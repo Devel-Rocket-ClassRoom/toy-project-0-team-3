@@ -2065,17 +2065,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Stairs_Large_02
       objectReference: {fileID: 0}
+    - target: {fileID: 118484, guid: ae56c52be3dec9f4d989d7f3064e95cb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 446560, guid: ae56c52be3dec9f4d989d7f3064e95cb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.04
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 446560, guid: ae56c52be3dec9f4d989d7f3064e95cb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.09487009
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 446560, guid: ae56c52be3dec9f4d989d7f3064e95cb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 14.18
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 446560, guid: ae56c52be3dec9f4d989d7f3064e95cb, type: 3}
       propertyPath: m_LocalRotation.w
