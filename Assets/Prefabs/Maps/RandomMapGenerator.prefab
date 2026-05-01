@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7905900530627991872}
-  - component: {fileID: 6062226534018931389}
   m_Layer: 0
   m_Name: RandomMapGenerator
   m_TagString: Untagged
@@ -32,20 +31,3 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6062226534018931389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5022809355461058302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f96448833ef7a2418709a2294d744ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RandomMapGenerator
-  tilePrefabs:
-  - {fileID: 6076637164184074705, guid: 8b31136bf5ccae84da91ba93ea534e1b, type: 3}
-  - {fileID: 480703320807909646, guid: 77fddde7287047942b8be1588944e6f9, type: 3}
-  - {fileID: 4720699259710555118, guid: 27272fd7628551444878568a498677d4, type: 3}
-  - {fileID: 8220018422036866439, guid: bceb3aca0bfc4bc428cb0c7fe7d218bc, type: 3}
