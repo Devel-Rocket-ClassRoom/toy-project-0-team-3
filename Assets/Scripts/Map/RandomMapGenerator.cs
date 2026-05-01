@@ -8,7 +8,7 @@ public class RandomMapGenerator : MonoBehaviour
     public GameObject playerPrefab;
 
     [Header("Grid Settings")]
-    public float tileSize = 15f; // 타일 한 칸 크기
+    public float tileSize = 20f; // 타일 한 칸 크기
     // 현재 맵
     private GameObject _currentMap;
     // 현재 플레이어 캐릭터
