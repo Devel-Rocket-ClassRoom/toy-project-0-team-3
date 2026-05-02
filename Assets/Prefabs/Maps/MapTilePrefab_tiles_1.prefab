@@ -1355,7 +1355,7 @@ GameObject:
   - component: {fileID: 6041089178242654593}
   m_Layer: 0
   m_Name: MapTilePrefab_tiles_1
-  m_TagString: Untagged
+  m_TagString: MapTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
