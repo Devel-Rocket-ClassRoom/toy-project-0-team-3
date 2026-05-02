@@ -1,12 +1,11 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
     private Animator _animator;
     private PlayerInput _playerInput;
+    private PlayerMovement _playerMovement;
 
     private int _comboStep = 0;
     private bool _canCombo = false;
@@ -26,6 +25,7 @@ public class PlayerAttack : MonoBehaviour
         _animator = GetComponent<Animator>();
         _playerInput = GetComponent<PlayerInput>();
         _rigidbody = GetComponent<Rigidbody>();
+        _playerMovement = GetComponent<PlayerMovement>();
     }
 
     private void Update()
@@ -59,6 +59,7 @@ public class PlayerAttack : MonoBehaviour
         {
             StopCoroutine(_coDash);
         }
+
         _comboStep++;
         _canCombo = false;
         _isAttacking = true;
@@ -92,15 +93,28 @@ public class PlayerAttack : MonoBehaviour
         _canCombo = false;
 
         if (_coDash != null)
+        {
             StopCoroutine(_coDash);
+            _coDash = null;
+        }
+
     }
 
     private IEnumerator DashCoroutine()
     {
+        Vector3 dashDirection = _playerMovement.PlayerDirection != Vector3.zero
+       ? _playerMovement.PlayerDirection
+       : transform.forward;
+
+        Debug.Log($"대시 {_comboStep}");
+
+        if (dashDirection != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(dashDirection);
+
         float elapsed = 0f;
         while (elapsed < _attackDashDuration)
         {
-            _rigidbody.MovePosition(_rigidbody.position + transform.forward * _attackDashSpeed * Time.fixedDeltaTime);
+            _rigidbody.MovePosition(_rigidbody.position + dashDirection * _attackDashSpeed * Time.fixedDeltaTime);
             elapsed += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
@@ -111,5 +125,18 @@ public class PlayerAttack : MonoBehaviour
     {
         //Debug.Log("OnAttackHitStart 호출됨");
         _sword.EnableHit();
+    }
+
+    public void ForceReset()
+    {
+        _isAttacking = false;
+        _comboStep = 0;
+        _canCombo = false;
+        if (_coDash != null)
+        {
+            StopCoroutine(_coDash);
+            _coDash = null;
+        }
+        _sword.DisableHit();
     }
 }

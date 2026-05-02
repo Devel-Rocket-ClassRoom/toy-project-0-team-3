@@ -4,17 +4,20 @@ public class PlayerSkill : MonoBehaviour
 {
     public GameObject Skills;
     private Animator _animator;
-
+    private PlayerAttack _playerAttack;
     private PlayerInput _input;
     private QSkill _qSkill;
     private WSkill _wSkill;
     private ESkill _eSkill;
     private RSkill _rSkill;
 
+    public bool IsUsingSkill { get; private set; }
+
     private void Awake()
     {
         _input = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
+        _playerAttack = GetComponent<PlayerAttack>();
         _qSkill = Skills.GetComponent<QSkill>();
         _wSkill = Skills.GetComponent<WSkill>();
         _eSkill = Skills.GetComponent<ESkill>();
@@ -23,26 +26,43 @@ public class PlayerSkill : MonoBehaviour
 
     private void Update()
     {
-        if (_input.SkillQ)
+        if (_input.SkillQ && _qSkill.CanUse && !IsUsingSkill)
         {
+            IsUsingSkill = true;
             _qSkill?.Use();
             _animator.SetTrigger("QSkill");
         }
-        if (_input.SkillW)
+
+        if (_input.SkillW && _qSkill.CanUse && !IsUsingSkill)
         {
+            IsUsingSkill = true;
             _wSkill?.Use();
             _animator.SetTrigger("WSkill");
         }
 
-        if (_input.SkillE)
+        if (_input.SkillE && _qSkill.CanUse && !IsUsingSkill)
         {
+            IsUsingSkill = true;
             _eSkill?.Use();
             _animator.SetTrigger("ESkill");
         }
-        if (_input.SkillR)
+
+        if (_input.SkillR && _qSkill.CanUse && !IsUsingSkill)
         {
+            IsUsingSkill = true;
             _rSkill?.Use();
             _animator.SetTrigger("RSkill");
         }
+    }
+
+    public void QDash()
+    {
+        _qSkill.OnDashStart();
+    }
+
+    public void OnSkillEnd()
+    {
+        IsUsingSkill = false;
+        _playerAttack.ForceReset();
     }
 }

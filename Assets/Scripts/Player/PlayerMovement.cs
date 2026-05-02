@@ -6,12 +6,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _rotateSpeed = 10f;
     [SerializeField] private float _animAcceleration = 2f; // 증가 속도
 
+    private Vector3 _playerDirection;
+    public Vector3 PlayerDirection => _playerDirection;
+
     private float _currentSpeed = 0f;
 
     private PlayerInput _playerInput;
     private PlayerAttack _playerAttack;
     private Rigidbody _playerRigidbody;
     private Animator _playerAnimator;
+    private PlayerSkill _playerSkill;
 
     private void Awake()
     {
@@ -19,10 +23,12 @@ public class PlayerMovement : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
         _playerRigidbody = GetComponent<Rigidbody>();
         _playerAnimator = GetComponentInChildren<Animator>();
+        _playerSkill = GetComponent<PlayerSkill>();
     }
 
     private void Update()
     {
+        _playerDirection = new Vector3(_playerInput.MoveX, 0f, _playerInput.MoveY).normalized;
         Rotate();
     }
 
@@ -33,23 +39,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        if (_playerAttack.IsAttacking)
+        if (_playerAttack.IsAttacking || _playerSkill.IsUsingSkill)
         {
             _playerAnimator.SetFloat("Speed", 0f);
             return;
         }
 
-        Vector3 direction = new Vector3(_playerInput.MoveX, 0f, _playerInput.MoveY).normalized;
-        _playerRigidbody.MovePosition(_playerRigidbody.position + direction * _moveSpeed * Time.fixedDeltaTime);
+        _playerRigidbody.MovePosition(_playerRigidbody.position + _playerDirection * _moveSpeed * Time.fixedDeltaTime);
 
-        float targetSpeed = direction.magnitude;
+        float targetSpeed = _playerDirection.magnitude;
         _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _animAcceleration * Time.fixedDeltaTime);
         _playerAnimator.SetFloat("Speed", _currentSpeed);
     }
 
     private void Rotate()
     {
-        if (_playerAttack.IsAttacking) return;
+        if (_playerAttack.IsAttacking || _playerSkill.IsUsingSkill) return;
 
         Vector3 direction = new Vector3(_playerInput.MoveX, 0f, _playerInput.MoveY);
         if (direction == Vector3.zero) return;
