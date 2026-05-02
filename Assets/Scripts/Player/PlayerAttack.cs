@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
@@ -16,6 +18,9 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float _attackDashDuration = 0.2f;
     private Coroutine _coDash = null;
 
+    [SerializeField] private Sword _sword;
+
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -27,7 +32,7 @@ public class PlayerAttack : MonoBehaviour
     {
         if (_playerInput.Attack)
         {
-            Debug.Log($"클릭 {_comboStep} {_canCombo}");
+            //Debug.Log($"클릭 {_comboStep} {_canCombo}");
             if (_comboStep == 0)
                 StartAttack();
             else if (_canCombo)
@@ -65,22 +70,24 @@ public class PlayerAttack : MonoBehaviour
     // Animation Event - 콤보 입력 가능 구간 시작 (애니메이션 중간에 설정)
     public void OnComboWindowOpen()
     {
-        Debug.Log($"윈도우 {_comboStep} {_canCombo}");
+        //Debug.Log($"윈도우 {_comboStep} {_canCombo}");
         _canCombo = true;
     }
 
     // Animation Event - 애니메이션 끝날 때 호출
     public void OnAttackEnd()
     {
-        Debug.Log($"OnAttack {_comboStep} {_canCombo}");
+        //Debug.Log($"OnAttack {_comboStep} {_canCombo}");
         ResetCombo();
 
         _isAttacking = false;
+        _sword.DisableHit();
+        //Debug.Log("OnAttackHitEnd 호출됨");
     }
 
     private void ResetCombo()
     {
-        Debug.Log("리셋");
+        //Debug.Log("리셋");
         _comboStep = 0;
         _canCombo = false;
 
@@ -98,5 +105,11 @@ public class PlayerAttack : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         _coDash = null;
+    }
+
+    public void OnAttackHitStart()
+    {
+        //Debug.Log("OnAttackHitStart 호출됨");
+        _sword.EnableHit();
     }
 }
