@@ -6,6 +6,8 @@ public class QSkill : SkillBase
     [SerializeField] private float _dashSpeed = 15f;
     [SerializeField] private float _dashDuration = 0.3f;
 
+    public Vector3 Direction { get; set; } = Vector3.zero;
+
     private Rigidbody _rigidbody;
 
     private void Awake()
@@ -27,10 +29,14 @@ public class QSkill : SkillBase
 
     private IEnumerator DashCoroutine()
     {
+        Vector3 QDirection = Direction != Vector3.zero
+      ? Direction
+      : transform.forward;
+
         float elapsed = 0f;
         while (elapsed < _dashDuration)
         {
-            _rigidbody.MovePosition(_rigidbody.position + _rigidbody.transform.forward * _dashSpeed * Time.fixedDeltaTime);
+            _rigidbody.MovePosition(_rigidbody.position + QDirection * _dashSpeed * Time.fixedDeltaTime);
             elapsed += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }

@@ -162,10 +162,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &15490260
 MonoBehaviour:
@@ -183,7 +183,7 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  _knockbackForce: 5
+  _knockbackForce: 7
 --- !u!65 &15490261
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -320,10 +320,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &65533603
 MonoBehaviour:
@@ -341,7 +341,7 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  _knockbackForce: 5
+  _knockbackForce: 7
 --- !u!65 &65533604
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -453,6 +453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sword
   _damage: 10
+  _player: {fileID: 1846991384}
 --- !u!65 &692769409
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -725,10 +726,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &925680696
 MonoBehaviour:
@@ -746,7 +747,7 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  _knockbackForce: 5
+  _knockbackForce: 7
 --- !u!65 &925680697
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1445,10 +1446,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &1388023713
 MonoBehaviour:
@@ -1466,7 +1467,7 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  _knockbackForce: 5
+  _knockbackForce: 7
 --- !u!65 &1388023714
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1932,7 +1933,7 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  _knockbackForce: 5
+  _knockbackForce: 7
 --- !u!54 &1913865364
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1955,10 +1956,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!1 &2130132587
 GameObject:
@@ -2003,10 +2004,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &2130132589
 MonoBehaviour:
@@ -2024,7 +2025,7 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  _knockbackForce: 5
+  _knockbackForce: 7
 --- !u!65 &2130132590
 BoxCollider:
   m_ObjectHideFlags: 0

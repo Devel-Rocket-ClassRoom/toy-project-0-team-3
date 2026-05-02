@@ -6,6 +6,7 @@ public class PlayerSkill : MonoBehaviour
     private Animator _animator;
     private PlayerAttack _playerAttack;
     private PlayerInput _input;
+    private PlayerMovement _playerMovement;
     private QSkill _qSkill;
     private WSkill _wSkill;
     private ESkill _eSkill;
@@ -18,6 +19,7 @@ public class PlayerSkill : MonoBehaviour
         _input = GetComponent<PlayerInput>();
         _animator = GetComponent<Animator>();
         _playerAttack = GetComponent<PlayerAttack>();
+        _playerMovement = GetComponent<PlayerMovement>();
         _qSkill = Skills.GetComponent<QSkill>();
         _wSkill = Skills.GetComponent<WSkill>();
         _eSkill = Skills.GetComponent<ESkill>();
@@ -30,6 +32,7 @@ public class PlayerSkill : MonoBehaviour
         {
             IsUsingSkill = true;
             _qSkill?.Use();
+            _qSkill.Direction = _playerMovement.PlayerDirection;
             _animator.SetTrigger("QSkill");
         }
 
@@ -57,6 +60,9 @@ public class PlayerSkill : MonoBehaviour
 
     public void QDash()
     {
+        if (_qSkill.Direction != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(_qSkill.Direction);
+
         _qSkill.OnDashStart();
     }
 
