@@ -12,17 +12,17 @@ public class RandomMapGenerator : MonoBehaviour
     // 현재 맵
     private GameObject _currentMap;
     // 현재 플레이어 캐릭터
-    private GameObject _currentPlayer;
+    public GameObject _currentPlayer;
     // 플레이서 생성 포지션 
-    private Vector3 _playerPosition;
+    private Vector3 _playerPosition = Vector3.zero;
     
     // 임시로 플레이어 생성 포지션 y좌표 1로 올려줌 (절반이 밑으로 들어가서)
-    private Vector3 _playerPositionLifter = new Vector3(0f, 1f, 0f);
+    private Vector3 _playerPositionLifter = new Vector3(0f, 2f, 0f);
 
     private void Start()
     {
         SpawnRandomTile();
-        // _currentPlayer = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        // _currentPlayer = Instantiate(, Vector3.zero, Quaternion.identity);
         // _currentPlayer.transform.SetParent(transform);
     }
 
@@ -79,11 +79,9 @@ public class RandomMapGenerator : MonoBehaviour
         // _currentMap.transform.SetParent(transform);
         // Debug.Log ($"맵 생성 : {tilePrefabs[index].name} (index{index})");
 
-        if (playerPrefab != null)
-        {
-            _currentPlayer = Instantiate (playerPrefab, Vector3.zero + _playerPositionLifter, Quaternion.identity);
-        }
-
-        Debug.Log ($"플레이어 생성 : {playerPrefab.name}");
+        _currentPlayer.transform.position = _playerPosition + _playerPositionLifter;
+        Debug.Log (_currentPlayer.transform.position);
+        //Instantiate (playerPrefab, Vector3.zero + _playerPositionLifter, Quaternion.identity);
+        
     }
 }
