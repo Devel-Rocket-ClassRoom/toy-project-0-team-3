@@ -49,13 +49,6 @@ public class RandomMapGenerator : MonoBehaviour
             Destroy(_currentMap);
         }
 
-        if (_currentPlayer != null)
-        {  
-            Debug.Log ($"기존 플레이어 제거 : {_currentPlayer.name}");  
-            Destroy(_currentPlayer); 
-        }
-
-        // 3x3 맵 생성해서 담을 빈 부모 생성
         _currentMap = new GameObject("MapGrid");
         _currentMap.transform.SetParent(transform);
         _currentMap.transform.localPosition = Vector3.zero;
@@ -67,10 +60,39 @@ public class RandomMapGenerator : MonoBehaviour
         {
             for (int j = 0; j < 3; j++)
             {
+                // int index = Random.Range(0, tilePrefabs.Length);
+                // Vector3 pos = new Vector3((i - 1) * tileSize, 0, (j - 1) * tileSize);
+                // GameObject tile = Instantiate (tilePrefabs[index], pos , Quaternion.identity);
+                // tile.transform.SetParent(_currentMap.transform);
+
+
                 int index = Random.Range(0, tilePrefabs.Length);
-                Vector3 pos = new Vector3((i - 1) * tileSize, 0, (j - 1) * tileSize);
-                GameObject tile = Instantiate (tilePrefabs[index], pos , Quaternion.identity);
+                Vector3 targetPos = new Vector3 ((i - 1) * tileSize, 0, (j - 1) * tileSize);
+                GameObject tile = Instantiate (tilePrefabs[index], targetPos, Quaternion.identity);
                 tile.transform.SetParent(_currentMap.transform);
+
+                // 납작한 바닥 렌더러들만 모아서 전체 바닥 중심을 targetPos에 정렬
+                Renderer[] allRenderers = tile.GetComponentsInChildren<Renderer>();
+                Bounds floorBounds = new();
+                bool boundsInitialized = false;
+                foreach (Renderer r in allRenderers)
+                {
+                    if (r.bounds.size.y < 0.5f)
+                    {
+                        if (!boundsInitialized) { floorBounds = r.bounds; boundsInitialized = true; }
+                        else floorBounds.Encapsulate(r.bounds);
+                    }
+                }
+                if (boundsInitialized)
+                {
+                    tile.transform.position += new Vector3(
+                        targetPos.x - floorBounds.center.x,
+                        0f,
+                        targetPos.z - floorBounds.center.z
+                    );
+                }
+
+
             }
         }
         Debug.Log ("3x3 맵 생성 완료");
