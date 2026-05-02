@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Sword : MonoBehaviour
 {
     [SerializeField] private float _damage = 10f;
+    [SerializeField] private GameObject _player;
     private BoxCollider _collider;
     private HashSet<Collider> _hitTargets = new HashSet<Collider>();
 
@@ -35,7 +36,7 @@ public class Sword : MonoBehaviour
         if (other.TryGetComponent<IDamagable>(out var target))
         {
             Vector3 hitPoint = other.transform.position;
-            Vector3 hitNormal = (other.transform.position - transform.position).normalized;
+            Vector3 hitNormal = (other.transform.position - _player.transform.position).normalized;
             target.OnDamage(_damage, hitPoint, hitNormal);
         }
     }
