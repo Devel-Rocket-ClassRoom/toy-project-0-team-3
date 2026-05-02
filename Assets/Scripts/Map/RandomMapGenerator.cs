@@ -12,17 +12,17 @@ public class RandomMapGenerator : MonoBehaviour
     // 현재 맵
     private GameObject _currentMap;
     // 현재 플레이어 캐릭터
-    private GameObject _currentPlayer;
+    public GameObject _currentPlayer;
     // 플레이서 생성 포지션 
-    private Vector3 _playerPosition;
+    private Vector3 _playerPosition = Vector3.zero;
     
     // 임시로 플레이어 생성 포지션 y좌표 1로 올려줌 (절반이 밑으로 들어가서)
-    private Vector3 _playerPositionLifter = new Vector3(0f, 1f, 0f);
+    private Vector3 _playerPositionLifter = new Vector3(0f, 2f, 0f);
 
     private void Start()
     {
         SpawnRandomTile();
-        // _currentPlayer = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        // _currentPlayer = Instantiate(, Vector3.zero, Quaternion.identity);
         // _currentPlayer.transform.SetParent(transform);
     }
 
@@ -49,13 +49,6 @@ public class RandomMapGenerator : MonoBehaviour
             Destroy(_currentMap);
         }
 
-        if (_currentPlayer != null)
-        {  
-            Debug.Log ($"기존 플레이어 제거 : {_currentPlayer.name}");  
-            Destroy(_currentPlayer); 
-        }
-
-        // 3x3 맵 생성해서 담을 빈 부모 생성
         _currentMap = new GameObject("MapGrid");
         _currentMap.transform.SetParent(transform);
         _currentMap.transform.localPosition = Vector3.zero;
@@ -67,10 +60,39 @@ public class RandomMapGenerator : MonoBehaviour
         {
             for (int j = 0; j < 3; j++)
             {
+                // int index = Random.Range(0, tilePrefabs.Length);
+                // Vector3 pos = new Vector3((i - 1) * tileSize, 0, (j - 1) * tileSize);
+                // GameObject tile = Instantiate (tilePrefabs[index], pos , Quaternion.identity);
+                // tile.transform.SetParent(_currentMap.transform);
+
+
                 int index = Random.Range(0, tilePrefabs.Length);
-                Vector3 pos = new Vector3((i - 1) * tileSize, 0, (j - 1) * tileSize);
-                GameObject tile = Instantiate (tilePrefabs[index], pos , Quaternion.identity);
+                Vector3 targetPos = new Vector3 ((i - 1) * tileSize, 0, (j - 1) * tileSize);
+                GameObject tile = Instantiate (tilePrefabs[index], targetPos, Quaternion.identity);
                 tile.transform.SetParent(_currentMap.transform);
+
+                // 납작한 바닥 렌더러들만 모아서 전체 바닥 중심을 targetPos에 정렬
+                Renderer[] allRenderers = tile.GetComponentsInChildren<Renderer>();
+                Bounds floorBounds = new();
+                bool boundsInitialized = false;
+                foreach (Renderer r in allRenderers)
+                {
+                    if (r.bounds.size.y < 0.5f)
+                    {
+                        if (!boundsInitialized) { floorBounds = r.bounds; boundsInitialized = true; }
+                        else floorBounds.Encapsulate(r.bounds);
+                    }
+                }
+                if (boundsInitialized)
+                {
+                    tile.transform.position += new Vector3(
+                        targetPos.x - floorBounds.center.x,
+                        0f,
+                        targetPos.z - floorBounds.center.z
+                    );
+                }
+
+
             }
         }
         Debug.Log ("3x3 맵 생성 완료");
@@ -79,11 +101,9 @@ public class RandomMapGenerator : MonoBehaviour
         // _currentMap.transform.SetParent(transform);
         // Debug.Log ($"맵 생성 : {tilePrefabs[index].name} (index{index})");
 
-        if (playerPrefab != null)
-        {
-            _currentPlayer = Instantiate (playerPrefab, Vector3.zero + _playerPositionLifter, Quaternion.identity);
-        }
-
-        Debug.Log ($"플레이어 생성 : {playerPrefab.name}");
+        _currentPlayer.transform.position = _playerPosition + _playerPositionLifter;
+        Debug.Log (_currentPlayer.transform.position);
+        //Instantiate (playerPrefab, Vector3.zero + _playerPositionLifter, Quaternion.identity);
+        
     }
 }
