@@ -11,7 +11,10 @@ public class PlayerInput : MonoBehaviour
     public Vector2 MousePosition { get; private set; }
     public bool Fire { get; private set; }
     public bool Attack { get; private set; }
-    // public bool Explode { get; private set; }
+    public bool SkillQ { get; private set; }
+    public bool SkillW { get; private set; }
+    public bool SkillE { get; private set; }
+    public bool SkillR { get; private set; }
 
     private void Update()
     {
@@ -20,6 +23,9 @@ public class PlayerInput : MonoBehaviour
         MousePosition = Input.mousePosition;
         Fire = Input.GetButton(FireButton);
         Attack = Input.GetKeyDown(KeyCode.Space);
-        // Explode = Input.GetKeyDown(KeyCode.Q);
+        SkillQ = Input.GetKeyDown(KeyCode.Q);
+        SkillW = Input.GetKeyDown(KeyCode.W);
+        SkillE = Input.GetKeyDown(KeyCode.E);
+        SkillR = Input.GetKeyDown(KeyCode.R);
     }
 }
