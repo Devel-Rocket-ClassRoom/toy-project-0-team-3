@@ -183,6 +183,7 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
+  _knockbackForce: 5
 --- !u!65 &15490261
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -340,6 +341,7 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
+  _knockbackForce: 5
 --- !u!65 &65533604
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -744,6 +746,7 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
+  _knockbackForce: 5
 --- !u!65 &925680697
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1033,6 +1036,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8e60287799d014892bb0b4e92fe9fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QSkill
+  _dashSpeed: 15
+  _dashDuration: 0.3
 --- !u!1001 &1197903048
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1461,6 +1466,7 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
+  _knockbackForce: 5
 --- !u!65 &1388023714
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1926,6 +1932,7 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
+  _knockbackForce: 5
 --- !u!54 &1913865364
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2017,6 +2024,7 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
+  _knockbackForce: 5
 --- !u!65 &2130132590
 BoxCollider:
   m_ObjectHideFlags: 0

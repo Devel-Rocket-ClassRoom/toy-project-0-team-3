@@ -7,14 +7,12 @@ public class QSkill : SkillBase
     [SerializeField] private float _dashDuration = 0.3f;
 
     private Rigidbody _rigidbody;
-    private Animator _animator;
 
     private void Awake()
     {
         Cooldown = 3f;
         // Skills 오브젝트가 아니라 Warrior(부모)에 붙어있으니까
         _rigidbody = GetComponentInParent<Rigidbody>();
-        _animator = GetComponentInParent<Animator>();
     }
 
     protected override void OnUse()
