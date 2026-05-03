@@ -104,6 +104,5 @@ public class RandomMapGenerator : MonoBehaviour
         _currentPlayer.transform.position = _playerPosition + _playerPositionLifter;
         Debug.Log (_currentPlayer.transform.position);
         //Instantiate (playerPrefab, Vector3.zero + _playerPositionLifter, Quaternion.identity);
-        
     }
 }
