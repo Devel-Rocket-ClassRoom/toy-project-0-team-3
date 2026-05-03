@@ -58,6 +58,28 @@ public class PlayerSkill : MonoBehaviour
         }
     }
 
+    public float[] GetRemainingCooldowns()
+    {
+        return new float[]
+        {
+        _qSkill.RemainingCooldown,
+        _wSkill.RemainingCooldown,
+        _eSkill.RemainingCooldown,
+        _rSkill.RemainingCooldown,
+        };
+    }
+
+    public float[] GetCooldownRatios()
+    {
+        return new float[]
+        {
+            _qSkill.CooldownRatio,
+            _wSkill.CooldownRatio,
+            _eSkill.CooldownRatio,
+            _rSkill.CooldownRatio,
+        };
+    }
+
     public void QDash()
     {
         if (_qSkill.Direction != Vector3.zero)
