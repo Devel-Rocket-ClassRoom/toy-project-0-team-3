@@ -40,6 +40,7 @@ public class DebugSceneSwitcher : MonoBehaviour
 
     private void OnGUI()
     {
+        // 에디터 화면에서 씬 쉽게 이동해줄 기능
         if (!showDebugPanel) return;
 
         GUI.Box (new Rect (10, 10, 200, 140), "Scene Switcher (F1)");
