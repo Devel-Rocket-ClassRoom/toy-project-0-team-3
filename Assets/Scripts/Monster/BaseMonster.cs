@@ -1,102 +1,225 @@
+using System.Collections;
 using UnityEngine;
-using System.Collections.Generic;
+using UnityEngine.UIElements;
 
-public abstract class BaseMonster : MonoBehaviour
+public abstract class BaseMonster : LivingEntity
 {
     [Header("Base Stats")]
-    public string monsterName = "Unknown";
-    public float maxHp = 100f;
-    protected float currentHp;
     public float moveSpeed = 3f;
+    public float attackRange = 1.5f;
+    public float attackCooldown = 2f;
+
+    [Header("Combat Settings")]
     public float attackDamage = 10f;
 
-    [Header("Layer Settings")]
-    public LayerMask wallLayer; 
+    [Header("HitBox")]
+    [SerializeField] 
+    protected HitBox hitBox;
 
-    [Header("Extraction Loot")]
-    public List<GameObject> dropItems;
+    protected float lastAttackTime;
+    protected bool isAttacking = false;
 
-    protected Transform playerTarget;
+    [Header("Death & Loot")]
+    public float destroyDelay = 3.0f;
 
-    public enum MonsterState { Idle, Investigate, Chase, Attack, Dead }
+    [Header("Detection Setup")]
+    public LayerMask obstacleLayer;
+    protected Transform player;
+    protected Animator anim;
+
+    protected enum MonsterState
+    {
+        Idle,
+        Move,
+        Attack,
+        Dead,
+        Alert,
+        Return,
+        Stun,
+    }
     protected MonsterState currentState = MonsterState.Idle;
 
-    protected virtual void Start()
+    protected override void OnEnable()
     {
-        currentHp = maxHp;
+        base.OnEnable();
+    }
 
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+    protected virtual void Awake()
+    {
+        anim = GetComponent<Animator>();
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+
+        if (playerObj != null)
         {
-            playerTarget = player.transform;
-        }
-        else
-        {
-            Debug.LogWarning("Player 태그를 가진 오브젝트를 찾을 수 없습니다!");
+            player = playerObj.transform;
         }
     }
 
-    protected virtual void Update()
+    protected override void Update()
     {
-        if (currentState == MonsterState.Dead || playerTarget == null) return;
+        base.Update();
 
-        switch (currentState)
+        if (IsDead || player == null)
         {
-            case MonsterState.Idle:
-                UpdateIdle();
-                break;
-            case MonsterState.Investigate:
-                UpdateInvestigate();
-                break;
-            case MonsterState.Chase:
-                UpdateChase();
-                break;
-            case MonsterState.Attack:
-                UpdateAttack();
-                break;
+            return;
+        }
+
+        if (currentState == MonsterState.Stun)
+        {
+            return;
+        }
+
+        if (isAttacking)
+        {
+            return;
+        }
+
+        AIBehavior();
+    }
+
+    protected abstract void AIBehavior();
+    protected abstract void PlayIdleAnim();
+    protected abstract void PlayMoveAnim();
+    protected abstract void PlayDeathAnim();
+    protected abstract IEnumerator AttackRoutine();
+
+    protected IEnumerator AttackProcess()
+    {
+        isAttacking = true;
+        currentState = MonsterState.Attack;
+
+        yield return StartCoroutine(AttackRoutine());
+
+        isAttacking = false;
+        currentState = MonsterState.Idle;
+        lastAttackTime = Time.time;
+    }
+
+    protected void UpdateAttack()
+    {
+        if (hitBox == null)
+        {
+            return;
+        }
+
+        Collider[] targets = hitBox.Colliders.ToArray();
+
+        foreach (Collider target in targets)
+        {
+            if (target.CompareTag("Player"))
+            {
+                var playerStatus = target.GetComponent<LivingEntity>();
+
+                if (playerStatus != null)
+                {
+                    playerStatus.OnDamage(attackDamage, target.ClosestPoint(transform.position), transform.forward);
+                    Debug.Log($"{playerStatus.Health}");
+                }
+            }
         }
     }
 
-    protected virtual void UpdateIdle() { }
-    protected virtual void UpdateInvestigate() { }
-    protected virtual void UpdateChase() { }
-    protected virtual void UpdateAttack() { }
-
-    protected bool HasLineOfSight(Transform target)
+    public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
-        if (target == null) return false;
-
-        Vector3 directionToTarget = target.position - transform.position;
-        float distanceToTarget = directionToTarget.magnitude;
-
-
-        if (Physics.Raycast(transform.position, directionToTarget.normalized, distanceToTarget, wallLayer))
+        if (IsDead)
         {
-            return false; 
+            return;
         }
-        return true; 
+
+        base.OnDamage(damage, hitPoint, hitNormal);
     }
 
-    public virtual void TakeDamage(float damage)
+    public override void Die()
     {
-        if (currentState == MonsterState.Dead) return;
+        base.Die();
 
-        currentHp -= damage;
-        if (currentHp <= 0)
-        {
-            Die();
-        }
-    }
-
-    protected virtual void Die()
-    {
         currentState = MonsterState.Dead;
+
+        PlayDeathAnim();
+
+        Collider col = GetComponent<Collider>();
+
+        if (col != null)
+        {
+            col.enabled = false;
+        }
+
         DropLoot();
-        Destroy(gameObject, 2f); 
+
+        Destroy(gameObject, destroyDelay);
     }
 
-    protected virtual void DropLoot()
+    private void DropLoot()
     {
-        // 전리품 드랍 로직 구현부
+        // 전리품 로직
+    }
+
+    protected bool HasObstacle(Vector3 targetPos)
+    {
+        Vector3 dir = (targetPos - transform.position).normalized;
+        float dist = Vector3.Distance(transform.position, targetPos);
+
+        return !Physics.Raycast(transform.position, dir, dist, obstacleLayer);
+    }
+
+    protected void Moving(Vector3 targetPos)
+    {
+        FaceTarget(targetPos);
+        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+        PlayMoveAnim();
+    }
+
+    protected void FaceTarget(Vector3 targetPos)
+    {
+        Vector3 lookPos = targetPos;
+        lookPos.y = transform.position.y;
+        transform.LookAt(lookPos);
+    }
+
+    public virtual void ApplyStun(float duration)
+    {
+        if (IsDead)
+        {
+            return;
+        }
+
+        StopAllCoroutines();
+
+        isAttacking = false;
+
+        ResetBehavior();
+
+        Rigidbody rb = GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero; 
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        if (anim != null)
+        {
+            anim.SetFloat("locomotion", 0f);
+            anim.SetTrigger("gotHit");
+        }
+
+        currentState = MonsterState.Stun;
+        StartCoroutine(StunRoutine(duration));
+    }
+
+    protected abstract void ResetBehavior();
+
+    protected IEnumerator StunRoutine(float duration)
+    {
+        Debug.Log($"기절");
+
+        yield return new WaitForSeconds(duration);
+
+        if (!IsDead)
+        {
+            Debug.Log("기절에서 회복");
+            currentState = MonsterState.Idle;
+            PlayIdleAnim();
+        }
     }
 }

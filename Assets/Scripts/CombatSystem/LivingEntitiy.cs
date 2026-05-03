@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 public class LivingEntity : MonoBehaviour, IDamagable
 {
@@ -9,10 +10,83 @@ public class LivingEntity : MonoBehaviour, IDamagable
 
     public UnityEvent OnDead;
 
+    public StatusFlags currentStatusMask { get; private set; } = StatusFlags.None;
+    private Dictionary<StatusFlags, StatusEffectData> activeEffects = new Dictionary<StatusFlags, StatusEffectData>();
+
+
     protected virtual void OnEnable()
     {
         IsDead = false;
         Health = startingHealth;
+        currentStatusMask = StatusFlags.None;
+        activeEffects.Clear();
+    }
+
+    protected virtual void Update()
+    {
+        if (IsDead)
+        {
+            return;
+        }
+
+        UpdateStatusEffects();
+    }
+
+    public void ApplyStatusEffect(StatusFlags newFlag, float duration, float tickDamage = 0f)
+    {
+        if (IsDead)
+        {
+            return;
+        }
+
+        if ((StatusFlags.ElementalGroup & newFlag) != 0)
+        {
+            currentStatusMask &= ~StatusFlags.ElementalGroup;
+
+            activeEffects.Remove(StatusFlags.Electric);
+            activeEffects.Remove(StatusFlags.Burn);
+            activeEffects.Remove(StatusFlags.Frostbite);
+        }
+
+        currentStatusMask |= newFlag;
+
+        activeEffects[newFlag] = new StatusEffectData(duration, tickDamage);
+    }
+
+    private void UpdateStatusEffects()
+    {
+        List<StatusFlags> keysList = new List<StatusFlags>(activeEffects.Keys);
+
+        foreach (StatusFlags flag in keysList)
+        {
+            StatusEffectData data = activeEffects[flag];
+
+            if (data.tickDamage > 0)
+            {
+                data.tickTimer += Time.deltaTime;
+
+                if (data.tickTimer >= 1f)
+                {
+                    OnDamage(data.tickDamage, transform.position, Vector3.zero);
+                    data.tickTimer -= 1f;
+                    Debug.Log($"{flag}");
+
+                    if (IsDead)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            data.duration -= Time.deltaTime;
+
+            if (data.duration <= 0)
+            {
+                currentStatusMask &= ~flag;
+                activeEffects.Remove(flag);
+                Debug.Log($"{flag} 상태이상이 종료되었습니다.");
+            }
+        }
     }
 
     public virtual void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
@@ -28,7 +102,11 @@ public class LivingEntity : MonoBehaviour, IDamagable
 
     public virtual void Heal(float amount)
     {
-        if (IsDead) return;
+        if (IsDead)
+        {
+            return;
+        }
+
         Health = Mathf.Clamp(Health + amount, 0f, startingHealth);
     }
 

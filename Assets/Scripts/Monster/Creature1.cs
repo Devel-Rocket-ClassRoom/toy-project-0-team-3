@@ -1,17 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
-public class Mushroom : SimpleMonster
+public class Creature1 : SensoryMonster
 {
-    private readonly int hashgoMonster = Animator.StringToHash("goMonster");
     private readonly int hashLocomotion = Animator.StringToHash("locomotion");
-    private readonly int hashGotHit = Animator.StringToHash("gotHit");
-    private readonly int hashDeath = Animator.StringToHash("death");
-    private readonly int hashAtk1 = Animator.StringToHash("attack1");
-    private readonly int hashAtk2 = Animator.StringToHash("attack2");
-    private readonly int hashAtk3 = Animator.StringToHash("attack3");
-
-    private bool hasAwoken = false;
+    private readonly int hashGotHit = Animator.StringToHash("GotHit");
+    private readonly int hashDeath = Animator.StringToHash("Death");
+    private readonly int hashAtk1 = Animator.StringToHash("Attack1");
+    private readonly int hashAtk2 = Animator.StringToHash("Attack2");
+    private readonly int hashAtk3 = Animator.StringToHash("Attack3");
 
     protected override void PlayIdleAnim()
     {
@@ -20,12 +17,6 @@ public class Mushroom : SimpleMonster
 
     protected override void PlayMoveAnim()
     {
-        if (!hasAwoken)
-        {
-            anim.SetTrigger(hashgoMonster);
-            hasAwoken = true;
-        }
-
         anim.SetFloat(hashLocomotion, 1f);
     }
 
@@ -167,4 +158,5 @@ public class Mushroom : SimpleMonster
             anim.SetTrigger(hashGotHit);
         }
     }
+
 }

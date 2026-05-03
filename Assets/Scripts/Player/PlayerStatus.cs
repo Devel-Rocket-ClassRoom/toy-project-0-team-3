@@ -21,8 +21,10 @@ public class PlayerStatus : LivingEntity
         _playerSkill = GetComponent<PlayerSkill>();
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
+
         TickManaRegen();
 
         // 테스트 코드

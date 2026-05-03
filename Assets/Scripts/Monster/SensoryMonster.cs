@@ -1,157 +1,131 @@
 using UnityEngine;
+using System.Collections;
 
-public class SensoryMonster : BaseMonster
+public abstract class SensoryMonster : BaseMonster
 {
-    [Header("Vision Settings (시야)")]
-    public float warningViewRadius = 12f;  
-    public float detectionViewRadius = 5f; 
-    [Range(0, 360)]
-    public float viewAngle = 110f;         
-    public float proximityRadius = 2f;     
+    [Header("Sensory Settings")]
+    public float detectRange = 4f;
+    public float alertRange = 8f;
+    public float alertDuration = 3f;
+    public GameObject alertMarkPrefab;
 
-    [Header("Hearing Settings (청각)")]
-    public float baseHearingRadius = 6f;   
+    private Vector3 originalPos;
+    private Vector3 alertPos;
+    private float alertTimer = 0f;
 
-    [Header("UI & State Settings")]
-    public GameObject exclamationMarkUI;
-    private Vector3 lastKnownPosition;
-    private float investigateTimer = 0f;
-    public float investigateDuration = 3f;
-
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
-        if (exclamationMarkUI != null) exclamationMarkUI.SetActive(false);
+        base.Awake();
+
+        originalPos = transform.position;
     }
 
-    protected override void UpdateIdle()
+    protected override void AIBehavior()
     {
-        if (playerTarget == null) return;
+        float distToPlayer = Vector3.Distance(transform.position, player.position);
+        bool hasLOS = HasObstacle(player.position);
 
-        float distanceToPlayer = Vector3.Distance(transform.position, playerTarget.position);
-        Vector3 directionToPlayer = (playerTarget.position - transform.position).normalized;
-
-        if (distanceToPlayer <= proximityRadius)
+        if (distToPlayer <= detectRange && hasLOS)
         {
-            TriggerChase(playerTarget.position);
+            if (Time.time >= lastAttackTime + attackCooldown)
+            {
+                StartCoroutine(AttackProcess());
+            }
+            else
+            {
+                currentState = MonsterState.Idle;
+
+                PlayIdleAnim();
+            }
             return;
         }
 
-        if (!HasLineOfSight(playerTarget)) return;
-
-        if (distanceToPlayer <= warningViewRadius)
+        switch (currentState)
         {
-            float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
+            case MonsterState.Idle:
+                PlayIdleAnim();
 
-            if (angleToPlayer < viewAngle / 2f)
-            {
-                if (distanceToPlayer <= detectionViewRadius)
+                if (distToPlayer <= alertRange && hasLOS)
                 {
-                    TriggerChase(playerTarget.position);
-                    return;
+                    TriggerAlert(player.position);
+                }
+                break;
+
+            case MonsterState.Alert:
+                if (Vector3.Distance(transform.position, alertPos) > 0.5f)
+                {
+                    Moving(alertPos);
                 }
                 else
                 {
-                    TriggerInvestigate(playerTarget.position);
-                    return;
+                    PlayIdleAnim();
+                    alertTimer += Time.deltaTime;
+
+                    if (alertTimer >= alertDuration)
+                    {
+                        currentState = MonsterState.Return;
+                    }
                 }
-            }
+                break;
+
+            case MonsterState.Return:
+                if (Vector3.Distance(transform.position, originalPos) > 0.5f)
+                {
+                    Moving(originalPos);
+                }
+                else
+                {
+                    currentState = MonsterState.Idle;
+                    FaceTarget(originalPos + transform.forward);
+                }
+                break;
         }
+    }
 
-        float playerNoise = 0f; 
-        float totalHearingRange = baseHearingRadius + playerNoise;
+    private void TriggerAlert(Vector3 targetPos)
+    {
+        currentState = MonsterState.Alert;
+        alertPos = targetPos;
+        alertTimer = 0f;
 
-        if (distanceToPlayer <= totalHearingRange)
+        if (alertMarkPrefab != null)
         {
-            TriggerInvestigate(playerTarget.position);
+            Instantiate(alertMarkPrefab, transform.position + Vector3.up * 2f, Quaternion.identity, transform);
         }
     }
 
-    private void TriggerChase(Vector3 targetPos)
+    protected abstract override IEnumerator AttackRoutine();
+
+    protected override void ResetBehavior()
     {
-        if (exclamationMarkUI != null) exclamationMarkUI.SetActive(true);
-        currentState = MonsterState.Chase;
+        
     }
 
-    private void TriggerInvestigate(Vector3 soundPos)
+#if UNITY_EDITOR
+    protected virtual void OnDrawGizmosSelected()
     {
-        if (exclamationMarkUI != null) exclamationMarkUI.SetActive(true);
-        lastKnownPosition = soundPos;
-        investigateTimer = 0f;
-        currentState = MonsterState.Investigate;
-    }
-
-    protected override void UpdateInvestigate()
-    {
-        if (playerTarget == null) return;
-
-        float distanceToPlayer = Vector3.Distance(transform.position, playerTarget.position);
-        Vector3 directionToPlayer = (playerTarget.position - transform.position).normalized;
-        float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
-
-        if (HasLineOfSight(playerTarget) && angleToPlayer < viewAngle / 2f)
-        {
-            if (distanceToPlayer <= detectionViewRadius)
-            {
-                TriggerChase(playerTarget.position);
-                return;
-            }
-            else if (distanceToPlayer <= warningViewRadius)
-            {
-                lastKnownPosition = playerTarget.position;
-                investigateTimer = 0f;
-            }
-        }
-
-        transform.position = Vector3.MoveTowards(transform.position, lastKnownPosition, (moveSpeed * 0.5f) * Time.deltaTime);
-
-        if (Vector3.Distance(transform.position, lastKnownPosition) < 0.5f)
-        {
-            investigateTimer += Time.deltaTime;
-            if (investigateTimer >= investigateDuration)
-            {
-                if (exclamationMarkUI != null) exclamationMarkUI.SetActive(false);
-                currentState = MonsterState.Idle;
-            }
-        }
-    }
-
-    protected override void UpdateChase()
-    {
-        if (playerTarget == null) return;
-
-        if (!HasLineOfSight(playerTarget))
-        {
-            TriggerInvestigate(playerTarget.position);
-            return;
-        }
-
-        transform.position = Vector3.MoveTowards(transform.position, playerTarget.position, moveSpeed * Time.deltaTime);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        // 1. 초근접 범위 (빨간색)
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, proximityRadius);
+        Gizmos.DrawWireSphere(transform.position, attackRange);
 
-        // 2. 청각 범위 (노란색)
+        Gizmos.color = new Color(1f, 0.5f, 0f);
+        Gizmos.DrawWireSphere(transform.position, detectRange);
+
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, baseHearingRadius);
+        Gizmos.DrawWireSphere(transform.position, alertRange);
 
-        Vector3 rightDir = Quaternion.Euler(0, viewAngle / 2, 0) * transform.forward;
-        Vector3 leftDir = Quaternion.Euler(0, -viewAngle / 2, 0) * transform.forward;
-
-        // 3. 확정 발각 시야 (주황색 부채꼴)
-        Gizmos.color = new Color(1f, 0.5f, 0f); // 주황색
-        Gizmos.DrawRay(transform.position, rightDir * detectionViewRadius);
-        Gizmos.DrawRay(transform.position, leftDir * detectionViewRadius);
-        Gizmos.DrawRay(transform.position, transform.forward * detectionViewRadius);
-
-        // 4. 멀리 경계 시야 (파란색 부채꼴)
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawRay(transform.position + rightDir * detectionViewRadius, rightDir * (warningViewRadius - detectionViewRadius));
-        Gizmos.DrawRay(transform.position + leftDir * detectionViewRadius, leftDir * (warningViewRadius - detectionViewRadius));
-        Gizmos.DrawRay(transform.position + transform.forward * detectionViewRadius, transform.forward * (warningViewRadius - detectionViewRadius));
+        if (Application.isPlaying)
+        {
+            if (currentState == MonsterState.Alert)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawLine(transform.position, alertPos);
+            }
+            else if (currentState == MonsterState.Return)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(transform.position, originalPos);
+            }
+        }
     }
+#endif
 }

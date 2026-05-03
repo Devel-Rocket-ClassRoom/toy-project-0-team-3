@@ -1,44 +1,84 @@
 using UnityEngine;
+using System.Collections;
 
-public class SimpleMonster : BaseMonster
+public abstract class SimpleMonster : BaseMonster
 {
     [Header("Simple Monster Settings")]
-    public float detectionRadius = 5f; 
-    public float chaseRadius = 10f;    
+    public float detectRange = 5f;
+    public float chaseRange = 10f;
+    protected bool isChasing = false;
 
-    protected override void UpdateIdle()
+    protected override void AIBehavior()
     {
-        if (playerTarget == null) return;
+        float distToPlayer = Vector3.Distance(transform.position, player.position);
 
-        float distance = Vector3.Distance(transform.position, playerTarget.position);
-
-        if (distance <= detectionRadius && HasLineOfSight(playerTarget))
+        if (!isChasing)
         {
-            currentState = MonsterState.Chase;
+            if (distToPlayer <= detectRange && HasObstacle(player.position))
+            {
+                isChasing = true;
+            }
+            else
+            {
+                currentState = MonsterState.Idle;
+                PlayIdleAnim();
+            }
+        }
+
+        if (isChasing)
+        {
+            if (distToPlayer > chaseRange)
+            {
+                isChasing = false;
+                currentState = MonsterState.Idle;
+                PlayIdleAnim();
+            }
+            else if (distToPlayer <= attackRange)
+            {
+                if (Time.time >= lastAttackTime + attackCooldown)
+                {
+                    StartCoroutine(AttackProcess());
+                }
+                else
+                {
+                    currentState = MonsterState.Idle;
+                    PlayIdleAnim();
+                }
+            }
+            else
+            {
+                currentState = MonsterState.Move;
+                Moving(player.position);
+            }
         }
     }
 
-    protected override void UpdateChase()
+    protected abstract override IEnumerator AttackRoutine();
+
+    protected override void ResetBehavior()
     {
-        if (playerTarget == null) return;
+        isChasing = false;
 
-        float distance = Vector3.Distance(transform.position, playerTarget.position);
-
-        if (distance > chaseRadius || !HasLineOfSight(playerTarget))
-        {
-            currentState = MonsterState.Idle;
-            return;
-        }
-
-        transform.position = Vector3.MoveTowards(transform.position, playerTarget.position, moveSpeed * Time.deltaTime);
+        Debug.Log($"{gameObject.name}의 추적 상태가 초기화");
     }
 
+#if UNITY_EDITOR
     protected virtual void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
 
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, chaseRadius);
+        Gizmos.color = new Color(1f, 0.5f, 0f);
+        Gizmos.DrawWireSphere(transform.position, detectRange);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, chaseRange);
+
+        if (Application.isPlaying && isChasing && player != null)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawLine(transform.position, player.position);
+        }
     }
+#endif
 }
