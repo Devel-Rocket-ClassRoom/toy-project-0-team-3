@@ -14,7 +14,7 @@ public class MonsterTest : LivingEntity
     {
         base.OnDamage(damage, hitPoint, hitNormal);
         Debug.Log($"데미지 받음: {damage}, 현재 체력: {Health}");
-
+        //
         // hitNormal 방향으로 밀기
         _rigidbody.AddForce(hitNormal * _knockbackForce, ForceMode.Impulse);
     }
