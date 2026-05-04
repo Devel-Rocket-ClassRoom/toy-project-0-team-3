@@ -662,6 +662,7 @@ GameObject:
   - component: {fileID: 8779853802452752782}
   - component: {fileID: 6429683634599484072}
   - component: {fileID: 1866209935107208663}
+  - component: {fileID: 3913982761115360346}
   m_Layer: 0
   m_Name: SM_Env_Wall_Rock_Blocked_01(Clone)
   m_TagString: Untagged
@@ -763,6 +764,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43390194764611520, guid: 27b5800f8d5f94e44b3156427a38f2bf, type: 2}
+--- !u!208 &3913982761115360346
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2290066622666753364}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.294, y: 1.7630001, z: 0.92}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 1.7630001, z: -0.74}
+  m_TimeToStationary: 0.5
 --- !u!1 &2303538740778698639
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,6 +792,7 @@ GameObject:
   - component: {fileID: 778580656984635218}
   - component: {fileID: 6961549011277350503}
   - component: {fileID: 7280938112392861943}
+  - component: {fileID: 4011369459801479204}
   m_Layer: 0
   m_Name: SM_Env_Stalagmite_05(Clone)
   m_TagString: Untagged
@@ -876,6 +894,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43584903354063332, guid: 3c26f68b2f342d64cb11bb4308d23d7b, type: 2}
+--- !u!208 &4011369459801479204
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303538740778698639}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.374, y: 0.62200004, z: 0.25100002}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.40100002, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &2686841602980852719
 GameObject:
   m_ObjectHideFlags: 0
@@ -2008,6 +2042,7 @@ GameObject:
   - component: {fileID: 49649014803212376}
   - component: {fileID: 5935539931689689578}
   - component: {fileID: 4120047631595417576}
+  - component: {fileID: 1647061490343210271}
   m_Layer: 0
   m_Name: SM_Env_Rune_Square_04(Clone)
   m_TagString: Untagged
@@ -2109,6 +2144,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43675488854822978, guid: 752971e1606e9c24d860f6415b86c756, type: 2}
+--- !u!208 &1647061490343210271
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7886455938272096888}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.48000002, y: 0.13700001, z: 0.44400004}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.13700001, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &7896125319456444878
 GameObject:
   m_ObjectHideFlags: 0

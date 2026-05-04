@@ -23,12 +23,19 @@ public class MonsterRandomSpawner : MonoBehaviour
     private List<Vector3> _spawnedPositions = new();
     private List<GameObject>_spawnedMonsters = new();
 
-    public void BakeAndSpawn()
+
+    private void Start()
     {
         ClearMonsters();
-        navMeshSurface.BuildNavMesh();
         SpawnMonsters();
     }
+
+    // public void BakeAndSpawn()
+    // {
+    //     ClearMonsters();
+    //     navMeshSurface.BuildNavMesh();
+    //     SpawnMonsters();
+    // }
 
     private void SpawnMonsters()
     {

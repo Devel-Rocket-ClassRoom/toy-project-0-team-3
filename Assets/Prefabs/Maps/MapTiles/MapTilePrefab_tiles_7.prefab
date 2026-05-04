@@ -685,6 +685,7 @@ GameObject:
   - component: {fileID: 3714129147932510379}
   - component: {fileID: 1488010833637659523}
   - component: {fileID: 4819070592717990796}
+  - component: {fileID: 2339840717867717266}
   m_Layer: 0
   m_Name: SM_Env_Rock_Pillar_08(Clone)
   m_TagString: Untagged
@@ -786,6 +787,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43519591847285386, guid: e375e96ca6931fc4aa53521990794178, type: 2}
+--- !u!208 &2339840717867717266
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2675501166467978185}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.35200003, y: 0.93100005, z: 0.314}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.008, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &2676488376757838840
 GameObject:
   m_ObjectHideFlags: 0
@@ -798,6 +815,7 @@ GameObject:
   - component: {fileID: 4345418937430978770}
   - component: {fileID: 1453546098090205662}
   - component: {fileID: 6191331781740527548}
+  - component: {fileID: 4837324740445527760}
   m_Layer: 0
   m_Name: SM_Env_Rock_Pillar_09(Clone)
   m_TagString: Untagged
@@ -899,6 +917,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43908599565649038, guid: e202b073fad1649499eafc7ed6843745, type: 2}
+--- !u!208 &4837324740445527760
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2676488376757838840}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.34800002, y: 0.93100005, z: 0.314}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &2792185787815574910
 GameObject:
   m_ObjectHideFlags: 0
@@ -1634,6 +1668,7 @@ GameObject:
   - component: {fileID: 5671449089338022640}
   - component: {fileID: 6947042391940292916}
   - component: {fileID: 9059730160921003721}
+  - component: {fileID: 3307427439070776457}
   m_Layer: 0
   m_Name: SM_Env_Rock_Pillar_011(Clone)
   m_TagString: Untagged
@@ -1735,6 +1770,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43052104368530794, guid: 446e5fe4bbccb574d8e4bf4ccad07062, type: 2}
+--- !u!208 &3307427439070776457
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5562621201968254828}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.35900003, y: 0.77800006, z: 0.314}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.15300001, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &5627436394891997236
 GameObject:
   m_ObjectHideFlags: 0

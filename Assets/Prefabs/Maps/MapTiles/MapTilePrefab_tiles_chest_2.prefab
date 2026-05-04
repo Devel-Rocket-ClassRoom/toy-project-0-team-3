@@ -1410,6 +1410,7 @@ GameObject:
   - component: {fileID: 8005740545198800837}
   - component: {fileID: 6319020023371617774}
   - component: {fileID: 8274353025575754676}
+  - component: {fileID: 2089191454122865838}
   m_Layer: 0
   m_Name: SM_Prop_Chest_02(Clone)
   m_TagString: Untagged
@@ -1512,6 +1513,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43655439950163236, guid: 1cb60c29f2577af429a5f69f5bacde1d, type: 2}
+--- !u!208 &2089191454122865838
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5251088533668122995}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.536, y: 0.187, z: 0.319}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.187, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &6210598134527611051
 GameObject:
   m_ObjectHideFlags: 0
@@ -1861,6 +1878,7 @@ GameObject:
   - component: {fileID: 363867699848769584}
   - component: {fileID: 8630720968219198986}
   - component: {fileID: 6550898749371626537}
+  - component: {fileID: 3350787939666193883}
   m_Layer: 0
   m_Name: SM_Prop_Bed_02(Clone)
   m_TagString: Untagged
@@ -1984,6 +2002,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43661102387117290, guid: 9d1d28041672780488f67327f3389e82, type: 2}
+--- !u!208 &3350787939666193883
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7593440684310004164}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.4790001, y: 1.0480001, z: 1.8830001}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.85, y: 1.0300001, z: 0.26000002}
+  m_TimeToStationary: 0.5
 --- !u!1 &8086451577828591374
 GameObject:
   m_ObjectHideFlags: 0
@@ -2221,6 +2255,7 @@ GameObject:
   - component: {fileID: 1532918886721598948}
   - component: {fileID: 6926174459789758230}
   - component: {fileID: 3308291210860843288}
+  - component: {fileID: 6337857105758466533}
   m_Layer: 0
   m_Name: SM_Env_Grate_Ground_01(Clone)
   m_TagString: Untagged
@@ -2322,6 +2357,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43728216388774962, guid: 2407f2750f84abc41940fce46f644cb0, type: 2}
+--- !u!208 &6337857105758466533
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8690356957685608113}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.554, y: 0.126, z: 0.544}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.20700002, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &8884574605406090974
 GameObject:
   m_ObjectHideFlags: 0

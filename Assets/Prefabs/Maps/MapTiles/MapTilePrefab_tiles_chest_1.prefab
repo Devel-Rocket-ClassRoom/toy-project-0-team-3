@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 1603785984332995033}
   - component: {fileID: 2291089373945680620}
   - component: {fileID: 196826273086283820}
+  - component: {fileID: 8813401664239194737}
   m_Layer: 0
   m_Name: SM_Env_GlowingOrb_02(Clone)
   m_TagString: Untagged
@@ -225,6 +226,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43944449198229586, guid: a0d772689a07c7e43b780dfa1174a772, type: 2}
+--- !u!208 &8813401664239194737
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192948195828321956}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.628, y: 1.031, z: 0.823}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 1.031, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &1272671894758068295
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,6 +367,7 @@ GameObject:
   - component: {fileID: 6074252353649960959}
   - component: {fileID: 7131111903680927265}
   - component: {fileID: 3795501797843468467}
+  - component: {fileID: 5328139255758429603}
   m_Layer: 0
   m_Name: SM_Env_Statue_02(Clone)
   m_TagString: Untagged
@@ -451,6 +469,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43710310274203318, guid: 4b13cb23b63747e4982b98813f9f4ea0, type: 2}
+--- !u!208 &5328139255758429603
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501746886412405911}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.772, y: 1.5040001, z: 0.693}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 1.5040001, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &1861972248397000542
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,6 +721,7 @@ GameObject:
   - component: {fileID: 1689632819630057322}
   - component: {fileID: 5579766469807148531}
   - component: {fileID: 1967691147264270296}
+  - component: {fileID: 5865293739589239644}
   m_Layer: 0
   m_Name: SM_Env_Mushroom_Giant_05(Clone)
   m_TagString: Untagged
@@ -788,6 +823,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43481508074669382, guid: 689e1f9e37d00bd40b26fb02546d9fb8, type: 2}
+--- !u!208 &5865293739589239644
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936653447159571086}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.767, y: 1.4710001, z: 0.74200004}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 1.4710001, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &3145284629170872835
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,6 +1299,7 @@ GameObject:
   - component: {fileID: 9186619566644764065}
   - component: {fileID: 5337237884213798327}
   - component: {fileID: 9139447219841344060}
+  - component: {fileID: 2099223710655213949}
   m_Layer: 0
   m_Name: SM_Prop_Chest_03(Clone)
   m_TagString: Untagged
@@ -1350,6 +1402,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43862928417577270, guid: d487063872abfd245b894576be57e191, type: 2}
+--- !u!208 &2099223710655213949
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616395690332355158}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.637, y: 0.20700002, z: 0.36200002}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.001, y: 0.20700002, z: -0.001}
+  m_TimeToStationary: 0.5
 --- !u!1 &5652157633201448792
 GameObject:
   m_ObjectHideFlags: 0
@@ -1862,6 +1930,7 @@ GameObject:
   - component: {fileID: 856759215217026381}
   - component: {fileID: 5209318911036457654}
   - component: {fileID: 1978354475898203911}
+  - component: {fileID: 1888171240946314064}
   m_Layer: 0
   m_Name: SM_Env_Railing_Pillar_05(Clone)
   m_TagString: Untagged
@@ -1963,6 +2032,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43265666198756388, guid: ca6e0b0a8cb24ad4fae8a5bcc7951374, type: 2}
+--- !u!208 &1888171240946314064
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7135665922280448479}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.18800001, y: 0.554, z: 0.18800001}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.554, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &7414018014347903566
 GameObject:
   m_ObjectHideFlags: 0
