@@ -66,7 +66,7 @@ public class Creature1 : SensoryMonster
 
         yield return new WaitForSeconds(hitTime);
 
-        UpdateDamage();
+        UpdateAttack();
 
         Debug.Log("공격 1 타격!");
 
@@ -99,7 +99,7 @@ public class Creature1 : SensoryMonster
 
         yield return new WaitForSeconds(hitTime);
 
-        UpdateDamage();
+        UpdateAttack();
 
         Debug.Log("공격 2");
 
@@ -131,7 +131,7 @@ public class Creature1 : SensoryMonster
 
         yield return new WaitForSeconds(hitTime);
 
-        UpdateDamage();
+        UpdateAttack();
 
         Debug.Log("공격 3");
 

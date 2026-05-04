@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -18,6 +17,7 @@ public abstract class BaseMonster : LivingEntity
     protected HitBox hitBox;
 
     protected float lastAttackTime;
+    protected bool isAttacking = false;
 
     [Header("Death & Loot")]
     public float destroyDelay = 3.0f;
@@ -30,55 +30,18 @@ public abstract class BaseMonster : LivingEntity
     protected enum MonsterState
     {
         Idle,
+        Move,
         Attack,
         Dead,
         Alert,
-        Trace,
         Return,
+        Stun,
     }
     protected MonsterState currentState = MonsterState.Idle;
-
-    protected MonsterState CurrentState
-    {
-        get
-        {
-            return currentState;
-        }
-        set
-        {
-            if (currentState == value)
-            {
-                return;
-            }
-
-            var prevStatus = currentState;
-            currentState = value;
-
-            Debug.Log($"[State Change] {prevStatus} -> {currentState}");
-
-            switch (currentState)
-            {
-                case MonsterState.Idle:
-                    break;
-                case MonsterState.Attack:
-                    break;
-                case MonsterState.Dead:
-                    PlayDeathAnim();
-                    break;
-                case MonsterState.Alert:
-                    break;
-                case MonsterState.Trace:
-                    break;
-                case MonsterState.Return:
-                    break;
-            }
-        }
-    }
 
     protected override void OnEnable()
     {
         base.OnEnable();
-        CurrentState = MonsterState.Idle;
     }
 
     protected virtual void Awake()
@@ -101,40 +64,20 @@ public abstract class BaseMonster : LivingEntity
             return;
         }
 
+        if (currentState == MonsterState.Stun)
+        {
+            return;
+        }
+
+        if (isAttacking)
+        {
+            return;
+        }
+
         AIBehavior();
     }
 
-    protected virtual void AIBehavior()
-    {
-        switch (CurrentState)
-        {
-            case MonsterState.Idle:
-                UpdateIdle();
-                break;
-            case MonsterState.Attack:
-                UpdateAttack();
-                break;
-            case MonsterState.Dead:
-                UpdateDead();
-                break;
-            case MonsterState.Alert:
-                UpdateAlert();
-                break;
-            case MonsterState.Trace:
-                UpdateTrace();
-                break;
-            case MonsterState.Return:
-                UpdateReturn();
-                break;
-        }
-    }
-    protected virtual void UpdateIdle() { }
-    protected virtual void UpdateAttack() { }
-    protected virtual void UpdateDead() { }
-    protected virtual void UpdateAlert() { }
-    protected virtual void UpdateTrace() { }
-    protected virtual void UpdateReturn() { }
-
+    protected abstract void AIBehavior();
     protected abstract void PlayIdleAnim();
     protected abstract void PlayMoveAnim();
     protected abstract void PlayDeathAnim();
@@ -142,15 +85,17 @@ public abstract class BaseMonster : LivingEntity
 
     protected IEnumerator AttackProcess()
     {
+        isAttacking = true;
         currentState = MonsterState.Attack;
 
         yield return StartCoroutine(AttackRoutine());
 
+        isAttacking = false;
         currentState = MonsterState.Idle;
         lastAttackTime = Time.time;
     }
 
-    protected void UpdateDamage()
+    protected void UpdateAttack()
     {
         if (hitBox == null)
         {
@@ -229,5 +174,52 @@ public abstract class BaseMonster : LivingEntity
         Vector3 lookPos = targetPos;
         lookPos.y = transform.position.y;
         transform.LookAt(lookPos);
+    }
+
+    public virtual void ApplyStun(float duration)
+    {
+        if (IsDead)
+        {
+            return;
+        }
+
+        StopAllCoroutines();
+
+        isAttacking = false;
+
+        ResetBehavior();
+
+        Rigidbody rb = GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero; 
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        if (anim != null)
+        {
+            anim.SetFloat("locomotion", 0f);
+            anim.SetTrigger("gotHit");
+        }
+
+        currentState = MonsterState.Stun;
+        StartCoroutine(StunRoutine(duration));
+    }
+
+    protected abstract void ResetBehavior();
+
+    protected IEnumerator StunRoutine(float duration)
+    {
+        Debug.Log($"기절");
+
+        yield return new WaitForSeconds(duration);
+
+        if (!IsDead)
+        {
+            Debug.Log("기절에서 회복");
+            currentState = MonsterState.Idle;
+            PlayIdleAnim();
+        }
     }
 }

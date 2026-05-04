@@ -167,17 +167,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6333187160507835309, guid: 7a6e25aee908a8f49aa370ba73d7becd, type: 3}
-      propertyPath: hitBox
-      value: 
-      objectReference: {fileID: 2025110853}
     - target: {fileID: 8272712446662012606, guid: 7a6e25aee908a8f49aa370ba73d7becd, type: 3}
       propertyPath: m_Name
       value: MushMonster
       objectReference: {fileID: 0}
     - target: {fileID: 8272712446662012606, guid: 7a6e25aee908a8f49aa370ba73d7becd, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -203,10 +199,6 @@ PrefabInstance:
     - target: {fileID: 31645413652738654, guid: 14ce1c108069d0245929f23fd65f5751, type: 3}
       propertyPath: m_Name
       value: Creature 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 31645413652738654, guid: 14ce1c108069d0245929f23fd65f5751, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 31645413652738654, guid: 14ce1c108069d0245929f23fd65f5751, type: 3}
       propertyPath: m_TagString
@@ -631,7 +623,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!1 &1982659531
 GameObject:
@@ -725,17 +717,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2025110853 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4003579869161019703, guid: 7a6e25aee908a8f49aa370ba73d7becd, type: 3}
-  m_PrefabInstance: {fileID: 147804688}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 347fec5b52d96834daba02a054842699, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HitBox
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
