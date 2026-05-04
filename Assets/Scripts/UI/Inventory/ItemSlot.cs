@@ -1,16 +1,21 @@
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ItemSlot : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public int slotIndex = -1;
+    public Image icon;
+    public Button button;
+
+    public void SetItem(ItemData data)
     {
-        
+        icon.sprite = data.SpriteIcon;
+        gameObject.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetEmpty()
     {
-        
+        icon.sprite = null;
     }
 }
