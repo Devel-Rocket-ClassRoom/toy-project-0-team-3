@@ -75,7 +75,7 @@ public class Mushroom : SimpleMonster
 
         yield return new WaitForSeconds(hitTime);
 
-        UpdateAttack();
+        UpdateDamage();
 
         Debug.Log("공격 1 타격!");
 
@@ -108,7 +108,7 @@ public class Mushroom : SimpleMonster
 
         yield return new WaitForSeconds(hitTime);
 
-        UpdateAttack();
+        UpdateDamage();
 
         Debug.Log("공격 2");
 
@@ -140,7 +140,7 @@ public class Mushroom : SimpleMonster
 
         yield return new WaitForSeconds(hitTime);
 
-        UpdateAttack();
+        UpdateDamage();
 
         Debug.Log("공격 3");
 

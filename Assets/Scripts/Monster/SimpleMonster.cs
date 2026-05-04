@@ -6,60 +6,47 @@ public abstract class SimpleMonster : BaseMonster
     [Header("Simple Monster Settings")]
     public float detectRange = 5f;
     public float chaseRange = 10f;
-    protected bool isChasing = false;
 
-    protected override void AIBehavior()
+    protected override void UpdateIdle()
     {
         float distToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (!isChasing)
+        if (distToPlayer <= detectRange && HasObstacle(player.position))
         {
-            if (distToPlayer <= detectRange && HasObstacle(player.position))
-            {
-                isChasing = true;
-            }
-            else
-            {
-                currentState = MonsterState.Idle;
-                PlayIdleAnim();
-            }
+            CurrentState = MonsterState.Trace;
+            return;
         }
 
-        if (isChasing)
-        {
-            if (distToPlayer > chaseRange)
-            {
-                isChasing = false;
-                currentState = MonsterState.Idle;
-                PlayIdleAnim();
-            }
-            else if (distToPlayer <= attackRange)
-            {
-                if (Time.time >= lastAttackTime + attackCooldown)
-                {
-                    StartCoroutine(AttackProcess());
-                }
-                else
-                {
-                    currentState = MonsterState.Idle;
-                    PlayIdleAnim();
-                }
-            }
-            else
-            {
-                currentState = MonsterState.Move;
-                Moving(player.position);
-            }
-        }
+        // 전이되지 않았다면 매 프레임 대기 애니메이션 갱신
+        PlayIdleAnim();
     }
 
-    protected abstract override IEnumerator AttackRoutine();
-
-    protected override void ResetBehavior()
+    // 💡 2. 추적 상태 로직 (UpdateTrace 오버라이드)
+    protected override void UpdateTrace()
     {
-        isChasing = false;
+        float distToPlayer = Vector3.Distance(transform.position, player.position);
 
-        Debug.Log($"{gameObject.name}의 추적 상태가 초기화");
+        if (distToPlayer > chaseRange)
+        {
+            CurrentState = MonsterState.Idle;
+            return;
+        }
+
+        if (distToPlayer <= attackRange)
+        {
+            if (Time.time >= lastAttackTime + attackCooldown)
+            {
+                StartCoroutine(AttackProcess());
+            }
+            else
+            {
+                CurrentState = MonsterState.Idle;
+            }
+            return;
+        }
+
+        // 거리가 닿지 않으면 계속 이동
+        Moving(player.position);
     }
 
 #if UNITY_EDITOR
@@ -74,7 +61,8 @@ public abstract class SimpleMonster : BaseMonster
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, chaseRange);
 
-        if (Application.isPlaying && isChasing && player != null)
+        // CurrentState가 Trace일 때만 추적 선을 그림
+        if (Application.isPlaying && CurrentState == MonsterState.Trace && player != null)
         {
             Gizmos.color = Color.magenta;
             Gizmos.DrawLine(transform.position, player.position);
