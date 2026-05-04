@@ -6,6 +6,7 @@ TagManager:
   tags:
   - MapTile
   - Monster
+  - TileFloor
   layers:
   - Default
   - TransparentFX

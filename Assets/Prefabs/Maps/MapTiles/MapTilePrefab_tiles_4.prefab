@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 36961723914106236}
   m_Layer: 0
   m_Name: Tile_3_2
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 3494823273337540528}
   m_Layer: 0
   m_Name: Tile_2_3
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 7504974775064477974}
   m_Layer: 0
   m_Name: Tile_2_0
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -350,7 +350,7 @@ GameObject:
   - component: {fileID: 4416361497934779357}
   m_Layer: 0
   m_Name: Tile_1_3
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -462,7 +462,7 @@ GameObject:
   - component: {fileID: 1747949542573868441}
   m_Layer: 0
   m_Name: Tile_0_0
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -574,7 +574,7 @@ GameObject:
   - component: {fileID: 4508281635285209095}
   m_Layer: 0
   m_Name: Tile_3_1
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -686,7 +686,7 @@ GameObject:
   - component: {fileID: 4548169553239540462}
   m_Layer: 0
   m_Name: Tile_0_2
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -798,7 +798,7 @@ GameObject:
   - component: {fileID: 7990378229002424229}
   m_Layer: 0
   m_Name: Tile_0_3
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -910,7 +910,7 @@ GameObject:
   - component: {fileID: 4530524268371433865}
   m_Layer: 0
   m_Name: Tile_1_2
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1022,7 +1022,7 @@ GameObject:
   - component: {fileID: 7434457063079391226}
   m_Layer: 0
   m_Name: Tile_0_1
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1134,7 +1134,7 @@ GameObject:
   - component: {fileID: 1653308488917677681}
   m_Layer: 0
   m_Name: Tile_3_3
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1246,7 +1246,7 @@ GameObject:
   - component: {fileID: 5876179735230973642}
   m_Layer: 0
   m_Name: Tile_2_1
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1358,7 +1358,7 @@ GameObject:
   - component: {fileID: 6512564062082087749}
   m_Layer: 0
   m_Name: Tile_2_2
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1470,7 +1470,7 @@ GameObject:
   - component: {fileID: 5462152925433312358}
   m_Layer: 0
   m_Name: Tile_1_1
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1582,7 +1582,7 @@ GameObject:
   - component: {fileID: 836374737109413346}
   m_Layer: 0
   m_Name: Tile_3_0
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1720,15 +1720,15 @@ Transform:
   - {fileID: 8549599962237985132}
   - {fileID: 2234996718467369899}
   - {fileID: 5015808437385795997}
-  - {fileID: 8920809823520960321}
   - {fileID: 1007291292069963390}
-  - {fileID: 6528825640759572423}
   - {fileID: 6778981753634255680}
   - {fileID: 1815677490813341879}
-  - {fileID: 5354902942094829295}
   - {fileID: 8529274772257743699}
-  - {fileID: 8903471397707022325}
   - {fileID: 9120303254151892359}
+  - {fileID: 6528825640759572423}
+  - {fileID: 8903471397707022325}
+  - {fileID: 5354902942094829295}
+  - {fileID: 8920809823520960321}
   - {fileID: 5256204362025826469}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1746,7 +1746,7 @@ GameObject:
   - component: {fileID: 5706296854484257576}
   m_Layer: 0
   m_Name: Tile_1_0
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

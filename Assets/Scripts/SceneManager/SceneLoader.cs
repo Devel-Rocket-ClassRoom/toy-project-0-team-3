@@ -34,7 +34,7 @@ public class SceneLoader : MonoBehaviour
     {
         { GameScene.MainTitle, "Prototype_1_Main" },
         { GameScene.Pub, "Prototype_1_Pub" },
-        { GameScene.Dungeon, "Prototype_1_Dungeon"}
+        { GameScene.Dungeon, "TestDungeon_Sangwook"}
     };
 
     private void Awake()
