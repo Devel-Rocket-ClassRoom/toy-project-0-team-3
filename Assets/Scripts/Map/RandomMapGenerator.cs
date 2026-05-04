@@ -1,7 +1,11 @@
 using UnityEngine;
+using System.Collections;
 
 public class RandomMapGenerator : MonoBehaviour
 {
+    [Header("Monster Spawner")]
+    public MonsterRandomSpawner monsterSpawner;
+
     [Header("Map Tile Prefabs")]
     public GameObject[] tilePrefabs; // 맵 프리팹 배열 
     [Header("Player Prefab")]
@@ -89,6 +93,9 @@ public class RandomMapGenerator : MonoBehaviour
                     );
                 }
 
+                _currentPlayer.transform.position = _playerPosition + _playerPositionLifter;
+
+                StartCoroutine(BakeAndSpawnRoutine());
 
             }
         }
@@ -101,5 +108,15 @@ public class RandomMapGenerator : MonoBehaviour
         _currentPlayer.transform.position = _playerPosition;
         Debug.Log (_currentPlayer.transform.position);
         //Instantiate (playerPrefab, Vector3.zero + _playerPositionLifter, Quaternion.identity);
+    }
+
+    private IEnumerator BakeAndSpawnRoutine()
+    {
+        yield return null;
+
+        if (monsterSpawner != null)
+        {
+            monsterSpawner.BakeAndSpawn();
+        }
     }
 }
