@@ -16,9 +16,6 @@ public class RandomMapGenerator : MonoBehaviour
     // 플레이서 생성 포지션 
     private Vector3 _playerPosition = Vector3.zero;
     
-    // 임시로 플레이어 생성 포지션 y좌표 1로 올려줌 (절반이 밑으로 들어가서)
-    private Vector3 _playerPositionLifter = new Vector3(0f, 2f, 0f);
-
     private void Start()
     {
         SpawnRandomTile();
@@ -29,10 +26,10 @@ public class RandomMapGenerator : MonoBehaviour
     private void Update()
     {
         // 스페이스 시 기존 맵을 제거 하고 새로운 랜덤 맵타일 스폰
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SpawnRandomTile();
-        }
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     SpawnRandomTile();
+        // }
     }
 
     // 랜덤 맵타일 스폰 메서드
@@ -101,7 +98,7 @@ public class RandomMapGenerator : MonoBehaviour
         // _currentMap.transform.SetParent(transform);
         // Debug.Log ($"맵 생성 : {tilePrefabs[index].name} (index{index})");
 
-        _currentPlayer.transform.position = _playerPosition + _playerPositionLifter;
+        _currentPlayer.transform.position = _playerPosition;
         Debug.Log (_currentPlayer.transform.position);
         //Instantiate (playerPrefab, Vector3.zero + _playerPositionLifter, Quaternion.identity);
     }
