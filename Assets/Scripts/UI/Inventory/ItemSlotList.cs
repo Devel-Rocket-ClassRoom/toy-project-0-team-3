@@ -6,11 +6,17 @@ public class ItemSlotList : MonoBehaviour
 {
     public ItemSlot prefab;
     public ScrollRect scrollRect;
+    public ItemInfo itemInfo;
 
     private List<ItemSlot> slotList = new List<ItemSlot>(); // 뷰어
     private List<ItemData> itemDataList = new List<ItemData>(); // 실제 데이터
 
     private int selectedSlotIndex = -1;
+
+    private void Awake()
+    {
+        itemInfo.SetEmpty();
+    }
 
     public void AddItem(string itemId)
     {
@@ -60,6 +66,7 @@ public class ItemSlotList : MonoBehaviour
                 slot.button.onClick.AddListener(() =>
                 {
                     selectedSlotIndex = capturedIndex;
+                    itemInfo.SetItemData(itemDataList[capturedIndex]);
                     Debug.Log($"선택된 슬롯: {selectedSlotIndex}");
                 });
 
@@ -83,5 +90,6 @@ public class ItemSlotList : MonoBehaviour
         }
 
         selectedSlotIndex = -1;
+        itemInfo.SetEmpty();
     }
 }
