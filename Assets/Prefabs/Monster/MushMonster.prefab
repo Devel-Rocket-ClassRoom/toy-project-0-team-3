@@ -1372,15 +1372,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a80caec21292d62499dcbab9e8f20ccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mushroom
-  startingHealth: 100
+  startingHealth: 30
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  moveSpeed: 3
+  moveSpeed: 0.1
   attackRange: 1.5
-  attackCooldown: 2
+  attackCooldown: 0.1
   attackDamage: 10
-  hitBox: {fileID: 0}
+  hitBox: {fileID: 4003579869161019703}
   destroyDelay: 3
   obstacleLayer:
     serializedVersion: 2
@@ -1409,10 +1409,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!136 &4519842578620285077
 CapsuleCollider:

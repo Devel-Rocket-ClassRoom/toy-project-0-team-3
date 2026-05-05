@@ -11,6 +11,8 @@ public class Mushroom : SimpleMonster
     private readonly int hashAtk2 = Animator.StringToHash("attack2");
     private readonly int hashAtk3 = Animator.StringToHash("attack3");
 
+    private Rigidbody _rigidbody;
+
     private bool hasAwoken = false;
 
     protected override void PlayIdleAnim()
@@ -165,6 +167,7 @@ public class Mushroom : SimpleMonster
             }
 
             anim.SetTrigger(hashGotHit);
+            _rigidbody.AddForce(hitNormal * 5, ForceMode.Impulse);
         }
     }
 }

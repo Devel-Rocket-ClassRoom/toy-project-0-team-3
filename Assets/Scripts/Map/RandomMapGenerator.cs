@@ -1,7 +1,11 @@
 using UnityEngine;
+using System.Collections;
 
 public class RandomMapGenerator : MonoBehaviour
 {
+    // [Header("Monster Spawner")]
+    // public MonsterRandomSpawner monsterSpawner;
+
     [Header("Map Tile Prefabs")]
     public GameObject[] tilePrefabs; // 맵 프리팹 배열 
     [Header("Player Prefab")]
@@ -15,12 +19,14 @@ public class RandomMapGenerator : MonoBehaviour
     public GameObject _currentPlayer;
     // 플레이서 생성 포지션 
     private Vector3 _playerPosition = Vector3.zero;
+    private Vector3 _playerPositionLifter = new Vector3 (0f, 1f, 0f);
     
     private void Start()
     {
         SpawnRandomTile();
         // _currentPlayer = Instantiate(, Vector3.zero, Quaternion.identity);
         // _currentPlayer.transform.SetParent(transform);
+        DeActivateTileFloors();
     }
 
     private void Update()
@@ -41,10 +47,10 @@ public class RandomMapGenerator : MonoBehaviour
             return;
         }
 
-        if (_currentMap != null)
-        {
-            Destroy(_currentMap);
-        }
+        // if (_currentMap != null)
+        // {
+        //     Destroy(_currentMap);
+        // }
 
         _currentMap = new GameObject("MapGrid");
         _currentMap.transform.SetParent(transform);
@@ -53,9 +59,9 @@ public class RandomMapGenerator : MonoBehaviour
         // 그리그 중앙 정렬 오프셋 (3칸 기준: -tileSize, 0, +tileSize)
         float offset = tileSize;
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 9; i++)
         {
-            for (int j = 0; j < 3; j++)
+            for (int j = 0; j < 9; j++)
             {
                 // int index = Random.Range(0, tilePrefabs.Length);
                 // Vector3 pos = new Vector3((i - 1) * tileSize, 0, (j - 1) * tileSize);
@@ -89,6 +95,9 @@ public class RandomMapGenerator : MonoBehaviour
                     );
                 }
 
+                // _currentPlayer.transform.position = _playerPosition;
+
+                // StartCoroutine(BakeAndSpawnRoutine());
 
             }
         }
@@ -98,8 +107,28 @@ public class RandomMapGenerator : MonoBehaviour
         // _currentMap.transform.SetParent(transform);
         // Debug.Log ($"맵 생성 : {tilePrefabs[index].name} (index{index})");
 
-        _currentPlayer.transform.position = _playerPosition;
+        _currentPlayer.transform.position = _playerPosition + _playerPositionLifter;
         Debug.Log (_currentPlayer.transform.position);
         //Instantiate (playerPrefab, Vector3.zero + _playerPositionLifter, Quaternion.identity);
     }
+
+    private void DeActivateTileFloors()
+    {
+        GameObject[] floorTiles = GameObject.FindGameObjectsWithTag("TileFloor");
+        foreach (GameObject floorTile in floorTiles)
+        {
+            Destroy(floorTile);
+            // floorTile.SetActive(false);
+        }
+    }
+
+    // private IEnumerator BakeAndSpawnRoutine()
+    // {
+    //     yield return null;
+
+    //     if (monsterSpawner != null)
+    //     {
+    //         monsterSpawner.BakeAndSpawn();
+    //     }
+    // }
 }
