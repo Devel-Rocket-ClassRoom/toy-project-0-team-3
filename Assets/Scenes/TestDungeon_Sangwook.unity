@@ -652,6 +652,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FullScaleMap_Plain
       objectReference: {fileID: 0}
+    - target: {fileID: 8828029821047372245, guid: 5772b43a91c5d0d47a504d541555b842, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
