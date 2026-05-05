@@ -1,101 +1,397 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Animator))]
 public abstract class BaseMonster : LivingEntity
 {
     [Header("Base Stats")]
-    public float moveSpeed = 3f;
-    public float attackRange = 1.5f;
-    public float attackCooldown = 2f;
+    [SerializeField] 
+    protected float moveSpeed = 3f;
+    [SerializeField] 
+    protected float turnSpeed = 720f;
+    [SerializeField] 
+    protected float attackRange = 1.5f;
+    [SerializeField] 
+    protected float attackCooldown = 1.0f;
 
-    [Header("Combat Settings")]
-    public float attackDamage = 10f;
 
-    [Header("HitBox")]
+    [Header("Combat")]
+    [SerializeField] 
+    protected float attackDamage = 10f;
     [SerializeField] 
     protected HitBox hitBox;
+    [SerializeField] 
+    protected bool allowMultipleDamageEventsPerAttack = false;
 
-    protected float lastAttackTime;
-    protected bool isAttacking = false;
+    [Header("Target")]
+    [SerializeField] 
+    protected string playerTag = "Player";
+    [SerializeField] 
+    protected LayerMask obstacleLayer;
+    [SerializeField] 
+    protected float eyeHeight = 1.5f;
+    [SerializeField] 
+    protected float targetEyeHeight = 1.0f;
 
-    [Header("Death & Loot")]
-    public float destroyDelay = 3.0f;
+    [Header("Alert Mark")]
+    [SerializeField] 
+    protected GameObject alertMarkPrefab;
+    [SerializeField] 
+    protected Vector3 alertMarkLocalOffset = new Vector3(0f, 2.2f, 0f);
 
-    [Header("Detection Setup")]
-    public LayerMask obstacleLayer;
-    protected Transform player;
-    protected Animator anim;
+    [Header("Animation Event Safety")]
+    [SerializeField] 
+    protected float attackFallbackDuration = 2.5f;
+    [SerializeField] 
+    protected float hitReactionFallbackDuration = 0.6f;
+
+    [Header("Return")]
+    [SerializeField] protected float returnArriveDistance = 0.35f;
+
+    [Header("Death")]
+    [SerializeField] protected float destroyDelay = 3f;
 
     protected enum MonsterState
     {
         Idle,
-        Move,
+        Trace,
         Attack,
-        Dead,
         Alert,
         Return,
-        Stun,
+        Dead,
     }
-    protected MonsterState currentState = MonsterState.Idle;
+
+    [SerializeField] private MonsterState currentState = MonsterState.Idle;
+
+    protected MonsterState CurrentState
+    {
+        get => currentState;
+        set => ChangeState(value);
+    }
+
+    [Header("NavMesh")]
+    [SerializeField]
+    protected float destinationSampleRadius = 2f;
+    private bool hasCachedSpawnPoint;
+    protected NavMeshAgent agent;
+
+    protected Animator anim;
+    protected Transform player;
+
+    protected Vector3 spawnPosition;
+    protected Quaternion spawnRotation;
+
+    protected bool isAttacking;
+    protected bool isHitReacting;
+
+    private bool hasAppliedDamageThisAttack;
+    private float attackStartedTime;
+    private float lastAttackEndTime;
+
+    private GameObject alertMarkInstance;
+    private Coroutine hitReactionCoroutine;
+    private Collider bodyCollider;
+
+    protected virtual void Awake()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
+        bodyCollider = GetComponent<Collider>();
+
+        spawnPosition = transform.position;
+        spawnRotation = transform.rotation;
+
+        FindPlayer();
+    }
 
     protected override void OnEnable()
     {
         base.OnEnable();
-    }
 
-    protected virtual void Awake()
-    {
-        anim = GetComponent<Animator>();
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        isAttacking = false;
+        isHitReacting = false;
+        hasAppliedDamageThisAttack = false;
+        lastAttackEndTime = -attackCooldown;
 
-        if (playerObj != null)
+        //spawnPosition = transform.position;
+        //spawnRotation = transform.rotation;
+
+        if (bodyCollider != null)
         {
-            player = playerObj.transform;
+            bodyCollider.enabled = true;
         }
+
+        if (hitBox != null)
+        {
+            hitBox.Colliders.Clear();
+        }
+
+        if (agent != null)
+        {
+            agent.speed = moveSpeed;
+            agent.updateRotation = true;
+
+            if (agent.isOnNavMesh)
+            {
+                agent.isStopped = true;
+                agent.ResetPath();
+            }
+        }
+
+        ClearAlertMark();
+        ChangeState(MonsterState.Idle, true);
     }
 
     protected override void Update()
     {
         base.Update();
 
-        if (IsDead || player == null)
+        if (IsDead)
         {
             return;
         }
 
-        if (currentState == MonsterState.Stun)
+        if (player == null)
+        {
+            FindPlayer();
+        }
+
+        if (isHitReacting)
         {
             return;
         }
+
+        switch (currentState)
+        {
+            case MonsterState.Idle:
+                UpdateIdle();
+                break;
+
+            case MonsterState.Alert:
+                UpdateAlert();
+                break;
+
+            case MonsterState.Trace:
+                UpdateTrace();
+                break;
+
+            case MonsterState.Attack:
+                UpdateAttackState();
+                break;
+
+            case MonsterState.Return:
+                UpdateReturn();
+                break;
+
+            case MonsterState.Dead:
+                break;
+        }
+    }
+
+    private void ChangeState(MonsterState nextState, bool force = false)
+    {
+        if (!force && currentState == nextState)
+        {
+            return;
+        }
+
+        if (!force && currentState == MonsterState.Dead)
+        {
+            return;
+        }
+
+        ExitState(currentState);
+
+        currentState = nextState;
+        Debug.Log($"[{gameObject.name}] State -> {currentState}");
+
+        EnterState(currentState);
+    }
+
+    private void EnterState(MonsterState state)
+    {
+        switch (state)
+        {
+            case MonsterState.Idle:
+                StopMoving();
+                ClearAlertMark();
+                PlayIdleAnim();
+                break;
+
+            case MonsterState.Alert:
+                StopMoving();
+                ShowAlertMark();
+                PlayIdleAnim();
+                break;
+
+            case MonsterState.Trace:
+                ClearAlertMark();
+                ResumeMoving();
+                break;
+
+            case MonsterState.Attack:
+                ClearAlertMark();
+                StopMoving();
+                break;
+
+            case MonsterState.Return:
+                ClearAlertMark();
+                ResumeMoving();
+                break;
+
+            case MonsterState.Dead:
+                StopMoving();
+                ClearAlertMark();
+
+                if (bodyCollider != null)
+                {
+                    bodyCollider.enabled = false;
+                }
+
+                if (hitBox != null)
+                {
+                    hitBox.Colliders.Clear();
+                    hitBox.gameObject.SetActive(false);
+                }
+
+                PlayDeathAnim();
+                DropLoot();
+                Destroy(gameObject, destroyDelay);
+                break;
+        }
+    }
+
+    private void ExitState(MonsterState state)
+    {
+        if (state == MonsterState.Alert)
+        {
+            ClearAlertMark();
+        }
+    }
+
+    protected abstract void UpdateIdle();
+    protected abstract void UpdateAlert();
+    protected abstract void UpdateTrace();
+
+    protected virtual void UpdateAttackState()
+    {
+        if (player == null)
+        {
+            CurrentState = MonsterState.Return;
+            return;
+        }
+
+        FaceTarget(player.position);
 
         if (isAttacking)
         {
+            if (attackFallbackDuration > 0f &&
+                Time.time >= attackStartedTime + attackFallbackDuration)
+            {
+                Animation_AttackEnd();
+            }
+
             return;
         }
 
-        AIBehavior();
+        float dist = GetDistanceToPlayer();
+
+        if (dist > GetChaseRange())
+        {
+            CurrentState = MonsterState.Return;
+            return;
+        }
+
+        if (dist > attackRange)
+        {
+            CurrentState = MonsterState.Trace;
+            return;
+        }
+
+        if (Time.time >= lastAttackEndTime + attackCooldown)
+        {
+            StartAttack();
+        }
+        else
+        {
+            StopMoving();
+            PlayIdleAnim();
+        }
     }
 
-    protected abstract void AIBehavior();
-    protected abstract void PlayIdleAnim();
-    protected abstract void PlayMoveAnim();
-    protected abstract void PlayDeathAnim();
-    protected abstract IEnumerator AttackRoutine();
+    protected virtual void UpdateReturn()
+    {
+        MoveTo(spawnPosition);
 
-    protected IEnumerator AttackProcess()
+        if (HasReached(spawnPosition, returnArriveDistance))
+        {
+            StopMoving();
+            transform.rotation = spawnRotation;
+            CurrentState = MonsterState.Idle;
+        }
+    }
+
+    protected virtual float GetChaseRange()
+    {
+        return attackRange * 2f;
+    }
+
+    private void StartAttack()
     {
         isAttacking = true;
-        currentState = MonsterState.Attack;
+        hasAppliedDamageThisAttack = false;
+        attackStartedTime = Time.time;
 
-        yield return StartCoroutine(AttackRoutine());
+        StopMoving();
 
-        isAttacking = false;
-        currentState = MonsterState.Idle;
-        lastAttackTime = Time.time;
+        if (player != null)
+        {
+            FaceTarget(player.position, true);
+        }
+
+        PlayAttackAnim();
     }
 
-    protected void UpdateAttack()
+    public void Animation_AttackHit()
+    {
+        if (IsDead)
+        {
+            return;
+        }
+
+        if (CurrentState != MonsterState.Attack)
+        {
+            return;
+        }
+
+        if (!isAttacking)
+        {
+            return;
+        }
+
+        if (!allowMultipleDamageEventsPerAttack && hasAppliedDamageThisAttack)
+        {
+            return;
+        }
+
+        hasAppliedDamageThisAttack = true;
+        ApplyAttackDamage();
+    }
+
+    public void Animation_AttackEnd()
+    {
+        if (!isAttacking)
+        {
+            return;
+        }
+
+        isAttacking = false;
+        lastAttackEndTime = Time.time;
+    }
+
+    protected virtual void ApplyAttackDamage()
     {
         if (hitBox == null)
         {
@@ -106,16 +402,32 @@ public abstract class BaseMonster : LivingEntity
 
         foreach (Collider target in targets)
         {
-            if (target.CompareTag("Player"))
+            if (target == null)
             {
-                var playerStatus = target.GetComponent<LivingEntity>();
-
-                if (playerStatus != null)
-                {
-                    playerStatus.OnDamage(attackDamage, target.ClosestPoint(transform.position), transform.forward);
-                    Debug.Log($"{playerStatus.Health}");
-                }
+                continue;
             }
+
+            LivingEntity targetEntity = target.GetComponentInParent<LivingEntity>();
+
+            if (targetEntity == null)
+            {
+                continue;
+            }
+
+            if (targetEntity == this)
+            {
+                continue;
+            }
+
+            if (!targetEntity.CompareTag(playerTag))
+            {
+                continue;
+            }
+
+            Vector3 hitPoint = target.ClosestPoint(transform.position);
+            Vector3 hitNormal = (target.transform.position - transform.position).normalized;
+
+            targetEntity.OnDamage(attackDamage, hitPoint, hitNormal);
         }
     }
 
@@ -127,99 +439,297 @@ public abstract class BaseMonster : LivingEntity
         }
 
         base.OnDamage(damage, hitPoint, hitNormal);
+
+        if (IsDead)
+        {
+            return;
+        }
+
+        HandleDamageAggro();
+
+        if (!isAttacking)
+        {
+            StartHitReaction();
+        }
+    }
+
+    protected virtual void HandleDamageAggro()
+    {
+        if (player == null)
+        {
+            FindPlayer();
+        }
+
+        if (player == null)
+        {
+            return;
+        }
+
+        ClearAlertMark();
+
+        float dist = GetDistanceToPlayer();
+
+        if (dist <= attackRange)
+        {
+            CurrentState = MonsterState.Attack;
+        }
+        else
+        {
+            CurrentState = MonsterState.Trace;
+        }
+    }
+
+    private void StartHitReaction()
+    {
+        if (hitReactionCoroutine != null)
+        {
+            StopCoroutine(hitReactionCoroutine);
+        }
+
+        isHitReacting = true;
+        StopMoving();
+        PlayHitAnim();
+
+        if (hitReactionFallbackDuration > 0f)
+        {
+            hitReactionCoroutine = StartCoroutine(HitReactionFallback());
+        }
+    }
+
+    private IEnumerator HitReactionFallback()
+    {
+        yield return new WaitForSeconds(hitReactionFallbackDuration);
+        Animation_HitReactEnd();
+    }
+
+    public void Animation_HitReactEnd()
+    {
+        isHitReacting = false;
+
+        if (hitReactionCoroutine != null)
+        {
+            StopCoroutine(hitReactionCoroutine);
+            hitReactionCoroutine = null;
+        }
     }
 
     public override void Die()
-    {
-        base.Die();
-
-        currentState = MonsterState.Dead;
-
-        PlayDeathAnim();
-
-        Collider col = GetComponent<Collider>();
-
-        if (col != null)
-        {
-            col.enabled = false;
-        }
-
-        DropLoot();
-
-        Destroy(gameObject, destroyDelay);
-    }
-
-    private void DropLoot()
-    {
-        // 전리품 로직
-    }
-
-    protected bool HasObstacle(Vector3 targetPos)
-    {
-        Vector3 dir = (targetPos - transform.position).normalized;
-        float dist = Vector3.Distance(transform.position, targetPos);
-
-        return !Physics.Raycast(transform.position, dir, dist, obstacleLayer);
-    }
-
-    protected void Moving(Vector3 targetPos)
-    {
-        FaceTarget(targetPos);
-        transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-        PlayMoveAnim();
-    }
-
-    protected void FaceTarget(Vector3 targetPos)
-    {
-        Vector3 lookPos = targetPos;
-        lookPos.y = transform.position.y;
-        transform.LookAt(lookPos);
-    }
-
-    public virtual void ApplyStun(float duration)
     {
         if (IsDead)
         {
             return;
         }
 
-        StopAllCoroutines();
-
-        isAttacking = false;
-
-        ResetBehavior();
-
-        Rigidbody rb = GetComponent<Rigidbody>();
-
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector3.zero; 
-            rb.angularVelocity = Vector3.zero;
-        }
-
-        if (anim != null)
-        {
-            anim.SetFloat("locomotion", 0f);
-            anim.SetTrigger("gotHit");
-        }
-
-        currentState = MonsterState.Stun;
-        StartCoroutine(StunRoutine(duration));
+        base.Die();
+        ChangeState(MonsterState.Dead, true);
     }
 
-    protected abstract void ResetBehavior();
-
-    protected IEnumerator StunRoutine(float duration)
+    protected virtual void DropLoot()
     {
-        Debug.Log($"기절");
+        // TODO:
+        // 고기, 재료, 골드 등 드롭 로직 연결 위치.
+    }
 
-        yield return new WaitForSeconds(duration);
+    protected void FindPlayer()
+    {
+        GameObject playerObj = GameObject.FindGameObjectWithTag(playerTag);
 
-        if (!IsDead)
+        if (playerObj != null)
         {
-            Debug.Log("기절에서 회복");
-            currentState = MonsterState.Idle;
-            PlayIdleAnim();
+            player = playerObj.transform;
         }
     }
+
+    protected float GetDistanceToPlayer()
+    {
+        if (player == null)
+        {
+            return float.PositiveInfinity;
+        }
+
+        return Vector3.Distance(transform.position, player.position);
+    }
+
+    protected bool IsPlayerInsideRange(float range, bool requireLineOfSight)
+    {
+        if (player == null)
+        {
+            return false;
+        }
+
+        if (GetDistanceToPlayer() > range)
+        {
+            return false;
+        }
+
+        if (requireLineOfSight && !HasLineOfSight(player.position))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected bool IsPlayerInsideView(float range, float viewAngle)
+    {
+        //Debug.Log("IsPlayerInsideView");
+        if (player == null)
+        {
+            return false;
+        }
+
+        if (GetDistanceToPlayer() > range)
+        {
+            return false;
+        }
+
+        Vector3 dirToPlayer = player.position - transform.position;
+        dirToPlayer.y = 0f;
+
+        if (dirToPlayer.sqrMagnitude <= 0.001f)
+        {
+            return true;
+        }
+
+        Vector3 forward = transform.forward;
+        forward.y = 0f;
+
+        float angle = Vector3.Angle(forward.normalized, dirToPlayer.normalized);
+
+        if (angle > viewAngle * 0.5f)
+        {
+            return false;
+        }
+
+        return HasLineOfSight(player.position);
+    }
+
+    protected bool HasLineOfSight(Vector3 targetPosition)
+    {
+        Vector3 start = transform.position + Vector3.up * eyeHeight;
+        Vector3 end = targetPosition + Vector3.up * targetEyeHeight;
+        Vector3 dir = end - start;
+
+        return !Physics.Raycast(
+            start,
+            dir.normalized,
+            dir.magnitude,
+            obstacleLayer,
+            QueryTriggerInteraction.Ignore
+        );
+    }
+
+    protected void MoveTo(Vector3 targetPosition)
+    {
+        if (agent == null || !agent.enabled || !agent.isOnNavMesh)
+        {
+            PlayMoveAnim();
+            return;
+        }
+
+        agent.speed = moveSpeed;
+        agent.isStopped = false;
+        agent.SetDestination(targetPosition);
+
+        PlayMoveAnim();
+    }
+
+    protected void StopMoving()
+    {
+        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        {
+            agent.isStopped = true;
+            agent.ResetPath();
+        }
+    }
+
+    protected void ResumeMoving()
+    {
+        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        {
+            agent.isStopped = false;
+        }
+    }
+
+    protected bool HasReached(Vector3 targetPosition, float arriveDistance)
+    {
+        if (Vector3.Distance(transform.position, targetPosition) <= arriveDistance)
+        {
+            return true;
+        }
+
+        if (agent == null || !agent.enabled || !agent.isOnNavMesh)
+        {
+            return false;
+        }
+
+        if (agent.pathPending)
+        {
+            return false;
+        }
+
+        return agent.remainingDistance <= arriveDistance;
+    }
+
+    protected void FaceTarget(Vector3 targetPosition, bool instant = false)
+    {
+        Vector3 lookPos = targetPosition;
+        lookPos.y = transform.position.y;
+
+        Vector3 dir = lookPos - transform.position;
+
+        if (dir.sqrMagnitude <= 0.001f)
+        {
+            return;
+        }
+
+        Quaternion targetRot = Quaternion.LookRotation(dir.normalized);
+
+        if (instant)
+        {
+            transform.rotation = targetRot;
+        }
+        else
+        {
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRot,
+                turnSpeed * Time.deltaTime
+            );
+        }
+    }
+
+    protected void ShowAlertMark()
+    {
+        if (alertMarkPrefab == null)
+        {
+            return;
+        }
+
+        if (alertMarkInstance != null)
+        {
+            return;
+        }
+
+        alertMarkInstance = Instantiate(alertMarkPrefab, transform);
+        alertMarkInstance.transform.localPosition = alertMarkLocalOffset;
+        alertMarkInstance.transform.localRotation = Quaternion.identity;
+    }
+
+    protected void ClearAlertMark()
+    {
+        if (alertMarkInstance == null)
+        {
+            return;
+        }
+
+        Destroy(alertMarkInstance);
+        alertMarkInstance = null;
+    }
+
+    protected abstract void PlayIdleAnim();
+    protected abstract void PlayMoveAnim();
+    protected abstract void PlayAttackAnim();
+    protected abstract void PlayHitAnim();
+    protected abstract void PlayDeathAnim();
 }

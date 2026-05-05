@@ -1,170 +1,66 @@
 using UnityEngine;
-using System.Collections;
 
 public class Mushroom : SimpleMonster
 {
-    private readonly int hashgoMonster = Animator.StringToHash("goMonster");
-    private readonly int hashLocomotion = Animator.StringToHash("locomotion");
-    private readonly int hashGotHit = Animator.StringToHash("gotHit");
-    private readonly int hashDeath = Animator.StringToHash("death");
-    private readonly int hashAtk1 = Animator.StringToHash("attack1");
-    private readonly int hashAtk2 = Animator.StringToHash("attack2");
-    private readonly int hashAtk3 = Animator.StringToHash("attack3");
+    private static readonly int HashGoMonster = Animator.StringToHash("goMonster");
+    private static readonly int HashLocomotion = Animator.StringToHash("locomotion");
+    private static readonly int HashGotHit = Animator.StringToHash("gotHit");
+    private static readonly int HashDeath = Animator.StringToHash("death");
+    private static readonly int HashAttack1 = Animator.StringToHash("attack1");
+    private static readonly int HashAttack2 = Animator.StringToHash("attack2");
+    private static readonly int HashAttack3 = Animator.StringToHash("attack3");
 
-    private bool hasAwoken = false;
+    private bool hasAwoken;
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        hasAwoken = false;
+    }
 
     protected override void PlayIdleAnim()
     {
-        anim.SetFloat(hashLocomotion, 0f, 0.1f, Time.deltaTime);
+        anim.SetFloat(HashLocomotion, 0f, 0.1f, Time.deltaTime);
     }
 
     protected override void PlayMoveAnim()
     {
         if (!hasAwoken)
         {
-            anim.SetTrigger(hashgoMonster);
+            anim.SetTrigger(HashGoMonster);
             hasAwoken = true;
         }
 
-        anim.SetFloat(hashLocomotion, 1f);
+        anim.SetFloat(HashLocomotion, 1f, 0.1f, Time.deltaTime);
     }
 
-    protected override void PlayDeathAnim()
+    protected override void PlayAttackAnim()
     {
-        anim.SetTrigger(hashDeath);
-    }
-
-    protected override IEnumerator AttackRoutine()
-    {
-        FaceTarget(player.position);
+        FaceTarget(player.position, true);
 
         float rand = Random.value;
 
         if (rand < 0.5f)
         {
-            yield return StartCoroutine(Attack1());
+            anim.SetTrigger(HashAttack1);
         }
         else if (rand < 0.8f)
         {
-            yield return StartCoroutine(Attack2());
+            anim.SetTrigger(HashAttack2);
         }
         else
         {
-            yield return StartCoroutine(Attack3());
+            anim.SetTrigger(HashAttack3);
         }
     }
 
-    private IEnumerator Attack1()
+    protected override void PlayHitAnim()
     {
-        anim.SetTrigger(hashAtk1);
-
-        yield return null;
-
-        AnimatorStateInfo stateInfo;
-
-        if (anim.IsInTransition(0))
-        {
-            stateInfo = anim.GetNextAnimatorStateInfo(0);
-        }
-        else
-        {
-            stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        }
-
-        float hitTime = 0.4f;
-
-        yield return new WaitForSeconds(hitTime);
-
-        UpdateAttack();
-
-        Debug.Log("공격 1 타격!");
-
-        float remainTime = stateInfo.length - hitTime;
-
-        if (remainTime > 0)
-        {
-            yield return new WaitForSeconds(remainTime);
-        }
+        anim.SetTrigger(HashGotHit);
     }
 
-    private IEnumerator Attack2()
+    protected override void PlayDeathAnim()
     {
-        anim.SetTrigger(hashAtk2);
-
-        yield return null;
-
-        AnimatorStateInfo stateInfo;
-
-        if (anim.IsInTransition(0))
-        {
-            stateInfo = anim.GetNextAnimatorStateInfo(0);
-        }
-        else
-        {
-            stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        }
-
-        float hitTime = 0.6f;
-
-        yield return new WaitForSeconds(hitTime);
-
-        UpdateAttack();
-
-        Debug.Log("공격 2");
-
-        float remainTime = stateInfo.length - hitTime;
-
-        if (remainTime > 0)
-        {
-            yield return new WaitForSeconds(remainTime);
-        }
-    }
-
-    private IEnumerator Attack3()
-    {
-        anim.SetTrigger(hashAtk3);
-        yield return null;
-
-        AnimatorStateInfo stateInfo;
-
-        if (anim.IsInTransition(0))
-        {
-            stateInfo = anim.GetNextAnimatorStateInfo(0);
-        }
-        else
-        {
-            stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        }
-
-        float hitTime = 0.6f;
-
-        yield return new WaitForSeconds(hitTime);
-
-        UpdateAttack();
-
-        Debug.Log("공격 3");
-
-        float remainTime = stateInfo.length - hitTime;
-
-        if (remainTime > 0)
-        {
-            yield return new WaitForSeconds(remainTime);
-        }
-    }
-
-    public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
-    {
-        base.OnDamage(damage, hitPoint, hitNormal);
-
-        if (!IsDead)
-        {
-            if (isAttacking)
-            {
-                Debug.Log($"{gameObject.name}이(가) 공격 중이라 경직을 무시합니다.");
-                return;
-            }
-
-            anim.SetTrigger(hashGotHit);
-        }
+        anim.SetTrigger(HashDeath);
     }
 }
