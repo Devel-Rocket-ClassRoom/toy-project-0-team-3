@@ -686,9 +686,9 @@ GameObject:
   - component: {fileID: 1488010833637659523}
   - component: {fileID: 4819070592717990796}
   - component: {fileID: 2339840717867717266}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SM_Env_Rock_Pillar_08(Clone)
-  m_TagString: Untagged
+  m_TagString: Fadeble
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -816,9 +816,9 @@ GameObject:
   - component: {fileID: 1453546098090205662}
   - component: {fileID: 6191331781740527548}
   - component: {fileID: 4837324740445527760}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SM_Env_Rock_Pillar_09(Clone)
-  m_TagString: Untagged
+  m_TagString: Fadeble
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1669,9 +1669,9 @@ GameObject:
   - component: {fileID: 6947042391940292916}
   - component: {fileID: 9059730160921003721}
   - component: {fileID: 3307427439070776457}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SM_Env_Rock_Pillar_011(Clone)
-  m_TagString: Untagged
+  m_TagString: Fadeble
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

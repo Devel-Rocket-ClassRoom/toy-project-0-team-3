@@ -125,9 +125,9 @@ GameObject:
   - component: {fileID: 2291089373945680620}
   - component: {fileID: 196826273086283820}
   - component: {fileID: 8813401664239194737}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SM_Env_GlowingOrb_02(Clone)
-  m_TagString: Untagged
+  m_TagString: Fadeble
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -368,9 +368,9 @@ GameObject:
   - component: {fileID: 7131111903680927265}
   - component: {fileID: 3795501797843468467}
   - component: {fileID: 5328139255758429603}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SM_Env_Statue_02(Clone)
-  m_TagString: Untagged
+  m_TagString: Fadeble
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -722,9 +722,9 @@ GameObject:
   - component: {fileID: 5579766469807148531}
   - component: {fileID: 1967691147264270296}
   - component: {fileID: 5865293739589239644}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SM_Env_Mushroom_Giant_05(Clone)
-  m_TagString: Untagged
+  m_TagString: Fadeble
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1931,9 +1931,9 @@ GameObject:
   - component: {fileID: 5209318911036457654}
   - component: {fileID: 1978354475898203911}
   - component: {fileID: 1888171240946314064}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SM_Env_Railing_Pillar_05(Clone)
-  m_TagString: Untagged
+  m_TagString: Fadeble
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

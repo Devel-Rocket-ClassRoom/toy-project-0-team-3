@@ -1856,6 +1856,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Wood_Construction_Wheel_03
       objectReference: {fileID: 0}
+    - target: {fileID: 106062, guid: 66bddf0235ba64b4f9b3a82b4731470e, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 106062, guid: 66bddf0235ba64b4f9b3a82b4731470e, type: 3}
+      propertyPath: m_TagString
+      value: Fadeble
+      objectReference: {fileID: 0}
     - target: {fileID: 472996, guid: 66bddf0235ba64b4f9b3a82b4731470e, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.78282
@@ -2211,6 +2219,14 @@ PrefabInstance:
     - target: {fileID: 188028, guid: 42ab107e7e6626f4cbea7b3e557f8b12, type: 3}
       propertyPath: m_Name
       value: SM_Env_Wood_Construction_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 188028, guid: 42ab107e7e6626f4cbea7b3e557f8b12, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 188028, guid: 42ab107e7e6626f4cbea7b3e557f8b12, type: 3}
+      propertyPath: m_TagString
+      value: Fadeble
       objectReference: {fileID: 0}
     - target: {fileID: 472102, guid: 42ab107e7e6626f4cbea7b3e557f8b12, type: 3}
       propertyPath: m_LocalPosition.x

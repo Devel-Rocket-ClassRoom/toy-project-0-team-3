@@ -1855,6 +1855,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Entrance_Crypt_02
       objectReference: {fileID: 0}
+    - target: {fileID: 151604, guid: 772903348b2350147ade514c354409a8, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 151604, guid: 772903348b2350147ade514c354409a8, type: 3}
+      propertyPath: m_TagString
+      value: Fadeble
+      objectReference: {fileID: 0}
     - target: {fileID: 405754, guid: 772903348b2350147ade514c354409a8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.14
@@ -1944,6 +1952,14 @@ PrefabInstance:
     - target: {fileID: 108808, guid: 94d8010a6fb36e349af40ab4fae8b972, type: 3}
       propertyPath: m_Name
       value: SM_Env_SpiralStairs_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 108808, guid: 94d8010a6fb36e349af40ab4fae8b972, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 108808, guid: 94d8010a6fb36e349af40ab4fae8b972, type: 3}
+      propertyPath: m_TagString
+      value: Fadeble
       objectReference: {fileID: 0}
     - target: {fileID: 440340, guid: 94d8010a6fb36e349af40ab4fae8b972, type: 3}
       propertyPath: m_LocalPosition.x
