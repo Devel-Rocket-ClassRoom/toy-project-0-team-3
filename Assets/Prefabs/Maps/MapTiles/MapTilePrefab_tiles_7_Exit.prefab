@@ -460,9 +460,11 @@ GameObject:
   - component: {fileID: 6233749050176122261}
   - component: {fileID: 8924615907479142268}
   - component: {fileID: 6454804940862148039}
-  m_Layer: 0
+  - component: {fileID: 5282088310075064586}
+  - component: {fileID: 6130746380914728384}
+  m_Layer: 7
   m_Name: SM_Env_Tiles_Pentagram_01(Clone)
-  m_TagString: Untagged
+  m_TagString: MagicSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -561,6 +563,35 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43233110753333874, guid: 6683cff489940fe41a5fe626887e2089, type: 2}
+--- !u!208 &5282088310075064586
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2299486046354298163}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 3.249, y: 0.113000005, z: 3.2530003}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.113000005, z: 0}
+  m_TimeToStationary: 0.5
+--- !u!114 &6130746380914728384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2299486046354298163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c40fae2cf0d91742a0bbf219b046f93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MagicSquare
+  portalPrefab: {fileID: 5918367378765878098, guid: 49848c61a05ddcb43ba0999cd7da95f7, type: 3}
 --- !u!1 &2451968279329919550
 GameObject:
   m_ObjectHideFlags: 0
@@ -943,7 +974,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3517822408222318985}
   m_Layer: 0
-  m_Name: MapTilePrefab_tiles_7
+  m_Name: MapTilePrefab_tiles_7_Exit
   m_TagString: MapTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

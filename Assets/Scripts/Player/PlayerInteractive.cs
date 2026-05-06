@@ -61,12 +61,23 @@ public class PlayerInteractive : MonoBehaviour
     // 범위내에 있는 상호작용 가능 오브젝트와 상호작용
     private void TryInteract(GameObject target)
     {
+        Debug.Log (target.tag);
         switch (target.tag)
         {
             case "Chest":
                 ChestOpening chest = target.GetComponent<ChestOpening>();
                 if (chest != null)   chest.OpenLid();
                 Debug.Log("Chest Opened");
+                break;
+            case "MagicSquare":
+                MagicSquare ms = target.GetComponent<MagicSquare>();
+                if (ms != null) ms.Interact();
+                Debug.Log("Portal Activated");
+                break;
+            case "Portal":
+                ExitPortal portal = target.GetComponent<ExitPortal>();
+                if (portal != null) portal.Interact();
+                Debug.Log("Leaving Dungeon");
                 break;
         }
     }

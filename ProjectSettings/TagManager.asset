@@ -9,6 +9,8 @@ TagManager:
   - TileFloor
   - Fadeble
   - Chest
+  - MagicSquare
+  - Portal
   layers:
   - Default
   - TransparentFX
