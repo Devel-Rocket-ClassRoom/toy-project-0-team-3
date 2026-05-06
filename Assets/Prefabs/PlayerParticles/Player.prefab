@@ -491,6 +491,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -927199367670048503, guid: b04406949810a0a46b21e74416b63350, type: 3}
       insertIndex: -1
       addedObject: {fileID: 780876000626128279}
+    - targetCorrespondingSourceObject: {fileID: -927199367670048503, guid: b04406949810a0a46b21e74416b63350, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2310165586864787441}
     - targetCorrespondingSourceObject: {fileID: 3367661130296280388, guid: b04406949810a0a46b21e74416b63350, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3475601059213919957}
@@ -583,7 +586,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &5343602002593360755
 CapsuleCollider:
@@ -681,6 +684,19 @@ MonoBehaviour:
       m_Calls: []
   maxMana: 100
   manaRegen: 5
+--- !u!114 &2310165586864787441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9042436790758611250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1445d23ea1e31ba46b3143960b73f155, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
+  _inventory: {fileID: 0}
 --- !u!1001 &6074527483121206693
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class PlayerStatus : LivingEntity
     public float MaxMana => maxMana;
 
     private PlayerSkill _playerSkill;
+    private Animator _animator;
 
     public float[] GetRemainingCooldowns() => _playerSkill.GetRemainingCooldowns();
 
@@ -19,6 +20,7 @@ public class PlayerStatus : LivingEntity
         base.OnEnable();  // Health, IsDead 초기화
         CurrentMana = maxMana;
         _playerSkill = GetComponent<PlayerSkill>();
+        _animator = GetComponent<Animator>();
     }
 
     protected override void Update()
@@ -47,5 +49,24 @@ public class PlayerStatus : LivingEntity
     {
         if (CurrentMana >= maxMana) return;
         CurrentMana = Mathf.Min(CurrentMana + manaRegen * Time.deltaTime, maxMana);
+    }
+
+    public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
+    {
+        if (IsDead) return;
+
+        base.OnDamage(damage, hitPoint, hitNormal);
+
+        // Die()에서 Dead 트리거를 쏘므로 여기선 살아있을 때만 Damaged 재생
+        if (!IsDead)
+        {
+            _animator.SetTrigger("Damaged");
+        }
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        _animator.SetTrigger("Dead");
     }
 }
