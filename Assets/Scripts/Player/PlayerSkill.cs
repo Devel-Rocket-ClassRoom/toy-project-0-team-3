@@ -7,6 +7,7 @@ public class PlayerSkill : MonoBehaviour
     private PlayerAttack _playerAttack;
     private PlayerInput _input;
     private PlayerMovement _playerMovement;
+    private PlayerStatus _playerStatus;
     private QSkill _qSkill;
     private WSkill _wSkill;
     private ESkill _eSkill;
@@ -24,10 +25,13 @@ public class PlayerSkill : MonoBehaviour
         _wSkill = Skills.GetComponent<WSkill>();
         _eSkill = Skills.GetComponent<ESkill>();
         _rSkill = Skills.GetComponent<RSkill>();
+        _playerStatus = GetComponent<PlayerStatus>();
     }
 
     private void Update()
     {
+        if (_playerStatus.IsHit || _playerStatus.IsDead) return;
+
         if (_input.SkillQ && _qSkill.CanUse && !IsUsingSkill)
         {
             IsUsingSkill = true;

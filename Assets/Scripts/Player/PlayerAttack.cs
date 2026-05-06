@@ -6,6 +6,7 @@ public class PlayerAttack : MonoBehaviour
     private Animator _animator;
     private PlayerInput _playerInput;
     private PlayerMovement _playerMovement;
+    private PlayerStatus _playerStatus;
 
     private int _comboStep = 0;
     private bool _canCombo = false;
@@ -26,10 +27,13 @@ public class PlayerAttack : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
         _rigidbody = GetComponent<Rigidbody>();
         _playerMovement = GetComponent<PlayerMovement>();
+        _playerStatus = GetComponent<PlayerStatus>();
     }
 
     private void Update()
     {
+        if (_playerStatus.IsHit || _playerStatus.IsDead) return;
+
         if (_playerInput.Attack)
         {
             //Debug.Log($"클릭 {_comboStep} {_canCombo}");
