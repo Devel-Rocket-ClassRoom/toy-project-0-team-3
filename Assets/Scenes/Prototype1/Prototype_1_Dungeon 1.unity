@@ -381,11 +381,6 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
---- !u!1 &537492985 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9042436790758611250, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
-  m_PrefabInstance: {fileID: 2045534446}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &550567587
 GameObject:
   m_ObjectHideFlags: 0
@@ -1177,25 +1172,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 780876000626128279, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
   m_PrefabInstance: {fileID: 2045534446}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537492985}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9225272eaad23c34b8fd132eb40f7d6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatus
---- !u!114 &1442657371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537492985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1445d23ea1e31ba46b3143960b73f155, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
-  _inventory: {fileID: 2083130998}
 --- !u!114 &1533971869 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8345845689536470235, guid: 337186b5d27c7804eb219f4e22f0460d, type: 3}
@@ -1860,10 +1842,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5213474698794301501, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
+    - target: {fileID: 2310165586864787441, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
+      propertyPath: _inventory
+      value: 
+      objectReference: {fileID: 2083130998}
     - target: {fileID: 5878163374890091685, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1871,10 +1853,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9042436790758611250, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1442657371}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
 --- !u!1 &2045534447 stripped
 GameObject:
