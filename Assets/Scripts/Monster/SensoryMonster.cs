@@ -30,6 +30,7 @@ public abstract class SensoryMonster : BaseMonster
             return;
         }
 
+
         if (IsPlayerInsideView(viewTraceRange, viewAngle))
         {
             CurrentState = MonsterState.Trace;
@@ -39,6 +40,14 @@ public abstract class SensoryMonster : BaseMonster
         if (IsPlayerInsideView(viewAlertRange, viewAngle))
         {
             BeginAlert(player.position);
+            return;
+        }
+
+        float dist = GetDistanceToPlayer();
+
+        if (dist <= attackRange)
+        {
+            CurrentState = MonsterState.Attack;
             return;
         }
     }
