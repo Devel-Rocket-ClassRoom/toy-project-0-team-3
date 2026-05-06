@@ -12,6 +12,7 @@ public class PlayerAttack : MonoBehaviour
     private bool _canCombo = false;
     private bool _isAttacking = false;
     public bool IsAttacking => _isAttacking;
+    private bool _isTransitioningCombo = false;
 
     private Rigidbody _rigidbody;
     [SerializeField] private float _attackDashSpeed = 8f;
@@ -64,12 +65,14 @@ public class PlayerAttack : MonoBehaviour
             StopCoroutine(_coDash);
         }
 
+        _isTransitioningCombo = true;
         _comboStep++;
         _canCombo = false;
         _isAttacking = true;
         _animator.SetInteger("ComboStep", _comboStep);
         _animator.SetTrigger("Attack");
         _coDash = StartCoroutine(DashCoroutine());
+        _isTransitioningCombo = false;
     }
 
     // Animation Event - 콤보 입력 가능 구간 시작 (애니메이션 중간에 설정)
@@ -82,6 +85,7 @@ public class PlayerAttack : MonoBehaviour
     // Animation Event - 애니메이션 끝날 때 호출
     public void OnAttackEnd()
     {
+        if (_isTransitioningCombo) return;
         //Debug.Log($"OnAttack {_comboStep} {_canCombo}");
         ResetCombo();
 
@@ -110,7 +114,7 @@ public class PlayerAttack : MonoBehaviour
        ? _playerMovement.PlayerDirection
        : transform.forward;
 
-        Debug.Log($"대시 {_comboStep}");
+        //Debug.Log($"대시 {_comboStep}");
 
         if (dashDirection != Vector3.zero)
             transform.rotation = Quaternion.LookRotation(dashDirection);
