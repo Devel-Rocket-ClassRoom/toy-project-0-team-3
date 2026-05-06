@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _playerRigidbody;
     private Animator _playerAnimator;
     private PlayerSkill _playerSkill;
+    private PlayerStatus _playerStatus;
 
     private void Awake()
     {
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
         _playerRigidbody = GetComponent<Rigidbody>();
         _playerAnimator = GetComponentInChildren<Animator>();
         _playerSkill = GetComponent<PlayerSkill>();
+        _playerStatus = GetComponent<PlayerStatus>();
     }
 
     private void Update()
@@ -39,7 +41,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        if (_playerAttack.IsAttacking || _playerSkill.IsUsingSkill)
+        if (_playerAttack.IsAttacking || _playerSkill.IsUsingSkill
+            || _playerStatus.IsHit || _playerStatus.IsDead)
         {
             _playerAnimator.SetFloat("Speed", 0f);
             return;
@@ -54,7 +57,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Rotate()
     {
-        if (_playerAttack.IsAttacking || _playerSkill.IsUsingSkill) return;
+        if (_playerAttack.IsAttacking || _playerSkill.IsUsingSkill
+            || _playerStatus.IsHit || _playerStatus.IsDead) return;
 
         Vector3 direction = new Vector3(_playerInput.MoveX, 0f, _playerInput.MoveY);
         if (direction == Vector3.zero) return;
