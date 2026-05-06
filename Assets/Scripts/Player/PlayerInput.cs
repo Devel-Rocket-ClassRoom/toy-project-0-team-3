@@ -16,6 +16,8 @@ public class PlayerInput : MonoBehaviour
     public bool SkillR { get; private set; }
     public bool TabKey { get; private set; }
 
+    public bool InteractKey {get; private set;}
+
     private void Update()
     {
         MoveX = Input.GetAxisRaw(MoveXAxis);
@@ -27,5 +29,6 @@ public class PlayerInput : MonoBehaviour
         SkillE = Input.GetKeyDown(KeyCode.E);
         SkillR = Input.GetKeyDown(KeyCode.R);
         TabKey = Input.GetKeyDown(KeyCode.Tab);
+        InteractKey = Input.GetKeyDown(KeyCode.F);
     }
 }

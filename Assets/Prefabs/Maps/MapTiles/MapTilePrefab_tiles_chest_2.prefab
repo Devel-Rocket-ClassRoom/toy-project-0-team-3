@@ -625,7 +625,7 @@ GameObject:
   - component: {fileID: 7017119570103730803}
   - component: {fileID: 1173182686107507039}
   - component: {fileID: 114046630305025173}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_Prop_Chest_02_Lid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1412,9 +1412,9 @@ GameObject:
   - component: {fileID: 8274353025575754676}
   - component: {fileID: 2089191454122865838}
   - component: {fileID: 90974681141525900}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_Prop_Chest_02(Clone)
-  m_TagString: Untagged
+  m_TagString: Chest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
