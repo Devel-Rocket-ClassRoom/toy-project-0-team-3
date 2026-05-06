@@ -5,6 +5,7 @@ public class ChestOpening : MonoBehaviour
 {
     public GameObject lid;
     public GameObject body;
+    public GameObject chestInventory;
     private GameObject player;
     public float interactableRange = 1f;
 
@@ -18,6 +19,7 @@ public class ChestOpening : MonoBehaviour
     private void Awake()
     {
         player = GameObject.FindWithTag("Player");
+        chestInventory.SetActive(false);
     }
 
     private void Update()
@@ -41,6 +43,8 @@ public class ChestOpening : MonoBehaviour
 
         if (isOpen || isAnimating) return;
         StartCoroutine(RotateLid());
+
+        OpenChestInv();
     }   
 
 
@@ -64,5 +68,14 @@ public class ChestOpening : MonoBehaviour
         isAnimating = false;
     }
 
+    private void OpenChestInv()
+    {
+        Debug.Log("OpenChestInv called / chestInventory: " + chestInventory);
+        chestInventory.SetActive(true);
+    }
 
+    private void CloseChestInv()
+    {
+        chestInventory.SetActive(false);
+    }
 }

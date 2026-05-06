@@ -1544,6 +1544,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ChestOpening
   lid: {fileID: 1850302763993445489}
   body: {fileID: 5251088533668122995}
+  chestInventory: {fileID: 8281881583006887190, guid: 53fc6a3e233564b45b471040d8a67fa2, type: 3}
   interactableRange: 1
   openAngle: {x: -90, y: 0, z: 0}
   openDuration: 0.5
