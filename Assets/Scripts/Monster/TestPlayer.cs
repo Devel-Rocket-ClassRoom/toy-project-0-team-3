@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class TestPlayer : LivingEntity
 {
+    [Header("이동")]
+    [SerializeField] private float moveSpeed = 5f;
+
     [Header("마나")]
     [SerializeField] private float maxMana = 100f;
     [SerializeField] private float manaRegen = 5f;
@@ -24,11 +27,29 @@ public class TestPlayer : LivingEntity
 
         TickManaRegen();
 
+        // 새로 추가된 이동 처리 메서드
+        HandleMovement();
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             TestAttack();
         }
     }
+
+    // --- 새로 추가된 영역 ---
+    private void HandleMovement()
+    {
+        // Unity의 기본 레거시 Input 설정을 사용하여 방향키 및 WASD 입력을 받습니다.
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+
+        // 이동 벡터 생성 및 정규화
+        Vector3 moveDirection = new Vector3(horizontal, 0f, vertical).normalized;
+
+        // 프레임률에 독립적인 이동을 위한 Time.deltaTime 적용
+        transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
+    }
+    // ----------------------
 
     public void UseMana(float amount)
     {
@@ -59,8 +80,6 @@ public class TestPlayer : LivingEntity
 
         base.OnDamage(damage, hitPoint, hitNormal);
 
-        //Debug.Log($"[PlayerStatus] 플레이어가 {damage}의 데미지를 받았습니다. 남은 체력: {Health}");
-
         if (IsDead)
         {
             Die();
@@ -70,8 +89,8 @@ public class TestPlayer : LivingEntity
     private void TestAttack()
     {
         float attackRadius = 5f;
-        float attackDamage = 10f; 
-        float stunDuration = 3f;  
+        float attackDamage = 10f;
+        float stunDuration = 3f;
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRadius);
 
@@ -84,8 +103,6 @@ public class TestPlayer : LivingEntity
                 if (monster != null)
                 {
                     monster.OnDamage(attackDamage, hitCol.ClosestPoint(transform.position), transform.forward);
-
-                    monster.ApplyStun(stunDuration);
 
                     Debug.Log($"[테스트 공격] {hitCol.name}에게 {attackDamage}의 데미지와 {stunDuration}초 스턴을 부여했습니다!");
                 }

@@ -1,104 +1,152 @@
 using UnityEngine;
-using System.Collections;
 
 public abstract class SensoryMonster : BaseMonster
 {
-    [Header("Sensory Settings")]
-    public float detectRange = 4f;
-    public float alertRange = 8f;
-    public float alertDuration = 3f;
-    public GameObject alertMarkPrefab;
+    [Header("Sight Type Settings")]
+    [SerializeField] protected float viewAngle = 120f;
 
-    private Vector3 originalPos;
-    private Vector3 alertPos;
-    private float alertTimer = 0f;
+    [Header("Sight Ranges")]
+    [SerializeField] protected float viewAlertRange = 12f;
+    [SerializeField] protected float viewTraceRange = 6f;
 
-    protected override void Awake()
+    [Header("Alert Detection")]
+    [SerializeField] protected float detectionRange = 2.5f;
+    [SerializeField] protected float alertDuration = 3f;
+    [SerializeField] protected float alertArriveDistance = 0.45f;
+
+    [Header("Chase")]
+    [SerializeField] protected float chaseRange = 18f;
+
+    private Vector3 alertPosition;
+    private float alertTimer;
+    private bool hasArrivedAlertPosition;
+
+    protected override void UpdateIdle()
     {
-        base.Awake();
+        PlayIdleAnim();
 
-        originalPos = transform.position;
-    }
-
-    protected override void AIBehavior()
-    {
-        float distToPlayer = Vector3.Distance(transform.position, player.position);
-        bool hasLOS = HasObstacle(player.position);
-
-        if (distToPlayer <= detectRange && hasLOS)
+        if (player == null)
         {
-            if (Time.time >= lastAttackTime + attackCooldown)
-            {
-                StartCoroutine(AttackProcess());
-            }
-            else
-            {
-                currentState = MonsterState.Idle;
-
-                PlayIdleAnim();
-            }
             return;
         }
 
-        switch (currentState)
+
+        if (IsPlayerInsideView(viewTraceRange, viewAngle))
         {
-            case MonsterState.Idle:
-                PlayIdleAnim();
+            CurrentState = MonsterState.Trace;
+            return;
+        }
 
-                if (distToPlayer <= alertRange && hasLOS)
-                {
-                    TriggerAlert(player.position);
-                }
-                break;
+        if (IsPlayerInsideView(viewAlertRange, viewAngle))
+        {
+            BeginAlert(player.position);
+            return;
+        }
 
-            case MonsterState.Alert:
-                if (Vector3.Distance(transform.position, alertPos) > 0.5f)
-                {
-                    Moving(alertPos);
-                }
-                else
-                {
-                    PlayIdleAnim();
-                    alertTimer += Time.deltaTime;
+        float dist = GetDistanceToPlayer();
 
-                    if (alertTimer >= alertDuration)
-                    {
-                        currentState = MonsterState.Return;
-                    }
-                }
-                break;
-
-            case MonsterState.Return:
-                if (Vector3.Distance(transform.position, originalPos) > 0.5f)
-                {
-                    Moving(originalPos);
-                }
-                else
-                {
-                    currentState = MonsterState.Idle;
-                    FaceTarget(originalPos + transform.forward);
-                }
-                break;
+        if (dist <= attackRange)
+        {
+            CurrentState = MonsterState.Attack;
+            return;
         }
     }
 
-    private void TriggerAlert(Vector3 targetPos)
+    protected override void UpdateAlert()
     {
-        currentState = MonsterState.Alert;
-        alertPos = targetPos;
+        if (player == null)
+        {
+            CurrentState = MonsterState.Return;
+            return;
+        }
+
+        float dist = GetDistanceToPlayer();
+
+        if (dist <= detectionRange)
+        {
+            CurrentState = MonsterState.Trace;
+            return;
+        }
+
+        if (dist <= viewTraceRange && HasLineOfSight(player.position))
+        {
+            CurrentState = MonsterState.Trace;
+            return;
+        }
+
+        if (!hasArrivedAlertPosition)
+        {
+            if (GetFlatDistance(transform.position, alertPosition) > alertArriveDistance)
+            {
+                MoveTo(alertPosition);
+                return;
+            }
+
+            hasArrivedAlertPosition = true;
+            StopMoving();
+            PlayIdleAnim();
+            alertTimer = 0f;
+        }
+
+        StopMoving();
+        PlayIdleAnim();
+
+        FaceTarget(player.position);
+
+        alertTimer += Time.deltaTime;
+
+        if (alertTimer >= alertDuration)
+        {
+            CurrentState = MonsterState.Return;
+            return;
+        }
+    }
+
+    private float GetFlatDistance(Vector3 a, Vector3 b)
+    {
+        a.y = 0f;
+        b.y = 0f;
+
+        return Vector3.Distance(a, b);
+    }
+
+    protected override void UpdateTrace()
+    {
+        if (player == null)
+        {
+            CurrentState = MonsterState.Return;
+            return;
+        }
+
+        float dist = GetDistanceToPlayer();
+
+        if (dist > chaseRange)
+        {
+            CurrentState = MonsterState.Return;
+            return;
+        }
+
+        if (dist <= attackRange)
+        {
+            CurrentState = MonsterState.Attack;
+            return;
+        }
+
+        MoveTo(player.position);
+    }
+
+    protected override float GetChaseRange()
+    {
+        return chaseRange;
+    }
+
+    private void BeginAlert(Vector3 targetPosition)
+    {
+        alertPosition = targetPosition;
         alertTimer = 0f;
+        hasArrivedAlertPosition = false;
 
-        if (alertMarkPrefab != null)
-        {
-            Instantiate(alertMarkPrefab, transform.position + Vector3.up * 2f, Quaternion.identity, transform);
-        }
-    }
-
-    protected abstract override IEnumerator AttackRoutine();
-
-    protected override void ResetBehavior()
-    {
-        
+        CurrentState = MonsterState.Alert;
     }
 
 #if UNITY_EDITOR
@@ -107,24 +155,47 @@ public abstract class SensoryMonster : BaseMonster
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
 
-        Gizmos.color = new Color(1f, 0.5f, 0f);
-        Gizmos.DrawWireSphere(transform.position, detectRange);
+        Gizmos.color = new Color(0.2f, 0.9f, 1f);
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, chaseRange);
+
+        Vector3 forward = transform.forward;
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, alertRange);
+        DrawViewCone(transform.position, forward, viewAngle, viewAlertRange);
+
+        Gizmos.color = new Color(1f, 0.5f, 0f);
+        DrawViewCone(transform.position, forward, viewAngle, viewTraceRange);
 
         if (Application.isPlaying)
         {
-            if (currentState == MonsterState.Alert)
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawLine(transform.position, alertPos);
-            }
-            else if (currentState == MonsterState.Return)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(transform.position, originalPos);
-            }
+            Gizmos.color = Color.blue;
+            Gizmos.DrawSphere(alertPosition, 0.15f);
+            Gizmos.DrawLine(transform.position, alertPosition);
+        }
+    }
+
+    private void DrawViewCone(Vector3 position, Vector3 forward, float angle, float range)
+    {
+        Vector3 left = Quaternion.Euler(0f, -angle * 0.5f, 0f) * forward;
+        Vector3 right = Quaternion.Euler(0f, angle * 0.5f, 0f) * forward;
+
+        Gizmos.DrawRay(position, left * range);
+        Gizmos.DrawRay(position, right * range);
+
+        int segments = 24;
+        Vector3 previous = position + left * range;
+
+        for (int i = 1; i <= segments; i++)
+        {
+            float currentAngle = -angle * 0.5f + angle * i / segments;
+            Vector3 dir = Quaternion.Euler(0f, currentAngle, 0f) * forward;
+            Vector3 next = position + dir * range;
+
+            Gizmos.DrawLine(previous, next);
+            previous = next;
         }
     }
 #endif

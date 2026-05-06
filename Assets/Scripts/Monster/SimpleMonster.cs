@@ -1,65 +1,96 @@
 using UnityEngine;
-using System.Collections;
 
 public abstract class SimpleMonster : BaseMonster
 {
-    [Header("Simple Monster Settings")]
-    public float detectRange = 5f;
-    public float chaseRange = 10f;
-    protected bool isChasing = false;
+    [Header("Detection Type Ranges")]
+    [SerializeField] protected float alertRange = 8f;
+    [SerializeField] protected float traceRange = 5f;
+    [SerializeField] protected float chaseRange = 14f;
 
-    protected override void AIBehavior()
+    [Header("Detection Option")]
+    [SerializeField] protected bool requireLineOfSight = true;
+
+    protected override void UpdateIdle()
     {
-        float distToPlayer = Vector3.Distance(transform.position, player.position);
+        PlayIdleAnim();
 
-        if (!isChasing)
+        if (player == null)
         {
-            if (distToPlayer <= detectRange && HasObstacle(player.position))
-            {
-                isChasing = true;
-            }
-            else
-            {
-                currentState = MonsterState.Idle;
-                PlayIdleAnim();
-            }
+            return;
         }
 
-        if (isChasing)
+        if (CanDetectPlayer(traceRange))
         {
-            if (distToPlayer > chaseRange)
-            {
-                isChasing = false;
-                currentState = MonsterState.Idle;
-                PlayIdleAnim();
-            }
-            else if (distToPlayer <= attackRange)
-            {
-                if (Time.time >= lastAttackTime + attackCooldown)
-                {
-                    StartCoroutine(AttackProcess());
-                }
-                else
-                {
-                    currentState = MonsterState.Idle;
-                    PlayIdleAnim();
-                }
-            }
-            else
-            {
-                currentState = MonsterState.Move;
-                Moving(player.position);
-            }
+            CurrentState = MonsterState.Trace;
+            return;
+        }
+
+        if (CanDetectPlayer(alertRange))
+        {
+            CurrentState = MonsterState.Alert;
+            return;
         }
     }
 
-    protected abstract override IEnumerator AttackRoutine();
-
-    protected override void ResetBehavior()
+    protected override void UpdateAlert()
     {
-        isChasing = false;
+        StopMoving();
+        PlayIdleAnim();
 
-        Debug.Log($"{gameObject.name}의 추적 상태가 초기화");
+        if (player == null)
+        {
+            CurrentState = MonsterState.Idle;
+            return;
+        }
+
+        FaceTarget(player.position);
+
+        if (CanDetectPlayer(traceRange))
+        {
+            CurrentState = MonsterState.Trace;
+            return;
+        }
+
+        if (!CanDetectPlayer(alertRange))
+        {
+            CurrentState = MonsterState.Idle;
+            return;
+        }
+    }
+
+    protected override void UpdateTrace()
+    {
+        if (player == null)
+        {
+            CurrentState = MonsterState.Return;
+            return;
+        }
+
+        float dist = GetDistanceToPlayer();
+
+        if (dist > chaseRange)
+        {
+            CurrentState = MonsterState.Return;
+            return;
+        }
+
+        if (dist <= attackRange)
+        {
+            CurrentState = MonsterState.Attack;
+            return;
+        }
+
+        MoveTo(player.position);
+    }
+
+    protected override float GetChaseRange()
+    {
+        return chaseRange;
+    }
+
+    private bool CanDetectPlayer(float range)
+    {
+        return IsPlayerInsideRange(range, requireLineOfSight);
     }
 
 #if UNITY_EDITOR
@@ -68,17 +99,14 @@ public abstract class SimpleMonster : BaseMonster
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
 
-        Gizmos.color = new Color(1f, 0.5f, 0f);
-        Gizmos.DrawWireSphere(transform.position, detectRange);
-
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, chaseRange);
+        Gizmos.DrawWireSphere(transform.position, alertRange);
 
-        if (Application.isPlaying && isChasing && player != null)
-        {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawLine(transform.position, player.position);
-        }
+        Gizmos.color = new Color(1f, 0.5f, 0f);
+        Gizmos.DrawWireSphere(transform.position, traceRange);
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, chaseRange);
     }
 #endif
 }
