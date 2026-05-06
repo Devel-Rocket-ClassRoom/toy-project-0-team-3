@@ -17,6 +17,6 @@ public class PlayerInventory : MonoBehaviour
         if (_playerInput.TabKey)
         {
             _inventory.SetActive(!_inventory.activeSelf);
-        }
+        } 
     }
 }

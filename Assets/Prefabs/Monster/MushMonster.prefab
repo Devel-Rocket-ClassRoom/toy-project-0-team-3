@@ -1372,7 +1372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a80caec21292d62499dcbab9e8f20ccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mushroom
-  startingHealth: 100
+  startingHealth: 30
   OnDead:
     m_PersistentCalls:
       m_Calls: []

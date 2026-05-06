@@ -1501,7 +1501,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02134f43555550b4e912d1cd5bc48ab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnubisMonster
-  startingHealth: 100
+  startingHealth: 80
   OnDead:
     m_PersistentCalls:
       m_Calls: []
@@ -1533,9 +1533,6 @@ MonoBehaviour:
   alertDuration: 3
   alertArriveDistance: 0.45
   chaseRange: 18
-  useGuardAnimationInAlert: 1
-  useIdleBreakRandomly: 0
-  idleBreakChancePerSecond: 0.08
 --- !u!136 &6602194669137973691
 CapsuleCollider:
   m_ObjectHideFlags: 0
