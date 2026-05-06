@@ -1411,6 +1411,7 @@ GameObject:
   - component: {fileID: 6319020023371617774}
   - component: {fileID: 8274353025575754676}
   - component: {fileID: 2089191454122865838}
+  - component: {fileID: 90974681141525900}
   m_Layer: 0
   m_Name: SM_Prop_Chest_02(Clone)
   m_TagString: Untagged
@@ -1529,6 +1530,23 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.187, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &90974681141525900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5251088533668122995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e46b4fef22c2be45ba20c9a997bdd30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChestOpening
+  lid: {fileID: 1850302763993445489}
+  body: {fileID: 5251088533668122995}
+  interactableRange: 1
+  openAngle: {x: -90, y: 0, z: 0}
+  openDuration: 0.5
 --- !u!1 &6210598134527611051
 GameObject:
   m_ObjectHideFlags: 0
