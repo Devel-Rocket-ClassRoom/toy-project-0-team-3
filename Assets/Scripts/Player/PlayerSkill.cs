@@ -40,21 +40,21 @@ public class PlayerSkill : MonoBehaviour
             _animator.SetTrigger("QSkill");
         }
 
-        if (_input.SkillW && _qSkill.CanUse && !IsUsingSkill)
+        if (_input.SkillW && _wSkill.CanUse && !IsUsingSkill)
         {
             IsUsingSkill = true;
             _wSkill?.Use();
             _animator.SetTrigger("WSkill");
         }
 
-        if (_input.SkillE && _qSkill.CanUse && !IsUsingSkill)
+        if (_input.SkillE && _eSkill.CanUse && !IsUsingSkill)
         {
             IsUsingSkill = true;
             _eSkill?.Use();
             _animator.SetTrigger("ESkill");
         }
 
-        if (_input.SkillR && _qSkill.CanUse && !IsUsingSkill)
+        if (_input.SkillR && _rSkill.CanUse && !IsUsingSkill)
         {
             IsUsingSkill = true;
             _rSkill?.Use();
