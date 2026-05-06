@@ -425,7 +425,12 @@ public abstract class BaseMonster : LivingEntity
             }
 
             Vector3 hitPoint = target.ClosestPoint(transform.position);
-            Vector3 hitNormal = (target.transform.position - transform.position).normalized;
+            Vector3 hitNormal = GetFlatDirection(transform.position, target.transform.position).normalized;
+
+            if (hitNormal.sqrMagnitude <= 0.001f)
+            {
+                hitNormal = transform.forward;
+            }
 
             targetEntity.OnDamage(attackDamage, hitPoint, hitNormal);
         }
@@ -547,7 +552,7 @@ public abstract class BaseMonster : LivingEntity
             return float.PositiveInfinity;
         }
 
-        return Vector3.Distance(transform.position, player.position);
+        return GetFlatDistance(transform.position, player.position);
     }
 
     protected bool IsPlayerInsideRange(float range, bool requireLineOfSight)
@@ -653,7 +658,7 @@ public abstract class BaseMonster : LivingEntity
 
     protected bool HasReached(Vector3 targetPosition, float arriveDistance)
     {
-        if (Vector3.Distance(transform.position, targetPosition) <= arriveDistance)
+        if (GetFlatDistance(transform.position, targetPosition) <= arriveDistance)
         {
             return true;
         }
@@ -732,4 +737,20 @@ public abstract class BaseMonster : LivingEntity
     protected abstract void PlayAttackAnim();
     protected abstract void PlayHitAnim();
     protected abstract void PlayDeathAnim();
+
+    protected float GetFlatDistance(Vector3 a, Vector3 b)
+    {
+        a.y = 0f;
+        b.y = 0f;
+
+        return Vector3.Distance(a, b);
+    }
+
+    protected Vector3 GetFlatDirection(Vector3 from, Vector3 to)
+    {
+        Vector3 dir = to - from;
+        dir.y = 0f;
+
+        return dir;
+    }
 }

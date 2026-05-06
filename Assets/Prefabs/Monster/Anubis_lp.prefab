@@ -366,7 +366,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6035452279502588180
 Transform:
   m_ObjectHideFlags: 0
@@ -1533,9 +1533,6 @@ MonoBehaviour:
   alertDuration: 3
   alertArriveDistance: 0.45
   chaseRange: 18
-  useGuardAnimationInAlert: 1
-  useIdleBreakRandomly: 0
-  idleBreakChancePerSecond: 0.08
 --- !u!136 &6602194669137973691
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5115,7 +5112,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
