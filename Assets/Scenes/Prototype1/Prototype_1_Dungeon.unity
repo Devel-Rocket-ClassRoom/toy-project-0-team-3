@@ -2169,7 +2169,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 2076610017901175215}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.6
   m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
@@ -2977,10 +2977,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.27071196
-  m_Height: 1.9272773
+  m_Radius: 0.5
+  m_Height: 2.2624645
   m_Direction: 1
-  m_Center: {x: 0.03586048, y: 1.1044365, z: -0.03185463}
+  m_Center: {x: 0.03586048, y: 1.1537287, z: -0.03185463}
 --- !u!4 &6283519621696734539
 Transform:
   m_ObjectHideFlags: 0
@@ -3210,14 +3210,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4bf32a851547644aa24abd025c2b9fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Monster
-  startingHealth: 100
+  startingHealth: 10000
   OnDead:
     m_PersistentCalls:
       m_Calls: []
   _detectRange: 10
   _attackRange: 2
+  _realAttackRange: 3
   _attackDamage: 10
-  _knockbackForce: 10
+  _knockbackForce: 5
 --- !u!1 &8024205436189187681
 GameObject:
   m_ObjectHideFlags: 0

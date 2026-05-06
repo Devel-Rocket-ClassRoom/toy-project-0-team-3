@@ -77,6 +77,9 @@ public class PlayerStatus : LivingEntity
             IsHit = true;
             _animator.SetTrigger("Damaged");
 
+            GetComponent<PlayerAttack>().ForceReset();
+            GetComponent<PlayerSkill>().OnSkillEnd();
+
             if (_invincibleCoroutine != null)
                 StopCoroutine(_invincibleCoroutine);
             _invincibleCoroutine = StartCoroutine(InvincibleCoroutine());
