@@ -8,6 +8,7 @@ TagManager:
   - Monster
   - TileFloor
   - Fadeble
+  - Chest
   layers:
   - Default
   - TransparentFX

@@ -24,13 +24,13 @@ public class ChestOpening : MonoBehaviour
     {
         if (isOpen || isAnimating) return;
 
-        if (Vector3.Distance(transform.position, player.transform.position) < interactableRange)
-        {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                OpenLid();
-            }
-        }
+        // if (Vector3.Distance(transform.position, player.transform.position) < interactableRange)
+        // {
+        //     if (Input.GetKeyDown(KeyCode.F))
+        //     {
+        //         OpenLid();
+        //     }
+        // }
     }
 
 
