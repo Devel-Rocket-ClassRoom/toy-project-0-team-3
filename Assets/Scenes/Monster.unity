@@ -490,7 +490,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!136 &979804924
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -769,7 +769,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3141888289606205529, guid: a1e28cc5277b74ff0ad8566e5e54bee5, type: 3}
   m_PrefabInstance: {fileID: 1946888646}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1590692702
+--- !u!114 &1590692709
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -785,54 +785,152 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  moveSpeed: 3
-  turnSpeed: 720
-  attackRange: 1.5
-  attackCooldown: 1
-  attackDamage: 10
-  hitBox: {fileID: 1988467903}
-  allowMultipleDamageEventsPerAttack: 0
   playerTag: Player
-  obstacleLayer:
+  anim: {fileID: 0}
+  disableNavMeshAgentOnEnable: 1
+  disableRootMotionOnEnable: 1
+  forceKinematicRigidbody: 1
+  activationRange: 25
+  attackRange: 10
+  stopDistance: 7.5
+  groundMoveSpeed: 4
+  airMoveSpeed: 8
+  turnSpeed: 360
+  airHeight: 6
+  airIdleDuration: 2
+  takeOffHeightCurve:
     serializedVersion: 2
-    m_Bits: 0
-  eyeHeight: 1.5
-  targetEyeHeight: 1
-  alertMarkPrefab: {fileID: 0}
-  alertMarkLocalOffset: {x: 0, y: 2.2, z: 0}
-  attackFallbackDuration: 2.5
-  hitReactionFallbackDuration: 0.6
-  returnArriveDistance: 0.35
-  destroyDelay: 3
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  landingHeightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  phase2HealthRatio: 0.5
+  attack1Damage: 18
+  attack2Damage: 24
+  breathDamage: 12
+  airBreathDamage: 16
+  burnDuration: 3
+  burnTickDamage: 2
+  forceSpecialAfterMeleeCount: 5
+  attack1WeightNear: 0.25
+  attack1WeightFar: 0.75
+  attack2WeightNear: 0.75
+  attack2WeightFar: 0.15
+  baseSpecialWeight: 0.08
+  specialWeightPerMeleeAttack: 0.08
+  maxSpecialWeight: 0.55
+  attackCooldown: 1.5
+  headBiteHitBox: {fileID: 0}
+  footStompHitBox: {fileID: 0}
+  groundBreathHitBox: {fileID: 0}
+  airBreathHitBox: {fileID: 0}
+  attack1HitWindow: {x: 0.35, y: 0.55}
+  attack2HitWindow: {x: 0.45, y: 0.65}
+  groundBreathHitWindow: {x: 0.25, y: 0.85}
+  airBreathHitWindow: {x: 0.2, y: 0.9}
+  animatorLayerIndex: 0
+  attack1StateName: Attack01
+  attack2StateName: Attack02
+  breatheFireStateName: BreatheFire
+  takeOffStateName: Idle Takeoff
+  flyBreatheFireStateName: FlyBreatheFire
+  landingStateName: Idle Landing
+  gotHitStateName: Hit01
+  hitReactionStepRatio: 0.05
+  destroyDelay: 5
   currentState: 0
-  destinationSampleRadius: 2
-  activationRange: 18
-  leashRange: 35
-  meleeRange: 3
-  breathRange: 12
-  useRunAnimation: 1
---- !u!195 &1590692703
-NavMeshAgent:
+--- !u!54 &1590692710
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1590692695}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &1590692711
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1590692695}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  m_AgentTypeID: 0
+  serializedVersion: 2
   m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1946888646
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -847,11 +945,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3141888289606205529, guid: a1e28cc5277b74ff0ad8566e5e54bee5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3141888289606205529, guid: a1e28cc5277b74ff0ad8566e5e54bee5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.62618
+      value: -13.6
       objectReference: {fileID: 0}
     - target: {fileID: 3141888289606205529, guid: a1e28cc5277b74ff0ad8566e5e54bee5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -898,10 +996,13 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3141888289606704249, guid: a1e28cc5277b74ff0ad8566e5e54bee5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1590692703}
+      addedObject: {fileID: 1590692709}
     - targetCorrespondingSourceObject: {fileID: 3141888289606704249, guid: a1e28cc5277b74ff0ad8566e5e54bee5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1590692702}
+      addedObject: {fileID: 1590692710}
+    - targetCorrespondingSourceObject: {fileID: 3141888289606704249, guid: a1e28cc5277b74ff0ad8566e5e54bee5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1590692711}
   m_SourcePrefab: {fileID: 100100000, guid: a1e28cc5277b74ff0ad8566e5e54bee5, type: 3}
 --- !u!1 &1982659531
 GameObject:
@@ -939,7 +1040,7 @@ Camera:
   m_GameObject: {fileID: 1982659531}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -990,7 +1091,7 @@ Transform:
   m_GameObject: {fileID: 1982659531}
   serializedVersion: 2
   m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 0, y: 10, z: -10}
+  m_LocalPosition: {x: -0.4, y: 24.7, z: -56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
