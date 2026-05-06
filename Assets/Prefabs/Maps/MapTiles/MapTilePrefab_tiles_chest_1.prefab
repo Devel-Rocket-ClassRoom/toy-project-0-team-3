@@ -238,7 +238,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.628, y: 1.031, z: 0.823}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 1.031, z: 0}
   m_TimeToStationary: 0.5
@@ -481,7 +481,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.772, y: 1.5040001, z: 0.693}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 1.5040001, z: 0}
   m_TimeToStationary: 0.5
@@ -835,7 +835,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.767, y: 1.4710001, z: 0.74200004}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 1.4710001, z: 0}
   m_TimeToStationary: 0.5
@@ -1415,7 +1415,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.637, y: 0.20700002, z: 0.36200002}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.001, y: 0.20700002, z: -0.001}
   m_TimeToStationary: 0.5
@@ -1433,8 +1433,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ChestOpening
   lid: {fileID: 1272671894758068295}
   body: {fileID: 4616395690332355158}
-  player: {fileID: 0}
-  interactableRadius: 1
+  interactableRange: 1
+  openAngle: {x: -90, y: 0, z: 0}
+  openDuration: 0.5
 --- !u!1 &5652157633201448792
 GameObject:
   m_ObjectHideFlags: 0
@@ -2061,7 +2062,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.18800001, y: 0.554, z: 0.18800001}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.554, z: 0}
   m_TimeToStationary: 0.5
