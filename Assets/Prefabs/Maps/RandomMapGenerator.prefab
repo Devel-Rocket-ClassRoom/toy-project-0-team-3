@@ -49,5 +49,11 @@ MonoBehaviour:
   - {fileID: 480703320807909646, guid: 77fddde7287047942b8be1588944e6f9, type: 3}
   - {fileID: 4720699259710555118, guid: 27272fd7628551444878568a498677d4, type: 3}
   - {fileID: 8220018422036866439, guid: bceb3aca0bfc4bc428cb0c7fe7d218bc, type: 3}
+  - {fileID: 5328279708345246365, guid: ac49839c671d1ed43956de564eeaccd3, type: 3}
+  - {fileID: 8854107621392401395, guid: ae21d594e551b214c9c75ad7bc8570bf, type: 3}
+  - {fileID: 2792185787815574910, guid: 65ed6f5a9fbf04e4bb3e5fda3036ee1c, type: 3}
+  - {fileID: 6075372382765460019, guid: 6e31b70f3ee3be94f815f9227a2a9c3e, type: 3}
+  - {fileID: 1561460129484962946, guid: cc086402ab7629742a5ad4b6c65071f9, type: 3}
   playerPrefab: {fileID: 2787062198841194380, guid: f97bdc13ee04da6438a06c0da204721c, type: 3}
   tileSize: 20
+  _currentPlayer: {fileID: 0}

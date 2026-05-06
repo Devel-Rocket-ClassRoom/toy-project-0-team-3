@@ -32,9 +32,9 @@ public class SceneLoader : MonoBehaviour
     // enum 값과 실제 씬 파일 이름을 매핑. 씬 이름이 바뀌면 여기서만 수정
     private readonly Dictionary<GameScene, string> sceneNames = new Dictionary<GameScene, string>
     {
-        { GameScene.MainTitle, "MainTitleUi_Sangwook" },
-        { GameScene.Pub, "PubUi_Sangwook" },
-        { GameScene.Dungeon, "TestDungeon_Sangwook"}
+        { GameScene.MainTitle, "Prototype_1_Main" },
+        { GameScene.Pub, "Prototype_1_Pub" },
+        { GameScene.Dungeon, "Prototype_1_Dungeon"}
     };
 
     private void Awake()

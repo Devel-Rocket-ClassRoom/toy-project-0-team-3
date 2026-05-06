@@ -6,11 +6,13 @@ TagManager:
   tags:
   - MapTile
   - Monster
+  - TileFloor
+  - Fadeble
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Obstacle
   - Water
   - UI
   - Ground
