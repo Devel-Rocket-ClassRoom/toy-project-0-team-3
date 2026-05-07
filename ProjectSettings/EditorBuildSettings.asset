@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TestDungeon_Sangwook.unity
     guid: 0c3496b8242fa404886e5668cf5108c0
+  - enabled: 1
+    path: Assets/Scenes/Prototype1/Prototype_1_Dungeon_Sangwook.unity
+    guid: 237b0083fdd3d364a86e236ea07d3395
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
