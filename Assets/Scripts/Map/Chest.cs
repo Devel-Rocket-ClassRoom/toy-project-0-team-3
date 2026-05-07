@@ -75,8 +75,9 @@ public class Chest : MonoBehaviour
 
     private void OpenChestInv()
     {
-        Debug.Log("OpenChestInv called / chestInventory: " + chestInventory);
         chestInventory.SetActive(true);
+        Debug.Log("OpenChestInv called / chestInventory: " + chestInventory);
+
     }
 
     private void CloseChestInv()
@@ -86,7 +87,7 @@ public class Chest : MonoBehaviour
 
     private void GenerateRandomItemInChest()
     {
-        int attempts = Random.Range(1, 7);
+        int attempts = Random.Range(0, 7);
         for (int i = 0; i < attempts; i++)
         {
             ItemData data = DataTableManager.ItemTable.GetRandom();
