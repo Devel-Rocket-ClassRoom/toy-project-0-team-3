@@ -293,9 +293,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'INVENTORY
-
-'
+  m_text: CHEST
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
   m_sharedMaterial: {fileID: -4994329752404780081, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
@@ -1909,7 +1907,7 @@ GameObject:
   - component: {fileID: 882995230862427063}
   - component: {fileID: 8854110417181823225}
   m_Layer: 5
-  m_Name: Inventory
+  m_Name: ChestInventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

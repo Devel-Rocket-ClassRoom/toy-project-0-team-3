@@ -1,10 +1,15 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class ChestOpening : MonoBehaviour
+public class Chest : MonoBehaviour
 {
     public GameObject lid;
     public GameObject body;
+    public GameObject chestInventory;
+    public List<ItemData> itemDataList = new();
+    
     private GameObject player;
     public float interactableRange = 1f;
 
@@ -18,6 +23,8 @@ public class ChestOpening : MonoBehaviour
     private void Awake()
     {
         player = GameObject.FindWithTag("Player");
+        chestInventory.SetActive(false);
+        GenerateRandomItemInChest();
     }
 
     private void Update()
@@ -41,6 +48,8 @@ public class ChestOpening : MonoBehaviour
 
         if (isOpen || isAnimating) return;
         StartCoroutine(RotateLid());
+
+        OpenChestInv();
     }   
 
 
@@ -64,5 +73,31 @@ public class ChestOpening : MonoBehaviour
         isAnimating = false;
     }
 
+    private void OpenChestInv()
+    {
+        chestInventory.SetActive(true);
+        Debug.Log("OpenChestInv called / chestInventory: " + chestInventory);
 
+    }
+
+    private void CloseChestInv()
+    {
+        chestInventory.SetActive(false);
+    }
+
+    private void GenerateRandomItemInChest()
+    {
+        int attempts = Random.Range(0, 7);
+        for (int i = 0; i < attempts; i++)
+        {
+            ItemData data = DataTableManager.ItemTable.GetRandom();
+            if (data == null) return;
+
+            itemDataList.Add(data);
+        }
+        foreach (var item in itemDataList)
+        {
+            Debug.Log(item.ItemName);
+        }
+    }
 }

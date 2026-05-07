@@ -1,3 +1,15 @@
 Id,ItemName,ItemDesc,Icon,Value
-Item1,고기,맛있다,Icon_Meat,300
-Item2,버섯,중독될 수 있다,Icon_Mushroom,140
+Item1,[요리] 고기,맛있다,Icon_Meat,300
+Item2,[요리] 버섯,중독될 수 있다,Icon_Mushroom,140
+Item3,[요리] 질긴 고기,질기다,Icon_HardMeat,140
+Item4,[요리] 부드러운 고기,부드럽다,Icon_SoftMeat,140
+Item5,[요리] 약초,효능이 좋다,Icon_Herb,140
+Item6,[요리] 소금,짜다,Icon_Salt,140
+Item7,[요리] 후추,매콤하가,Icon_Pepper,140
+Item8,금화,높은 가치를 지닌 재화,Icon_Coin,1000
+Item9,[에픽] 칼,에픽 등급의 상당히 희귀한 칼이다,Icon_EpicSword,1000
+Item10,[에픽] 활,에픽 등급의 상당히 희귀한 활이다,Icon_EpicBow,1000
+Item11,[에픽] 스태프,에픽 등급의 상당히 희귀한 스패트이다,Icon_EpicStaff,1000
+Item12,[에픽] 투구,에픽 등급의 상당히 희귀한 투쿠이다,Icon_EpicHelm,1000
+Item13,[에픽] 완드,에픽 등급의 상당히 희귀한 완드이다,Icon_EpicWand,1000
+Item14,[에픽] 엘릭서,에픽 등급의 상당히 희귀한 엘릭서이다,Icon_EpicElixir,1000
