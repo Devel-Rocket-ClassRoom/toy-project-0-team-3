@@ -1,267 +1,214 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
-/// <summary>
-/// 독립형 드래곤 보스.
-/// BaseMonster, SimpleMonster, SensoryMonster를 상속하지 않는다.
-/// NavMesh를 사용하지 않고 transform 좌표 기반으로 직접 이동한다.
-/// </summary>
 public class DragonBoss : LivingEntity
 {
-    private enum BossState
-    {
+    private enum BossState 
+    { 
         Idle,
         Chase,
         GroundAttack,
         TakeOff,
         AirIdle,
         AirBreathFire,
-        Landing,
+        Landing, 
         HitReaction,
-        Dead,
+        Dead 
     }
 
-    private enum BossPhase
+    [System.Serializable]
+    private class AttackData
     {
-        Phase1,
-        Phase2,
+        public string triggerName;
+        public string stateName;
+        public HitBox hitBox;
+        public float damage;
+        public bool applyBurn;
+        public Vector2 hitWindow;
+        public int TriggerHash => Animator.StringToHash(triggerName);
     }
 
-    private enum DragonAttackType
-    {
-        Attack1,
-        Attack2,
-        Special,
-    }
-
-    private static readonly int HashLocomotion = Animator.StringToHash("locomotion");
-
-    private static readonly int HashAttack1 = Animator.StringToHash("attack1");
-    private static readonly int HashAttack2 = Animator.StringToHash("attack2");
-    private static readonly int HashBreatheFire = Animator.StringToHash("breatheFire");
-
-    private static readonly int HashIdleTakeoff = Animator.StringToHash("idleTakeoff");
-    private static readonly int HashFlyGlide = Animator.StringToHash("flyGlide");
-    private static readonly int HashFlyBreatheFire = Animator.StringToHash("flyBreatheFire");
-    private static readonly int HashIdleLand = Animator.StringToHash("idleLand");
-
-    private static readonly int HashGotHit1 = Animator.StringToHash("gotHit1");
-    private static readonly int HashDeath = Animator.StringToHash("death");
-    private static readonly int HashFlyDeath = Animator.StringToHash("flyDeath");
-
-    // 애니메이션 Blend Tree의 파라미터 값 (0: 후진, 0.5: 대기, 0.75: 걷기, 1: 달리기)
-    private const float LocomotionBackward = 0f;
+    private readonly int HashLocomotion = Animator.StringToHash("locomotion");
+    private readonly int HashFlyGlide = Animator.StringToHash("flyGlide");
+    private readonly int HashIdleTakeoff = Animator.StringToHash("idleTakeoff");
+    private readonly int HashIdleLand = Animator.StringToHash("idleLand");
+    private readonly int HashGotHit1 = Animator.StringToHash("gotHit1");
+    private readonly int HashDeath = Animator.StringToHash("death");
+    private readonly int HashFlyDeath = Animator.StringToHash("flyDeath");
     private const float LocomotionIdle = 0.5f;
-    private const float LocomotionWalk = 0.75f;
     private const float LocomotionRun = 1f;
 
+    [Header("Target")]
+    [SerializeField]
     private string playerTag = "Player";
-
-    private Transform player;
-    private Animator anim;
-
-    [Header("External Movement Driver Safety")]
     [SerializeField]
-    private bool disableRootMotionOnEnable = true;
-
-    [SerializeField]
-    private bool forceKinematicRigidbody = true;
-
-    private Rigidbody rigidBody;
+    private LayerMask targetLayers = ~0;
 
     [Header("Movement")]
     [SerializeField]
     private float activationRange = 25f;
-
     [SerializeField]
     private float attackRange = 10f;
-
     [SerializeField]
     private float stopDistance = 7.5f;
-
     [SerializeField]
     private float groundMoveSpeed = 4f;
-
     [SerializeField]
     private float airMoveSpeed = 8f;
-
     [SerializeField]
     private float turnSpeed = 360f;
 
     [Header("Air Movement")]
     [SerializeField]
     private float airHeight = 6f;
-
     [SerializeField]
     private float airIdleDuration = 2f;
-
-
+    [SerializeField]
     private AnimationCurve takeOffHeightCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
-    private AnimationCurve landingHeightCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
-
-    private float groundY;
-    private Vector3 airMoveDirection;
+    [SerializeField]
+    private float landingSpeedMultiplier = 2f;
 
     [Header("Phase")]
-    [SerializeField]
+    [SerializeField] 
     private float phase2HealthRatio = 0.5f;
 
-    private BossPhase currentPhase = BossPhase.Phase1;
-    private bool hasEnteredPhase2;
-    private bool pendingPhase2Transition;
-
-    [Header("Damage")]
-    [SerializeField]
-    private float attack1Damage = 18f;
-    [SerializeField]
-    private float attack2Damage = 24f;
-    [SerializeField]
-    private float breathDamage = 12f;
-    [SerializeField]
-    private float airBreathDamage = 16f;
-
-    [Header("Burn Status")]
-    [SerializeField]
+    [Header("Burn")]
+    [SerializeField] 
     private float burnDuration = 3f;
-    [SerializeField]
+    [SerializeField] 
     private float burnTickDamage = 2f;
 
     [Header("Attack Probability")]
     [SerializeField]
-    private int forceSpecialAfterMeleeCount = 5;
+    private int specialAttackInterval = 5;
     [SerializeField]
-    private float attack1WeightNear = 0.25f;
+    private float attack1Near = 0.25f;
     [SerializeField]
-    private float attack1WeightFar = 0.75f;
+    private float attack1Far = 0.75f;
     [SerializeField]
-    private float attack2WeightNear = 0.75f;
+    private float attack2Near = 0.75f;
     [SerializeField]
-    private float attack2WeightFar = 0.15f;
+    private float attack2Far = 0.15f;
     [SerializeField]
     private float baseSpecialWeight = 0.08f;
     [SerializeField]
-    private float specialWeightPerMeleeAttack = 0.08f;
+    private float specialChanceIncrease = 0.08f;
     [SerializeField]
     private float maxSpecialWeight = 0.55f;
-
-    private int meleeAttackChainCount;
-
-    [Header("Attack Cooldown")]
     [SerializeField]
     private float attackCooldown = 1.5f;
 
-    private float nextAttackTime;
+    [Header("Attack Boxes")]
+    [SerializeField]
+    private AttackData attack1 = new AttackData
+    {
+        triggerName = "attack1",
+        stateName = "Attack01",
+        damage = 18f,
+        applyBurn = false,
+        hitWindow = new Vector2(0.35f, 0.55f)
+    };
+    [SerializeField]
+    private AttackData attack2 = new AttackData
+    {
+        triggerName = "attack2",
+        stateName = "Attack02",
+        damage = 24f,
+        applyBurn = false,
+        hitWindow = new Vector2(0.45f, 0.65f)
+    };
+    [SerializeField]
+    private AttackData groundBreath = new AttackData
+    {
+        triggerName = "breatheFire",
+        stateName = "BreatheFire",
+        damage = 12f,
+        applyBurn = true,
+        hitWindow = new Vector2(0.25f, 0.85f)
+    };
+    [SerializeField]
+    private AttackData airBreath = new AttackData
+    {
+        triggerName = "flyBreatheFire",
+        stateName = "FlyBreatheFire",
+        damage = 16f,
+        applyBurn = true,
+        hitWindow = new Vector2(0.20f, 0.90f)
+    };
 
-    [Header("HitBoxes")]
-    [SerializeField]
-    private HitBox headBiteHitBox;
-    [SerializeField]
-    private HitBox footStompHitBox;
-    [SerializeField]
-    private HitBox groundBreathHitBox;
-    [SerializeField]
-    private HitBox airBreathHitBox;
-
-    [Header("HitBox Timing - Normalized Time")]
-    [SerializeField]
-    private Vector2 attack1HitWindow = new Vector2(0.35f, 0.55f);
-
-    [SerializeField]
-    private Vector2 attack2HitWindow = new Vector2(0.45f, 0.65f);
-
-    [SerializeField]
-    private Vector2 groundBreathHitWindow = new Vector2(0.25f, 0.85f);
-
-    [SerializeField]
-    private Vector2 airBreathHitWindow = new Vector2(0.20f, 0.90f);
-
-    [Header("Animator State Names")]
+    [Header("Animator")]
     [SerializeField]
     private int animatorLayerIndex = 0;
-
-
     [SerializeField]
     private string takeOffStateName = "Idle Takeoff";
-    private string flyBreatheFireStateName = "FlyBreatheFire";
+    [SerializeField]
     private string landingStateName = "Idle Landing";
+    [SerializeField]
     private string gotHitStateName = "Hit01";
 
-    [Header("Hit Reaction")]
+    [Header("Hit Reaction / Death")]
     [SerializeField]
     private float hitReactionStepRatio = 0.05f;
-
-    private float nextHitReactionHealth;
-    private bool pendingHitReaction;
-
-    [Header("Death")]
     [SerializeField]
     private float destroyDelay = 5f;
 
+    [Header("Gizmos")]
+    [SerializeField] private bool drawDetectionGizmos = true;
+
     [Header("Debug")]
-    [SerializeField]
-    private BossState currentState = BossState.Idle;
+    [SerializeField] private BossState currentState = BossState.Idle;
 
-    private Coroutine currentActionRoutine;
-
-    private bool isActionLocked;
+    private Transform player;
+    private Animator anim;
+    private Rigidbody rigidBody;
+    private AttackData[] attacks;
+    private Coroutine currentRoutine;
+    private bool isPhase2;
     private bool isAirborne;
-    private bool isPhaseTransitioning;
-
-    private bool isGroundAttackTransformLocked;
-    private Vector3 lockedGroundAttackPosition;
-    private Quaternion lockedGroundAttackRotation;
-
-    private readonly HashSet<LivingEntity> damagedTargetsThisAttack = new HashSet<LivingEntity>();
+    private bool isActionLocked;
+    private bool isChangingPhase;
+    private bool phase2Requested;
+    private int normalAttackCount;
+    private float groundY;
+    private Vector3 bossPosition;
+    private Quaternion bossRotation;
+    private float nextAttackTime;
+    private float nextHitReactionHealth;
+    private readonly HashSet<LivingEntity> damagedTargets = new HashSet<LivingEntity>();
 
     protected override void OnEnable()
     {
         base.OnEnable();
 
-        if (anim == null)
-        {
-            anim = GetComponent<Animator>();
-        }
-
+        anim = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
+        attacks = new[] { attack1, attack2, groundBreath, airBreath };
 
-        DisableExternalMovementDrivers();
-
+        SetupExternalDrivers();
         FindPlayer();
 
         groundY = transform.position.y;
+        bossPosition = transform.position;
+        bossRotation = transform.rotation;
 
-        currentState = BossState.Idle;
-        currentPhase = BossPhase.Phase1;
+        ApplyPose();
 
-        hasEnteredPhase2 = false;
-        pendingPhase2Transition = false;
-        pendingHitReaction = false;
-
-        isActionLocked = false;
-        isAirborne = false;
-        isPhaseTransitioning = false;
-        isGroundAttackTransformLocked = false;
-
-        meleeAttackChainCount = 0;
+        isPhase2 = isAirborne = isActionLocked = isChangingPhase = phase2Requested = false;
+        normalAttackCount = 0;
         nextAttackTime = 0f;
-
         nextHitReactionHealth = startingHealth * (1f - hitReactionStepRatio);
+        currentState = BossState.Idle;
 
-        DeactivateAllHitBoxes();
-
-        if (anim != null)
-        {
-            anim.SetFloat(HashLocomotion, LocomotionIdle);
-        }
+        ClearAttackData();
+        PlayIdle();
     }
 
     protected override void Update()
     {
         base.Update();
 
-        if (IsDead)
+        if (IsDead || isActionLocked)
         {
             return;
         }
@@ -269,62 +216,52 @@ public class DragonBoss : LivingEntity
         if (player == null)
         {
             FindPlayer();
-
             if (player == null)
             {
                 return;
             }
         }
 
-        if (isActionLocked)
+        if (currentState == BossState.Idle)
         {
-            return;
+            UpdateIdle();
         }
-
-        switch (currentState)
+        else if (currentState == BossState.Chase)
         {
-            case BossState.Idle:
-                UpdateIdle();
-                break;
-
-            case BossState.Chase:
-                UpdateChase();
-                break;
-
-            case BossState.GroundAttack:
-            case BossState.TakeOff:
-            case BossState.AirIdle:
-            case BossState.AirBreathFire:
-            case BossState.Landing:
-            case BossState.HitReaction:
-            case BossState.Dead:
-                break;
+            UpdateChase();
         }
     }
 
-    private void DisableExternalMovementDrivers()
+    private void LateUpdate()
     {
-        if (disableRootMotionOnEnable && anim != null)
+        if (!IsDead) ApplyPose();
+    }
+
+    private void OnAnimatorMove()
+    {
+        // Root Motion이 Transform을 되돌리는 것을 막기 위해 비워둔다.
+    }
+
+    private void SetupExternalDrivers()
+    {
+        if (anim != null)
         {
             anim.applyRootMotion = false;
         }
-
-        if (forceKinematicRigidbody && rigidBody != null)
+        if (rigidBody == null)
         {
-            rigidBody.isKinematic = true;
-            rigidBody.useGravity = false;
-            rigidBody.linearVelocity = Vector3.zero;
-            rigidBody.angularVelocity = Vector3.zero;
+            return;
         }
+        rigidBody.isKinematic = true;
+        rigidBody.useGravity = false;
+        rigidBody.linearVelocity = Vector3.zero;
+        rigidBody.angularVelocity = Vector3.zero;
     }
 
     private void UpdateIdle()
     {
         PlayIdle();
-
-        float dist = GetFlatDistance(transform.position, player.position);
-
-        if (dist <= activationRange)
+        if (FlatDistance(bossPosition, player.position) <= activationRange)
         {
             currentState = BossState.Chase;
         }
@@ -332,13 +269,12 @@ public class DragonBoss : LivingEntity
 
     private void UpdateChase()
     {
-        if (!hasEnteredPhase2 && Health <= startingHealth * phase2HealthRatio)
+        if (!isPhase2 && Health <= startingHealth * phase2HealthRatio)
         {
             RequestPhase2Transition();
             return;
         }
-
-        float dist = GetFlatDistance(transform.position, player.position);
+        float dist = FlatDistance(bossPosition, player.position);
 
         if (dist <= attackRange && Time.time >= nextAttackTime)
         {
@@ -359,149 +295,60 @@ public class DragonBoss : LivingEntity
 
     private void StartSelectedAttack()
     {
-        DragonAttackType attackType = SelectAttack();
-
-        switch (attackType)
+        int index = SelectAttackIndex();
+        if (index == 2)
         {
-            case DragonAttackType.Attack1:
-                meleeAttackChainCount++;
-
-                StartAction(GroundAttackRoutine(
-                    HashAttack1,
-                    "Attack01",
-                    headBiteHitBox,
-                    attack1Damage,
-                    false,
-                    attack1HitWindow
-                ));
-                break;
-
-            case DragonAttackType.Attack2:
-                meleeAttackChainCount++;
-
-                StartAction(GroundAttackRoutine(
-                    HashAttack2,
-                    "Attack02",
-                    footStompHitBox,
-                    attack2Damage,
-                    false,
-                    attack2HitWindow
-                ));
-                break;
-
-            case DragonAttackType.Special:
-                meleeAttackChainCount = 0;
-
-                if (currentPhase == BossPhase.Phase1)
-                {
-                    StartAction(GroundAttackRoutine(
-                        HashBreatheFire,
-                        "BreatheFire",
-                        groundBreathHitBox,
-                        breathDamage,
-                        true,
-                        groundBreathHitWindow
-                    ));
-                }
-                else
-                {
-                    StartAction(AirAttackSequenceRoutine(false));
-                }
-                break;
+            normalAttackCount = 0;
+            StartAction(isPhase2 ? AirSequence(false) : GroundAttack(groundBreath));
+            return;
         }
+        normalAttackCount++;
+        StartAction(GroundAttack(index == 0 ? attack1 : attack2));
     }
 
-    private DragonAttackType SelectAttack()
+    private int SelectAttackIndex()
     {
-        if (meleeAttackChainCount >= forceSpecialAfterMeleeCount)
+        if (normalAttackCount >= specialAttackInterval)
         {
-            return DragonAttackType.Special;
+            return 2;
         }
 
-        float dist = GetFlatDistance(transform.position, player.position);
-        float distance01 = Mathf.Clamp01(dist / Mathf.Max(attackRange, 0.01f));
+        float distance01 = Mathf.Clamp01(FlatDistance(bossPosition, player.position) / Mathf.Max(attackRange, 0.01f));
+        float w1 = Mathf.Lerp(attack1Near, attack1Far, distance01);
+        float w2 = Mathf.Lerp(attack2Near, attack2Far, distance01);
+        float ws = Mathf.Clamp(baseSpecialWeight + normalAttackCount * specialChanceIncrease, 0f, maxSpecialWeight);
+        float random = Random.value * (w1 + w2 + ws);
 
-        float attack1Weight = Mathf.Lerp(attack1WeightNear, attack1WeightFar, distance01);
-        float attack2Weight = Mathf.Lerp(attack2WeightNear, attack2WeightFar, distance01);
-
-        float specialWeight = Mathf.Clamp(
-            baseSpecialWeight + meleeAttackChainCount * specialWeightPerMeleeAttack,
-            0f,
-            maxSpecialWeight
-        );
-
-        float totalWeight = attack1Weight + attack2Weight + specialWeight;
-        float random = Random.value * totalWeight;
-
-        if (random < attack1Weight)
+        if (random < w1)
         {
-            return DragonAttackType.Attack1;
+            return 0;
         }
 
-        random -= attack1Weight;
-
-        if (random < attack2Weight)
-        {
-            return DragonAttackType.Attack2;
-        }
-
-        return DragonAttackType.Special;
+        return random - w1 < w2 ? 1 : 2;
     }
 
-    private IEnumerator GroundAttackRoutine(
-        int triggerHash,
-        string stateName,
-        HitBox hitBox,
-        float damage,
-        bool applyBurn,
-        Vector2 hitWindow)
+    private IEnumerator GroundAttack(AttackData attack)
     {
-        currentState = BossState.GroundAttack;
-        isActionLocked = true;
-
-        DeactivateAllHitBoxes();
-        damagedTargetsThisAttack.Clear();
-
+        BeginAction(BossState.GroundAttack);
         PlayIdle();
+        FaceTarget(player.position, true);
 
-        if (player != null)
+        Vector3 lockedPosition = bossPosition;
+        lockedPosition.y = groundY;
+        Quaternion lockedRotation = bossRotation;
+
+        anim.SetTrigger(attack.TriggerHash);
+
+        yield return WaitForState(attack.stateName);
+
+        bool active = false;
+
+        while (TryGetStateTime(attack.stateName, out float t))
         {
-            FaceTarget(player.position, true);
-        }
+            SetPose(lockedPosition, lockedRotation);
+            active = UpdateAttackWindow(attack, t, active);
 
-        lockedGroundAttackPosition = transform.position;
-        lockedGroundAttackPosition.y = groundY;
-        lockedGroundAttackRotation = transform.rotation;
-        isGroundAttackTransformLocked = true;
-
-        anim.SetTrigger(triggerHash);
-
-        yield return WaitUntilCurrentStateStarts(stateName);
-
-        bool hitBoxActive = false;
-
-        while (TryGetCurrentStateNormalizedTime(stateName, out float normalizedTime))
-        {
-            ApplyGroundAttackTransformLock();
-
-            if (!hitBoxActive && normalizedTime >= hitWindow.x)
-            {
-                hitBoxActive = true;
-                ActivateHitBox(hitBox);
-            }
-
-            if (hitBoxActive)
-            {
-                ApplyDamageFromHitBox(hitBox, damage, applyBurn);
-            }
-
-            if (hitBoxActive && normalizedTime > hitWindow.y)
-            {
-                hitBoxActive = false;
-                DeactivateHitBox(hitBox);
-            }
-
-            if (normalizedTime >= 1f)
+            if (t >= 1f)
             {
                 break;
             }
@@ -509,81 +356,44 @@ public class DragonBoss : LivingEntity
             yield return null;
         }
 
-        isGroundAttackTransformLocked = false;
-        DeactivateHitBox(hitBox);
-
-        FinishActionToChase();
+        FinishAction();
     }
 
-    private void ApplyGroundAttackTransformLock()
+    private IEnumerator AirSequence(bool isPhaseTransition)
     {
-        if (!isGroundAttackTransformLocked)
-        {
-            return;
-        }
+        isChangingPhase = isPhaseTransition;
 
-        transform.position = lockedGroundAttackPosition;
-        transform.rotation = lockedGroundAttackRotation;
+        yield return TakeOff();
+        yield return AirIdle();
+        yield return AirBreathFire();
+        yield return Landing();
+
+        isChangingPhase = false;
+
+        FinishAction();
     }
 
-    private IEnumerator AirAttackSequenceRoutine(bool isPhaseTransition)
+    private IEnumerator TakeOff()
     {
-        isPhaseTransitioning = isPhaseTransition;
+        BeginAction(BossState.TakeOff);
 
-        yield return TakeOffRoutine();
-        yield return AirIdleRoutine();
-        yield return AirBreathFireRoutine();
-        yield return LandingRoutine();
-
-        isPhaseTransitioning = false;
-
-        if (pendingHitReaction)
-        {
-            pendingHitReaction = false;
-
-            currentActionRoutine = null;
-            isActionLocked = false;
-
-            StartAction(HitReactionRoutine());
-            yield break;
-        }
-
-        FinishActionToChase();
-    }
-
-    private IEnumerator TakeOffRoutine()
-    {
-        currentState = BossState.TakeOff;
-        isActionLocked = true;
         isAirborne = true;
 
-        isGroundAttackTransformLocked = false;
-
-        DeactivateAllHitBoxes();
-        damagedTargetsThisAttack.Clear();
-
         PlayIdle();
+        FaceTarget(player.position, true);
 
-        if (player != null)
-        {
-            FaceTarget(player.position, true);
-        }
-
-        float startY = transform.position.y;
+        float startY = bossPosition.y;
         float targetY = groundY + airHeight;
 
         anim.SetTrigger(HashIdleTakeoff);
 
-        yield return WaitUntilCurrentStateStarts(takeOffStateName);
+        yield return WaitForState(takeOffStateName);
 
-        while (TryGetCurrentStateNormalizedTime(takeOffStateName, out float normalizedTime))
+        while (TryGetStateTime(takeOffStateName, out float t))
         {
-            float t = Mathf.Clamp01(normalizedTime);
-            float curveValue = takeOffHeightCurve.Evaluate(t);
+            SetY(Mathf.Lerp(startY, targetY, takeOffHeightCurve.Evaluate(Mathf.Clamp01(t))));
 
-            SetY(Mathf.Lerp(startY, targetY, curveValue));
-
-            if (normalizedTime >= 1f)
+            if (t >= 1f)
             {
                 break;
             }
@@ -595,7 +405,7 @@ public class DragonBoss : LivingEntity
         anim.SetTrigger(HashFlyGlide);
     }
 
-    private IEnumerator AirIdleRoutine()
+    private IEnumerator AirIdle()
     {
         currentState = BossState.AirIdle;
 
@@ -603,151 +413,76 @@ public class DragonBoss : LivingEntity
 
         while (timer < airIdleDuration)
         {
-            if (player != null)
-            {
-                FaceTarget(player.position);
-            }
-
+            FaceTarget(player.position);
             SetY(groundY + airHeight);
-
             timer += Time.deltaTime;
+
             yield return null;
         }
     }
 
-    private IEnumerator AirBreathFireRoutine()
+    private IEnumerator AirBreathFire()
     {
-        currentState = BossState.AirBreathFire;
-        isActionLocked = true;
+        BeginAction(BossState.AirBreathFire);
+        Vector3 direction = FlatDirection(bossPosition, player.position);
 
-        DeactivateAllHitBoxes();
-        damagedTargetsThisAttack.Clear();
-
-        airMoveDirection = GetFlatDirection(transform.position, player.position);
-
-        if (airMoveDirection.sqrMagnitude <= 0.001f)
+        if (direction.sqrMagnitude <= 0.001f)
         {
-            airMoveDirection = transform.forward;
-            airMoveDirection.y = 0f;
+            direction = bossRotation * Vector3.forward;
         }
 
-        airMoveDirection.Normalize();
+        direction.Normalize();
+        FaceDirection(direction, true);
+        Quaternion lockedRotation = bossRotation;
+        anim.SetTrigger(airBreath.TriggerHash);
 
-        FaceDirection(airMoveDirection, true);
+        yield return WaitForState(airBreath.stateName);
 
-        Quaternion lockedRotation = transform.rotation;
+        bool active = false;
 
-        anim.SetTrigger(HashFlyBreatheFire);
-
-        yield return WaitUntilCurrentStateStarts(flyBreatheFireStateName);
-
-        bool hitBoxActive = false;
-
-        while (TryGetCurrentStateNormalizedTime(flyBreatheFireStateName, out float normalizedTime))
+        while (TryGetStateTime(airBreath.stateName, out float t))
         {
-            transform.rotation = lockedRotation;
-
-            Vector3 nextPosition = transform.position + airMoveDirection * airMoveSpeed * Time.deltaTime;
+            bossRotation = lockedRotation;
+            Vector3 nextPosition = bossPosition + direction * airMoveSpeed * Time.deltaTime;
             nextPosition.y = groundY + airHeight;
-            transform.position = nextPosition;
 
-            if (!hitBoxActive && normalizedTime >= airBreathHitWindow.x)
-            {
-                hitBoxActive = true;
-                ActivateHitBox(airBreathHitBox);
-            }
+            SetPose(nextPosition, lockedRotation);
 
-            if (hitBoxActive)
-            {
-                ApplyDamageFromHitBox(airBreathHitBox, airBreathDamage, true);
-            }
+            active = UpdateAttackWindow(airBreath, t, active);
 
-            if (hitBoxActive && normalizedTime > airBreathHitWindow.y)
-            {
-                hitBoxActive = false;
-                DeactivateHitBox(airBreathHitBox);
-            }
-
-            if (normalizedTime >= 1f)
+            if (t >= 1f)
             {
                 break;
             }
 
             yield return null;
         }
-
-        DeactivateHitBox(airBreathHitBox);
     }
 
-    private IEnumerator LandingRoutine()
+    private IEnumerator Landing()
     {
         currentState = BossState.Landing;
 
-        float startY = transform.position.y;
-        float targetY = groundY;
+        FaceTarget(player.position, true);
 
-        if (player != null)
-        {
-            FaceTarget(player.position, true);
-        }
+        float startY = bossPosition.y;
 
-        anim.ResetTrigger(HashFlyBreatheFire);
+        anim.ResetTrigger(airBreath.TriggerHash);
         anim.SetTrigger(HashIdleLand);
 
         yield return null;
+        yield return WaitForState(landingStateName);
 
-        yield return WaitUntilCurrentStateStarts(landingStateName);
-
-        while (TryGetCurrentStateNormalizedTime(landingStateName, out float normalizedTime))
+        while (TryGetStateTime(landingStateName, out float t))
         {
-            if (player != null)
-            {
-                FaceTarget(player.position);
-            }
-
-            // 핵심 수정:
-            // 착지는 무조건 공중 startY에서 땅 targetY로 내려가야 한다.
-            float landingTime = Mathf.Clamp01(normalizedTime) * 2;
-
-            SetY(Mathf.Lerp(startY, targetY, landingTime));
-
-            if (normalizedTime >= 1f)
-            {
-                break;
-            }
-
+            FaceTarget(player.position);
+            SetY(Mathf.Lerp(startY, groundY, Mathf.Clamp01(t) * landingSpeedMultiplier));
+            if (t >= 1f) break;
             yield return null;
         }
 
-        SetY(targetY);
+        SetY(groundY);
         isAirborne = false;
-    }
-
-    private void RequestPhase2Transition()
-    {
-        if (hasEnteredPhase2 || pendingPhase2Transition)
-        {
-            return;
-        }
-
-        pendingPhase2Transition = true;
-
-        if (!isActionLocked)
-        {
-            StartPhase2TransitionNow();
-        }
-    }
-
-    private void StartPhase2TransitionNow()
-    {
-        pendingPhase2Transition = false;
-
-        hasEnteredPhase2 = true;
-        currentPhase = BossPhase.Phase2;
-        meleeAttackChainCount = 0;
-
-        StopCurrentAction();
-        StartAction(AirAttackSequenceRoutine(true));
     }
 
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
@@ -757,8 +492,6 @@ public class DragonBoss : LivingEntity
             return;
         }
 
-        float previousHealth = Health;
-
         base.OnDamage(damage, hitPoint, hitNormal);
 
         if (IsDead)
@@ -766,95 +499,92 @@ public class DragonBoss : LivingEntity
             return;
         }
 
-        if (!hasEnteredPhase2 && Health <= startingHealth * phase2HealthRatio)
+        if (!isPhase2 && Health <= startingHealth * phase2HealthRatio)
         {
             RequestPhase2Transition();
+
+            return;
+        }
+        if (!CrossedHitReactionStep(Health))
+        {
             return;
         }
 
-        if (ShouldTriggerHitReaction(previousHealth, Health))
+        if (ShouldDelayHitReaction())
         {
-            if (ShouldDelayHitReaction())
-            {
-                pendingHitReaction = true;
-            }
-            else
-            {
-                StopCurrentAction();
-                StartAction(HitReactionRoutine());
-            }
+            return;
         }
+
+        StopAction();
+        StartAction(HitReaction());
     }
 
-    private bool ShouldTriggerHitReaction(float previousHealth, float currentHealth)
+    private bool CrossedHitReactionStep(float currentHealth)
     {
-        bool shouldReact = false;
-        float stepAmount = startingHealth * hitReactionStepRatio;
+        bool crossed = false;
+        float step = startingHealth * hitReactionStepRatio;
 
         while (currentHealth <= nextHitReactionHealth && nextHitReactionHealth > 0f)
         {
-            shouldReact = true;
-            nextHitReactionHealth -= stepAmount;
+            crossed = true;
+            nextHitReactionHealth -= step;
         }
 
-        return shouldReact;
+        return crossed;
     }
 
     private bool ShouldDelayHitReaction()
     {
-        return isAirborne ||
-               isPhaseTransitioning ||
-               currentState == BossState.TakeOff ||
-               currentState == BossState.AirIdle ||
-               currentState == BossState.AirBreathFire ||
-               currentState == BossState.Landing;
+        return isAirborne || isChangingPhase || currentState == BossState.TakeOff || currentState == BossState.AirIdle || currentState == BossState.AirBreathFire || currentState == BossState.Landing;
     }
 
-    private IEnumerator HitReactionRoutine()
+    private IEnumerator HitReaction()
     {
-        currentState = BossState.HitReaction;
-        isActionLocked = true;
-        isGroundAttackTransformLocked = false;
-
-        DeactivateAllHitBoxes();
-        damagedTargetsThisAttack.Clear();
-
+        BeginAction(BossState.HitReaction);
         PlayIdle();
-
         ResetCombatTriggers();
 
         anim.SetTrigger(HashGotHit1);
 
-        yield return WaitUntilCurrentStateStarts(gotHitStateName);
+        yield return WaitForState(gotHitStateName);
 
-        while (TryGetCurrentStateNormalizedTime(gotHitStateName, out float normalizedTime))
+        while (TryGetStateTime(gotHitStateName, out float t))
         {
             PlayIdle();
 
-            if (normalizedTime >= 1f)
+            if (t >= 1f)
             {
                 break;
             }
 
             yield return null;
         }
-
-        FinishActionToChase();
+        FinishAction();
     }
 
-    private void ResetCombatTriggers()
+    private void RequestPhase2Transition()
     {
-        if (anim == null)
+        if (isPhase2 || phase2Requested)
         {
             return;
         }
 
-        anim.ResetTrigger(HashAttack1);
-        anim.ResetTrigger(HashAttack2);
-        anim.ResetTrigger(HashBreatheFire);
-        anim.ResetTrigger(HashIdleTakeoff);
-        anim.ResetTrigger(HashFlyBreatheFire);
-        anim.ResetTrigger(HashIdleLand);
+        phase2Requested = true;
+
+        if (!isActionLocked)
+        { 
+            StartPhase2TransitionNow();
+        }
+    }
+
+    private void StartPhase2TransitionNow()
+    {
+        phase2Requested = false;
+        isPhase2 = true;
+        normalAttackCount = 0;
+
+        StopAction();
+        StartAction(AirSequence(true));
     }
 
     public override void Die()
@@ -866,33 +596,255 @@ public class DragonBoss : LivingEntity
 
         base.Die();
 
-        StopCurrentAction();
-        DeactivateAllHitBoxes();
+        StopAction();
+        ClearAttackData();
 
         currentState = BossState.Dead;
         isActionLocked = true;
-        isGroundAttackTransformLocked = false;
 
         if (anim != null)
         {
-            if (isAirborne)
-            {
-                anim.SetTrigger(HashFlyDeath);
-            }
-            else
-            {
-                anim.SetTrigger(HashDeath);
-            }
+            anim.SetTrigger(isAirborne ? HashFlyDeath : HashDeath);
         }
 
         Destroy(gameObject, destroyDelay);
     }
 
+    private void BeginAction(BossState state)
+    {
+        currentState = state;
+        isActionLocked = true;
+
+        ClearAttackData();
+    }
+
+    private void StartAction(IEnumerator routine)
+    {
+        StopAction();
+        currentRoutine = StartCoroutine(routine);
+    }
+
+    private void StopAction()
+    {
+        if (currentRoutine != null)
+        {
+            StopCoroutine(currentRoutine);
+            currentRoutine = null;
+        }
+
+        ClearAttackData();
+        isActionLocked = false;
+    }
+
+    private void FinishAction()
+    {
+        ClearAttackData();
+
+        currentRoutine = null;
+        isActionLocked = false;
+        nextAttackTime = Time.time + attackCooldown;
+
+        if (phase2Requested)
+        {
+            StartPhase2TransitionNow();
+            return;
+        }
+
+        currentState = BossState.Chase;
+    }
+
+    private bool UpdateAttackWindow(AttackData attack, float normalizedTime, bool active)
+    {
+        if (attack == null)
+        {
+            return false;
+        }
+
+        if (!active && normalizedTime >= attack.hitWindow.x)
+        {
+            active = true;
+            SetAttackHitBoxEnabled(attack, true);
+        }
+
+        if (active)
+        {
+            ApplyDamageFromHitBox(attack);
+        }
+
+        if (active && normalizedTime > attack.hitWindow.y)
+        {
+            active = false;
+            SetAttackHitBoxEnabled(attack, false);
+        }
+
+        return active;
+    }
+
+    private void ApplyDamageFromHitBox(AttackData attack)
+    {
+        if (attack.hitBox == null)
+        {
+            return;
+        }
+
+        BoxCollider[] boxes = attack.hitBox.GetComponentsInChildren<BoxCollider>(true);
+
+        foreach (BoxCollider box in boxes)
+        {
+            if (box == null)
+            {
+                continue;
+            }
+
+            Vector3 center = box.transform.TransformPoint(box.center);
+            Vector3 halfExtents = Vector3.Scale(box.size * 0.5f, box.transform.lossyScale);
+            Collider[] colliders = Physics.OverlapBox(center, halfExtents, box.transform.rotation, targetLayers, QueryTriggerInteraction.Collide);
+
+            foreach (Collider targetCollider in colliders)
+            {
+                LivingEntity target = targetCollider != null ? targetCollider.GetComponentInParent<LivingEntity>() : null;
+                if (target == null || target == this || target.IsDead || damagedTargets.Contains(target))
+                {
+                    continue;
+                }
+
+                bool isPlayer = target.CompareTag(playerTag) ||
+                                targetCollider.CompareTag(playerTag) ||
+                                target.transform.root.CompareTag(playerTag);
+
+                if (!isPlayer)
+                {
+                    continue;
+                }
+
+                damagedTargets.Add(target);
+
+                Vector3 hitPoint = targetCollider.ClosestPoint(center);
+                Vector3 hitNormal = FlatDirection(bossPosition, target.transform.position);
+
+                if (hitNormal.sqrMagnitude <= 0.001f)
+                {
+                    hitNormal = bossRotation * Vector3.forward;
+                }
+
+                target.OnDamage(attack.damage, hitPoint, hitNormal.normalized);
+
+                if (attack.applyBurn)
+                {
+                    target.ApplyStatusEffect(StatusFlags.Burn, burnDuration, burnTickDamage);
+                }
+            }
+        }
+    }
+
+    private void SetAttackHitBoxEnabled(AttackData attack, bool enabled)
+    {
+        if (attack == null || attack.hitBox == null)
+        {
+            return;
+        }
+
+        Collider[] colliders = attack.hitBox.GetComponentsInChildren<Collider>(true);
+
+        foreach (Collider collider in colliders)
+        {
+            collider.enabled = enabled;
+        }
+
+        attack.hitBox.Colliders.Clear();
+    }
+
+    private void DisableAllAttackHitBoxes()
+    {
+        if (attacks == null)
+        {
+            return;
+        }
+
+        foreach (AttackData attack in attacks)
+        {
+            SetAttackHitBoxEnabled(attack, false);
+        }
+    }
+
+    private void ClearAttackData()
+    {
+        damagedTargets.Clear();
+
+        DisableAllAttackHitBoxes();
+    }
+
+    private void ResetCombatTriggers()
+    {
+        if (anim == null)
+        {
+            return;
+        }
+
+        if (attacks != null)
+        {
+            foreach (AttackData attack in attacks)
+            {
+                if (attack != null)
+                {
+                    anim.ResetTrigger(attack.TriggerHash);
+                }
+            }
+        }
+
+        anim.ResetTrigger(HashIdleTakeoff);
+        anim.ResetTrigger(HashIdleLand);
+    }
+
+    private IEnumerator WaitForState(string stateName)
+    {
+        float timeout = 2f;
+        while (timeout > 0f)
+        {
+            AnimatorStateInfo info = 
+                anim.IsInTransition(animatorLayerIndex) ? anim.GetNextAnimatorStateInfo(animatorLayerIndex) 
+                : anim.GetCurrentAnimatorStateInfo(animatorLayerIndex);
+            
+            if (IsState(info, stateName) && !anim.IsInTransition(animatorLayerIndex))
+            {
+                yield break;
+            }
+            timeout -= Time.deltaTime;
+            yield return null;
+        }
+
+        Debug.LogWarning($"[{gameObject.name}] Animator state '{stateName}'에 진입하지 못했습니다.");
+    }
+
+    private bool TryGetStateTime(string stateName, out float normalizedTime)
+    {
+        normalizedTime = 0f;
+
+        if (anim == null || anim.IsInTransition(animatorLayerIndex))
+        {
+            return false;
+        }
+
+        AnimatorStateInfo info = anim.GetCurrentAnimatorStateInfo(animatorLayerIndex);
+
+        if (!IsState(info, stateName))
+        {
+            return false;
+        }
+
+        normalizedTime = info.normalizedTime;
+
+        return true;
+    }
+
+    private bool IsState(AnimatorStateInfo info, string stateName)
+    {
+        return info.IsName(stateName) || info.shortNameHash == Animator.StringToHash(stateName);
+    }
+
     private void MoveTowardPlayer()
     {
-        isGroundAttackTransformLocked = false;
-
-        Vector3 dir = GetFlatDirection(transform.position, player.position);
+        Vector3 dir = FlatDirection(bossPosition, player.position);
 
         if (dir.sqrMagnitude <= 0.001f)
         {
@@ -902,34 +854,25 @@ public class DragonBoss : LivingEntity
 
         FaceDirection(dir, false);
 
-        Vector3 nextPosition = transform.position + dir.normalized * groundMoveSpeed * Time.deltaTime;
+        Vector3 nextPosition = bossPosition + dir.normalized * groundMoveSpeed * Time.deltaTime;
         nextPosition.y = groundY;
 
-        transform.position = nextPosition;
+        SetPose(nextPosition);
 
         anim.SetFloat(HashLocomotion, LocomotionRun, 0.1f, Time.deltaTime);
     }
 
     private void PlayIdle()
     {
-        if (anim == null)
+        if (anim != null)
         {
-            return;
+            anim.SetFloat(HashLocomotion, LocomotionIdle, 0.1f, Time.deltaTime);
         }
-
-        anim.SetFloat(HashLocomotion, LocomotionIdle, 0.1f, Time.deltaTime);
     }
 
     private void FaceTarget(Vector3 targetPosition, bool instant = false)
     {
-        Vector3 dir = GetFlatDirection(transform.position, targetPosition);
-
-        if (dir.sqrMagnitude <= 0.001f)
-        {
-            return;
-        }
-
-        FaceDirection(dir, instant);
+        FaceDirection(FlatDirection(bossPosition, targetPosition), instant);
     }
 
     private void FaceDirection(Vector3 direction, bool instant)
@@ -942,254 +885,18 @@ public class DragonBoss : LivingEntity
         }
 
         Quaternion targetRotation = Quaternion.LookRotation(direction.normalized);
+        bossRotation = instant ? targetRotation : Quaternion.RotateTowards(bossRotation, targetRotation, turnSpeed * Time.deltaTime);
 
-        if (instant)
-        {
-            transform.rotation = targetRotation;
-        }
-        else
-        {
-            transform.rotation = Quaternion.RotateTowards(
-                transform.rotation,
-                targetRotation,
-                turnSpeed * Time.deltaTime
-            );
-        }
-    }
-
-    private void ActivateHitBox(HitBox hitBox)
-    {
-        if (hitBox == null)
-        {
-            return;
-        }
-
-        hitBox.gameObject.SetActive(true);
-        hitBox.Colliders.Clear();
-
-        Collider[] colliders = hitBox.GetComponentsInChildren<Collider>(true);
-
-        foreach (Collider col in colliders)
-        {
-            col.enabled = true;
-        }
-    }
-
-    private void DeactivateHitBox(HitBox hitBox)
-    {
-        if (hitBox == null)
-        {
-            return;
-        }
-
-        Collider[] colliders = hitBox.GetComponentsInChildren<Collider>(true);
-
-        foreach (Collider col in colliders)
-        {
-            col.enabled = false;
-        }
-
-        hitBox.Colliders.Clear();
-    }
-
-    private void DeactivateAllHitBoxes()
-    {
-        DeactivateHitBox(headBiteHitBox);
-        DeactivateHitBox(footStompHitBox);
-        DeactivateHitBox(groundBreathHitBox);
-        DeactivateHitBox(airBreathHitBox);
-    }
-
-    private void ApplyDamageFromHitBox(HitBox hitBox, float damage, bool applyBurn)
-    {
-        if (hitBox == null)
-        {
-            return;
-        }
-
-        Collider[] targets = hitBox.Colliders.ToArray();
-
-        foreach (Collider targetCollider in targets)
-        {
-            if (targetCollider == null)
-            {
-                continue;
-            }
-
-            LivingEntity target = targetCollider.GetComponentInParent<LivingEntity>();
-
-            if (target == null)
-            {
-                continue;
-            }
-
-            if (target == this)
-            {
-                continue;
-            }
-
-            bool isTargetPlayer =
-                target.CompareTag(playerTag) ||
-                targetCollider.CompareTag(playerTag) ||
-                target.transform.root.CompareTag(playerTag);
-
-            if (!isTargetPlayer)
-            {
-                continue;
-            }
-
-            if (target.IsDead)
-            {
-                continue;
-            }
-
-            if (damagedTargetsThisAttack.Contains(target))
-            {
-                continue;
-            }
-
-            damagedTargetsThisAttack.Add(target);
-
-            Vector3 hitPoint = targetCollider.ClosestPoint(transform.position);
-            Vector3 hitNormal = GetFlatDirection(transform.position, target.transform.position);
-
-            if (hitNormal.sqrMagnitude <= 0.001f)
-            {
-                hitNormal = transform.forward;
-            }
-
-            target.OnDamage(damage, hitPoint, hitNormal.normalized);
-
-            if (applyBurn)
-            {
-                target.ApplyStatusEffect(StatusFlags.Burn, burnDuration, burnTickDamage);
-            }
-        }
-    }
-
-    private void StartAction(IEnumerator routine)
-    {
-        StopCurrentAction();
-        currentActionRoutine = StartCoroutine(routine);
-    }
-
-    private void StopCurrentAction()
-    {
-        if (currentActionRoutine != null)
-        {
-            StopCoroutine(currentActionRoutine);
-            currentActionRoutine = null;
-        }
-
-        isGroundAttackTransformLocked = false;
-
-        DeactivateAllHitBoxes();
-        damagedTargetsThisAttack.Clear();
-
-        isActionLocked = false;
-    }
-
-    private void FinishActionToChase()
-    {
-        isGroundAttackTransformLocked = false;
-
-        DeactivateAllHitBoxes();
-        damagedTargetsThisAttack.Clear();
-
-        currentActionRoutine = null;
-        isActionLocked = false;
-        nextAttackTime = Time.time + attackCooldown;
-
-        if (pendingPhase2Transition)
-        {
-            StartPhase2TransitionNow();
-            return;
-        }
-
-        if (pendingHitReaction && !ShouldDelayHitReaction())
-        {
-            pendingHitReaction = false;
-            StartAction(HitReactionRoutine());
-            return;
-        }
-
-        currentState = BossState.Chase;
-    }
-
-    private IEnumerator WaitUntilCurrentStateStarts(string stateName)
-    {
-        float timeout = 2f;
-
-        while (timeout > 0f)
-        {
-            if (!anim.IsInTransition(animatorLayerIndex))
-            {
-                AnimatorStateInfo currentStateInfo = anim.GetCurrentAnimatorStateInfo(animatorLayerIndex);
-
-                if (IsAnimatorStateName(currentStateInfo, stateName))
-                {
-                    yield break;
-                }
-            }
-            else
-            {
-                AnimatorStateInfo nextStateInfo = anim.GetNextAnimatorStateInfo(animatorLayerIndex);
-
-                if (IsAnimatorStateName(nextStateInfo, stateName))
-                {
-                    // 다음 상태가 목표 상태면 전환이 끝날 때까지 기다린다.
-                }
-            }
-
-            timeout -= Time.deltaTime;
-            yield return null;
-        }
-
-        Debug.LogWarning($"[{gameObject.name}] Animator state '{stateName}'에 진입하지 못했습니다.");
-    }
-
-    private bool TryGetCurrentStateNormalizedTime(string stateName, out float normalizedTime)
-    {
-        normalizedTime = 0f;
-
-        if (anim == null)
-        {
-            return false;
-        }
-
-        if (anim.IsInTransition(animatorLayerIndex))
-        {
-            return false;
-        }
-
-        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(animatorLayerIndex);
-
-        if (!IsAnimatorStateName(stateInfo, stateName))
-        {
-            return false;
-        }
-
-        normalizedTime = stateInfo.normalizedTime;
-        return true;
-    }
-
-    private bool IsAnimatorStateName(AnimatorStateInfo stateInfo, string stateName)
-    {
-        return stateInfo.IsName(stateName) ||
-               stateInfo.shortNameHash == Animator.StringToHash(stateName);
+        ApplyPose();
     }
 
     private void FindPlayer()
     {
-        GameObject playerObj = GameObject.FindGameObjectWithTag(playerTag);
-
-        if (playerObj != null)
-        {
-            player = playerObj.transform;
-        }
+        GameObject playerObject = GameObject.FindGameObjectWithTag(playerTag);
+        player = playerObject != null ? playerObject.transform : null;
     }
 
-    private float GetFlatDistance(Vector3 a, Vector3 b)
+    private float FlatDistance(Vector3 a, Vector3 b)
     {
         a.y = 0f;
         b.y = 0f;
@@ -1197,7 +904,7 @@ public class DragonBoss : LivingEntity
         return Vector3.Distance(a, b);
     }
 
-    private Vector3 GetFlatDirection(Vector3 from, Vector3 to)
+    private Vector3 FlatDirection(Vector3 from, Vector3 to)
     {
         Vector3 dir = to - from;
         dir.y = 0f;
@@ -1207,34 +914,56 @@ public class DragonBoss : LivingEntity
 
     private void SetY(float y)
     {
-        Vector3 pos = transform.position;
-        pos.y = y;
-        transform.position = pos;
+        bossPosition.y = y;
+
+        ApplyPose();
+    }
+
+    private void SetPose(Vector3 position)
+    {
+        bossPosition = position;
+
+        ApplyPose();
+    }
+
+    private void SetPose(Vector3 position, Quaternion rotation)
+    {
+        bossPosition = position;
+        bossRotation = rotation;
+
+        ApplyPose();
+    }
+
+    private void ApplyPose()
+    {
+        if (rigidBody != null)
+        {
+            rigidBody.position = bossPosition;
+            rigidBody.rotation = bossRotation;
+        }
+
+        transform.SetPositionAndRotation(bossPosition, bossRotation);
     }
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
+        if (drawDetectionGizmos) DrawDetectionGizmos();
+    }
+
+    private void DrawDetectionGizmos()
+    {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, activationRange);
-
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
-
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(transform.position, stopDistance);
-
         Gizmos.color = Color.cyan;
-        Vector3 airPos = transform.position;
-        airPos.y += airHeight;
-        Gizmos.DrawLine(transform.position, airPos);
-        Gizmos.DrawWireSphere(airPos, 0.5f);
-
-        if (Application.isPlaying && player != null)
-        {
-            Gizmos.color = Color.white;
-            Gizmos.DrawLine(transform.position, player.position);
-        }
+        Vector3 airPosition = transform.position + Vector3.up * airHeight;
+        Gizmos.DrawLine(transform.position, airPosition);
+        Gizmos.DrawWireSphere(airPosition, 0.5f);
     }
+
 #endif
 }

@@ -85,6 +85,7 @@ public class TestPlayer : LivingEntity
         {
             Die();
         }
+        Debug.Log("damage");
     }
 
     private void TestAttack()
