@@ -22,7 +22,7 @@ public class ObstacleTransparecncy : MonoBehaviour
     public Material fadeMaterial;
     public float fadedAlpha = 0.25f;
     public float fadeSpeed = 5f;
-    
+
 
     //장애물이 시야를 막을 때 적용할 목표 알파값 (0 ~ 1). 낮을수록 더 투명하다.    public float fadedAlpha = 0.25f;
     //알파값을 목표치로 보간하는 속도. 값이 클수록 빠르게 전환된다.
@@ -58,6 +58,8 @@ public class ObstacleTransparecncy : MonoBehaviour
     // 이번 프레임에 감지되지 않은 Renderer는 목표 알파값을 1(불투명)로 되돌린다.
     void DetectBlockingObject()
     {
+        if (player == null) return;
+
         foreach (var state in _trackedRenderers.Values)
         {
             state.isBlocking = false;
@@ -141,7 +143,7 @@ public class ObstacleTransparecncy : MonoBehaviour
             {
                 Color c = mat.color;
                 float newAlpha = Mathf.Lerp(c.a, state.targetAlpha, Time.deltaTime * fadeSpeed);
-                mat.color = new Color (c.r, c.g, c.b , newAlpha);
+                mat.color = new Color(c.r, c.g, c.b, newAlpha);
                 if (Mathf.Abs(newAlpha - 1f) > 0.01f) fullyOpaque = false;
             }
 

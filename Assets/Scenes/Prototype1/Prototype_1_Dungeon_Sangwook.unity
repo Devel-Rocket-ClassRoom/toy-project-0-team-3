@@ -1497,7 +1497,6 @@ GameObject:
   - component: {fileID: 1735453026}
   - component: {fileID: 1735453025}
   - component: {fileID: 1735453028}
-  - component: {fileID: 1735453029}
   - component: {fileID: 1735453030}
   - component: {fileID: 1735453031}
   m_Layer: 0
@@ -1625,19 +1624,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!114 &1735453029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1735453024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3723d35ebc054084c877390b4e22b16f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
-  target: {fileID: 1442657362}
 --- !u!114 &1735453030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1858,7 +1844,9 @@ PrefabInstance:
       propertyPath: itemSlotList
       value: 
       objectReference: {fileID: 245770853}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6081197827050893558, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
+    - {fileID: 7858203939767971946, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
