@@ -22,7 +22,7 @@ EditorBuildSettings:
     guid: acde3cee467714c4a8cef4cc0c5d12d9
   - enabled: 1
     path: Assets/Scenes/Prototype1/Prototype_1_Dungeon.unity
-    guid: cc237ad465435b04aae9b0cb1dba429a
+    guid: 0ba2bd8ccfd2369429bce2b7ae9a9332
   - enabled: 1
     path: Assets/Scenes/TestDungeon_Sangwook.unity
     guid: 0c3496b8242fa404886e5668cf5108c0

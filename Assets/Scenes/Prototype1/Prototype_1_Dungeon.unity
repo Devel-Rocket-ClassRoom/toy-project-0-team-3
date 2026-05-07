@@ -292,6 +292,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 192395020}
     m_Modifications:
+    - target: {fileID: 241566241700912810, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
+    - target: {fileID: 241566241700912810, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 424461936882174692, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
+    - target: {fileID: 424461936882174692, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 459786656986270325, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -440,6 +456,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5691614462677046024, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
+    - target: {fileID: 5691614462677046024, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5887221941455535807, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_SizeDelta.x
       value: -28
@@ -447,6 +471,30 @@ PrefabInstance:
     - target: {fileID: 5887221941455535807, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_SizeDelta.y
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6076914818733720516, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
+    - target: {fileID: 6076914818733720516, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6731920459204908563, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
+    - target: {fileID: 6731920459204908563, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6804944692594451499, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
+    - target: {fileID: 6804944692594451499, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7177436868223803990, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_Pivot.x
@@ -837,7 +885,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7416032317324659749, guid: 3622d56cca0212c41b016d7eabd0e89a, type: 3}
       propertyPath: monsterPrefabs.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7416032317324659749, guid: 3622d56cca0212c41b016d7eabd0e89a, type: 3}
       propertyPath: 'monsterPrefabs.Array.data[0]'
@@ -861,7 +909,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8419381491423727454, guid: 3622d56cca0212c41b016d7eabd0e89a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1969,7 +2017,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7707154960554707790, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
