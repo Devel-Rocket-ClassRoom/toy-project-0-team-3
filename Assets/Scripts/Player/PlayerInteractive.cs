@@ -65,12 +65,12 @@ public class PlayerInteractive : MonoBehaviour
     // 범위내에 있는 상호작용 가능 오브젝트와 상호작용
     private void TryInteract(GameObject target)
     {
-        Debug.Log (target.tag);
+        Debug.Log(target.tag);
         switch (target.tag)
         {
             case "Chest":
                 Chest chest = target.GetComponent<Chest>();
-                if (chest != null)   chest.OpenLid();
+                if (chest != null) chest.OpenLid();
                 if (chest.itemDataList.Count <= 0) return;
                 else
                 {
@@ -99,7 +99,7 @@ public class PlayerInteractive : MonoBehaviour
     private void OnDrawGizmoSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere (transform.position, interactableRange);
+        Gizmos.DrawWireSphere(transform.position, interactableRange);
     }
 }
 
