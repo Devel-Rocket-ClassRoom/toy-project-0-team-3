@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &44047293 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 896867296857514453, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+  m_PrefabInstance: {fileID: 341499910}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d537a2e247092b1419215d7dd8c81d4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSlotList
 --- !u!1001 &67538777
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -296,7 +307,11 @@ PrefabInstance:
     - target: {fileID: 241566241700912810, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 241566241700912810, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 241566241700912810, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
@@ -304,7 +319,11 @@ PrefabInstance:
     - target: {fileID: 424461936882174692, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 424461936882174692, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 424461936882174692, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
@@ -460,7 +479,11 @@ PrefabInstance:
     - target: {fileID: 5691614462677046024, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 5691614462677046024, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 5691614462677046024, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
@@ -476,7 +499,11 @@ PrefabInstance:
     - target: {fileID: 6076914818733720516, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 6076914818733720516, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6076914818733720516, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
@@ -484,7 +511,11 @@ PrefabInstance:
     - target: {fileID: 6731920459204908563, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 6731920459204908563, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6731920459204908563, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
@@ -492,7 +523,11 @@ PrefabInstance:
     - target: {fileID: 6804944692594451499, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 80089894f9c93154a875de3039b42bbf, type: 2}
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 6804944692594451499, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6804944692594451499, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
@@ -639,6 +674,18 @@ PrefabInstance:
       value: 'Obtain
 
 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 5090646165755782612, guid: 53fc6a3e233564b45b471040d8a67fa2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 704452881}
+    - target: {fileID: 5090646165755782612, guid: 53fc6a3e233564b45b471040d8a67fa2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClickObtain
+      objectReference: {fileID: 0}
+    - target: {fileID: 5090646165755782612, guid: 53fc6a3e233564b45b471040d8a67fa2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerInventory, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7177436868223803990, guid: 53fc6a3e233564b45b471040d8a67fa2, type: 3}
       propertyPath: m_Pivot.x
@@ -895,6 +942,14 @@ PrefabInstance:
       propertyPath: _inventory
       value: 
       objectReference: {fileID: 889819750}
+    - target: {fileID: 2310165586864787441, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
+      propertyPath: chestItemSlotList
+      value: 
+      objectReference: {fileID: 725831736}
+    - target: {fileID: 2310165586864787441, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
+      propertyPath: inventoryItemSlotList
+      value: 
+      objectReference: {fileID: 44047293}
     - target: {fileID: 5878163374890091685, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
       propertyPath: m_Name
       value: Player
@@ -958,6 +1013,17 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 128
+--- !u!114 &704452881 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2310165586864787441, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
+  m_PrefabInstance: {fileID: 676825961}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704452876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1445d23ea1e31ba46b3143960b73f155, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
 --- !u!1001 &717714558
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1076,7 +1142,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3415979873232891297, guid: bef543091c0eb2c4e84ba09f7b8e1f1b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.21121
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3415979873232891297, guid: bef543091c0eb2c4e84ba09f7b8e1f1b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1084,7 +1150,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3415979873232891297, guid: bef543091c0eb2c4e84ba09f7b8e1f1b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.24075
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3415979873232891297, guid: bef543091c0eb2c4e84ba09f7b8e1f1b, type: 3}
       propertyPath: m_LocalRotation.w
