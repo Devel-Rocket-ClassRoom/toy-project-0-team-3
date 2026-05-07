@@ -13,6 +13,7 @@ public class ItemSlotList : MonoBehaviour
     private List<ItemData> itemDataList = new List<ItemData>(); // 실제 데이터
 
     private int selectedSlotIndex = -1;
+    public int SelectedSlotIndex => selectedSlotIndex;
 
     private void Awake()
     {

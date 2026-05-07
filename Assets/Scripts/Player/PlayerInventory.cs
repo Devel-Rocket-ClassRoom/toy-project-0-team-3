@@ -4,6 +4,12 @@ public class PlayerInventory : MonoBehaviour
 {
     private PlayerInput _playerInput;
 
+    public ItemSlotList chestItemSlotList;
+    public ItemSlotList inventoryItemSlotList;
+
+    private GameObject _chest;
+    
+
     public GameObject _inventory;
 
     private void Awake()
@@ -18,5 +24,17 @@ public class PlayerInventory : MonoBehaviour
         {
             _inventory.SetActive(!_inventory.activeSelf);
         } 
+    }
+
+    public void OnClickObtain()
+    {
+        inventoryItemSlotList.AddItem(chestItemSlotList.GetSelectedItem().Id);
+        chestItemSlotList.RemoveItem();
+        _chest.GetComponent<Chest>().itemDataList.RemoveAt(chestItemSlotList.SelectedSlotIndex);
+    }
+
+    public void SetChest(GameObject chest)
+    {  
+        _chest = chest;
     }
 }
