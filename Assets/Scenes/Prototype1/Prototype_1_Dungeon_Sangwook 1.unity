@@ -279,9 +279,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1694688870}
   - {fileID: 1204524325}
   - {fileID: 1376591185}
+  - {fileID: 1694688870}
   - {fileID: 1858679167}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -565,6 +565,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 192395020}
     m_Modifications:
+    - target: {fileID: 5090646165755782612, guid: 53fc6a3e233564b45b471040d8a67fa2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1442657365}
+    - target: {fileID: 5090646165755782612, guid: 53fc6a3e233564b45b471040d8a67fa2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClickObtain
+      objectReference: {fileID: 0}
+    - target: {fileID: 5090646165755782612, guid: 53fc6a3e233564b45b471040d8a67fa2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerInventory, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 7177436868223803990, guid: 53fc6a3e233564b45b471040d8a67fa2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1168,6 +1180,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9225272eaad23c34b8fd132eb40f7d6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatus
+--- !u!114 &1442657365 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2310165586864787441, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
+  m_PrefabInstance: {fileID: 2045534446}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1445d23ea1e31ba46b3143960b73f155, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
 --- !u!1 &1462491606 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8281881583006887190, guid: aec981f834154844c948d8d8a5d978b9, type: 3}
