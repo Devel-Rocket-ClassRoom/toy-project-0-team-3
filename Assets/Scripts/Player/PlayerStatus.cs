@@ -139,4 +139,9 @@ public class PlayerStatus : LivingEntity
 
         _animator.SetTrigger("Dead");
     }
+
+    public void SetInvincible(bool value)
+    {
+        IsInvincible = value;
+    }
 }
