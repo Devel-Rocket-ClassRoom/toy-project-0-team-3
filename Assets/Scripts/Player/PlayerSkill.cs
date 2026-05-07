@@ -13,6 +13,11 @@ public class PlayerSkill : MonoBehaviour
     private ESkill _eSkill;
     private RSkill _rSkill;
 
+    [SerializeField] private float _qManaCost = 20f;
+    [SerializeField] private float _wManaCost = 30f;
+    [SerializeField] private float _eManaCost = 30f;
+    [SerializeField] private float _rManaCost = 50f;
+
     public bool IsUsingSkill { get; private set; }
 
     private void Awake()
@@ -32,32 +37,36 @@ public class PlayerSkill : MonoBehaviour
     {
         if (_playerStatus.IsHit || _playerStatus.IsDead) return;
 
-        if (_input.SkillQ && _qSkill.CanUse && !IsUsingSkill)
+        if (_input.SkillQ && _qSkill.CanUse && !IsUsingSkill && _playerStatus.CurrentMana >= _qManaCost)
         {
             IsUsingSkill = true;
+            _playerStatus.UseMana(_qManaCost); // 추가
             _qSkill?.Use();
             _qSkill.Direction = _playerMovement.PlayerDirection;
             _animator.SetTrigger("QSkill");
         }
 
-        if (_input.SkillW && _wSkill.CanUse && !IsUsingSkill)
+        if (_input.SkillW && _wSkill.CanUse && !IsUsingSkill && _playerStatus.CurrentMana >= _wManaCost)
         {
             IsUsingSkill = true;
+            _playerStatus.UseMana(_wManaCost); // 추가
             _wSkill?.Use();
             _wSkill.Direction = _playerMovement.PlayerDirection;
             _animator.SetTrigger("WSkill");
         }
 
-        if (_input.SkillE && _eSkill.CanUse && !IsUsingSkill)
+        if (_input.SkillE && _eSkill.CanUse && !IsUsingSkill && _playerStatus.CurrentMana >= _eManaCost)
         {
             IsUsingSkill = true;
+            _playerStatus.UseMana(_eManaCost); // 추가
             _eSkill?.Use();
             _animator.SetTrigger("ESkill");
         }
 
-        if (_input.SkillR && _rSkill.CanUse && !IsUsingSkill)
+        if (_input.SkillR && _rSkill.CanUse && !IsUsingSkill && _playerStatus.CurrentMana >= _rManaCost)
         {
             IsUsingSkill = true;
+            _playerStatus.UseMana(_rManaCost); // 추가
             _rSkill?.Use();
             _animator.SetTrigger("RSkill");
         }

@@ -19,7 +19,7 @@ public class WSkill : SkillBase
 
     private void Awake()
     {
-        Cooldown = 3f;
+        Cooldown = 6f;
         _playerSkill = GetComponentInParent<PlayerSkill>();
         _playerStatus = GetComponentInParent<PlayerStatus>();
         _rigidbody = GetComponentInParent<Rigidbody>();
