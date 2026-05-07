@@ -115,45 +115,34 @@ public class DragonBoss : LivingEntity
     [Header("Damage")]
     [SerializeField]
     private float attack1Damage = 18f;
-
     [SerializeField]
     private float attack2Damage = 24f;
-
     [SerializeField]
     private float breathDamage = 12f;
-
     [SerializeField]
     private float airBreathDamage = 16f;
 
     [Header("Burn Status")]
     [SerializeField]
     private float burnDuration = 3f;
-
     [SerializeField]
     private float burnTickDamage = 2f;
 
     [Header("Attack Probability")]
     [SerializeField]
     private int forceSpecialAfterMeleeCount = 5;
-
     [SerializeField]
     private float attack1WeightNear = 0.25f;
-
     [SerializeField]
     private float attack1WeightFar = 0.75f;
-
     [SerializeField]
     private float attack2WeightNear = 0.75f;
-
     [SerializeField]
     private float attack2WeightFar = 0.15f;
-
     [SerializeField]
     private float baseSpecialWeight = 0.08f;
-
     [SerializeField]
     private float specialWeightPerMeleeAttack = 0.08f;
-
     [SerializeField]
     private float maxSpecialWeight = 0.55f;
 
@@ -165,16 +154,13 @@ public class DragonBoss : LivingEntity
 
     private float nextAttackTime;
 
-    [Header("HitBoxes - Existing HitBox.cs")]
+    [Header("HitBoxes")]
     [SerializeField]
     private HitBox headBiteHitBox;
-
     [SerializeField]
     private HitBox footStompHitBox;
-
     [SerializeField]
     private HitBox groundBreathHitBox;
-
     [SerializeField]
     private HitBox airBreathHitBox;
 
