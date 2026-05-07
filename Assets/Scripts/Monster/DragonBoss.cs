@@ -51,32 +51,24 @@ public class DragonBoss : LivingEntity
     private static readonly int HashDeath = Animator.StringToHash("death");
     private static readonly int HashFlyDeath = Animator.StringToHash("flyDeath");
 
+    // 애니메이션 Blend Tree의 파라미터 값 (0: 후진, 0.5: 대기, 0.75: 걷기, 1: 달리기)
     private const float LocomotionBackward = 0f;
     private const float LocomotionIdle = 0.5f;
     private const float LocomotionWalk = 0.75f;
     private const float LocomotionRun = 1f;
 
-    [Header("Target")]
-    [SerializeField]
     private string playerTag = "Player";
 
     private Transform player;
-
-    [Header("Components")]
-    [SerializeField]
     private Animator anim;
 
     [Header("External Movement Driver Safety")]
-    [SerializeField]
-    private bool disableNavMeshAgentOnEnable = true;
-
     [SerializeField]
     private bool disableRootMotionOnEnable = true;
 
     [SerializeField]
     private bool forceKinematicRigidbody = true;
 
-    private NavMeshAgent navMeshAgent;
     private Rigidbody rigidBody;
 
     [Header("Movement")]
@@ -105,10 +97,8 @@ public class DragonBoss : LivingEntity
     [SerializeField]
     private float airIdleDuration = 2f;
 
-    [SerializeField]
-    private AnimationCurve takeOffHeightCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
-    [SerializeField]
+    private AnimationCurve takeOffHeightCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     private AnimationCurve landingHeightCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
 
     private float groundY;
@@ -205,25 +195,11 @@ public class DragonBoss : LivingEntity
     [SerializeField]
     private int animatorLayerIndex = 0;
 
-    [SerializeField]
-    private string attack1StateName = "Attack01";
-
-    [SerializeField]
-    private string attack2StateName = "Attack02";
-
-    [SerializeField]
-    private string breatheFireStateName = "BreatheFire";
 
     [SerializeField]
     private string takeOffStateName = "Idle Takeoff";
-
-    [SerializeField]
     private string flyBreatheFireStateName = "FlyBreatheFire";
-
-    [SerializeField]
     private string landingStateName = "Idle Landing";
-
-    [SerializeField]
     private string gotHitStateName = "Hit01";
 
     [Header("Hit Reaction")]
@@ -262,7 +238,6 @@ public class DragonBoss : LivingEntity
             anim = GetComponent<Animator>();
         }
 
-        navMeshAgent = GetComponent<NavMeshAgent>();
         rigidBody = GetComponent<Rigidbody>();
 
         DisableExternalMovementDrivers();
@@ -348,19 +323,6 @@ public class DragonBoss : LivingEntity
             anim.applyRootMotion = false;
         }
 
-        if (disableNavMeshAgentOnEnable && navMeshAgent != null)
-        {
-            if (navMeshAgent.enabled)
-            {
-                if (navMeshAgent.isOnNavMesh)
-                {
-                    navMeshAgent.ResetPath();
-                }
-
-                navMeshAgent.enabled = false;
-            }
-        }
-
         if (forceKinematicRigidbody && rigidBody != null)
         {
             rigidBody.isKinematic = true;
@@ -368,12 +330,6 @@ public class DragonBoss : LivingEntity
             rigidBody.linearVelocity = Vector3.zero;
             rigidBody.angularVelocity = Vector3.zero;
         }
-    }
-
-    private void OnAnimatorMove()
-    {
-        // Root Motion을 사용하지 않는다.
-        // 이 보스의 이동은 MoveTowardPlayer, TakeOff, AirBreathFire, Landing에서 직접 처리한다.
     }
 
     private void UpdateIdle()
@@ -426,7 +382,7 @@ public class DragonBoss : LivingEntity
 
                 StartAction(GroundAttackRoutine(
                     HashAttack1,
-                    attack1StateName,
+                    "Attack01",
                     headBiteHitBox,
                     attack1Damage,
                     false,
@@ -439,7 +395,7 @@ public class DragonBoss : LivingEntity
 
                 StartAction(GroundAttackRoutine(
                     HashAttack2,
-                    attack2StateName,
+                    "Attack02",
                     footStompHitBox,
                     attack2Damage,
                     false,
@@ -454,7 +410,7 @@ public class DragonBoss : LivingEntity
                 {
                     StartAction(GroundAttackRoutine(
                         HashBreatheFire,
-                        breatheFireStateName,
+                        "BreatheFire",
                         groundBreathHitBox,
                         breathDamage,
                         true,
@@ -749,7 +705,10 @@ public class DragonBoss : LivingEntity
             FaceTarget(player.position, true);
         }
 
+        anim.ResetTrigger(HashFlyBreatheFire);
         anim.SetTrigger(HashIdleLand);
+
+        yield return null;
 
         yield return WaitUntilCurrentStateStarts(landingStateName);
 
@@ -760,11 +719,11 @@ public class DragonBoss : LivingEntity
                 FaceTarget(player.position);
             }
 
-            float t = Mathf.Clamp01(normalizedTime);
-            float curveValue = landingHeightCurve.Evaluate(t);
+            // 핵심 수정:
+            // 착지는 무조건 공중 startY에서 땅 targetY로 내려가야 한다.
+            float landingTime = Mathf.Clamp01(normalizedTime) * 2;
 
-            Debug.Log(startY +", " + targetY);
-            SetY(Mathf.Lerp(startY, targetY, curveValue));
+            SetY(Mathf.Lerp(startY, targetY, landingTime));
 
             if (normalizedTime >= 1f)
             {
