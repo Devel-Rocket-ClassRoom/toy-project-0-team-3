@@ -3,10 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class ExitPortal : MonoBehaviour
 {
-    [SerializeField] private string pubScene = "Prototype_1_Pub";
+    [SerializeField] private string bossScene = "Prototype_1_BossRoom";
     public void Interact()
     {
-        SceneManager.LoadScene(pubScene);
+        SceneManager.LoadScene(bossScene);
     }
 
 }

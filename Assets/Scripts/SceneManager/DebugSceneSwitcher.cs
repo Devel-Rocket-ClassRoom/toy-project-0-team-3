@@ -35,6 +35,10 @@ public class DebugSceneSwitcher : MonoBehaviour
             {
                 SceneLoader.Instance.LoadScene(SceneLoader.GameScene.Dungeon);
             }
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                SceneLoader.Instance.LoadScene(SceneLoader.GameScene.BossRoom);
+            }
         }
     }
 
@@ -56,6 +60,10 @@ public class DebugSceneSwitcher : MonoBehaviour
         if (GUI.Button (new Rect(20, 100, 180, 25), "3. Dungeon (던전)"))
         {
             SceneLoader.Instance.LoadScene(SceneLoader.GameScene.Dungeon);
+        }
+        if (GUI.Button (new Rect(20, 130, 180, 25), "4. Boss Room (보스 방)"))
+        {
+            SceneLoader.Instance.LoadScene(SceneLoader.GameScene.BossRoom);
         }
     }
 }

@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 248170757794865002}
+  - component: {fileID: 7216270727905032101}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,6 +33,19 @@ Transform:
   - {fileID: 5415131612759321377}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7216270727905032101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5878163374890091685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e7287b65344bf4eaf7599f971c6f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSlotListTest
+  itemSlotList: {fileID: 0}
 --- !u!1 &6834159675368438836
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,6 +107,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdcb4e6608a14ec4196a5205cddeab2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WSkill
+  _dashSpeed: 6
+  _dashDuration: 3
+  _rotateSpeed: 3
 --- !u!114 &2981363948359004581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,6 +122,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50e5fda0549604c43ba7cbfade148683, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ESkill
+  _jumpHeight: 3
+  _forwardDistance: 3
+  _jumpDuration: 0.5
+  _smashDuration: 0.2
 --- !u!114 &1271694151584365225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +138,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 934ae1afe53a79d4f8461391ddbad88e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RSkill
+  _lightningPrefab: {fileID: 0}
+  _radius: 3
+  _strikeCount: 3
+  _lightningPerStrike: 5
+  _strikeCooldown: 0.4
 --- !u!1001 &1034945334471049275
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -494,6 +520,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -927199367670048503, guid: b04406949810a0a46b21e74416b63350, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2310165586864787441}
+    - targetCorrespondingSourceObject: {fileID: -927199367670048503, guid: b04406949810a0a46b21e74416b63350, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5785982396001941173}
+    - targetCorrespondingSourceObject: {fileID: -927199367670048503, guid: b04406949810a0a46b21e74416b63350, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6081197827050893558}
     - targetCorrespondingSourceObject: {fileID: 3367661130296280388, guid: b04406949810a0a46b21e74416b63350, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3475601059213919957}
@@ -698,7 +730,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1445d23ea1e31ba46b3143960b73f155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
+  chestItemSlotList: {fileID: 0}
+  inventoryItemSlotList: {fileID: 0}
   _inventory: {fileID: 0}
+--- !u!114 &5785982396001941173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9042436790758611250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55846cd98f807d942b1140d666192ba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractive
+  itemSlotList: {fileID: 0}
+  chestInventory: {fileID: 0}
+  interactableRange: 1
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!114 &6081197827050893558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9042436790758611250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55846cd98f807d942b1140d666192ba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractive
+  itemSlotList: {fileID: 0}
+  chestInventory: {fileID: 0}
+  interactableRange: 1
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1001 &6074527483121206693
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -26,7 +26,8 @@ public class SceneLoader : MonoBehaviour
     {
         MainTitle,
         Pub,
-        Dungeon
+        Dungeon,
+        BossRoom
     }
 
     // enum 값과 실제 씬 파일 이름을 매핑. 씬 이름이 바뀌면 여기서만 수정
@@ -34,7 +35,8 @@ public class SceneLoader : MonoBehaviour
     {
         { GameScene.MainTitle, "Prototype_1_Main" },
         { GameScene.Pub, "Prototype_1_Pub" },
-        { GameScene.Dungeon, "Prototype_1_Dungeon"}
+        { GameScene.Dungeon, "Prototype_1_Dungeon_Sangwook"},
+        { GameScene.BossRoom, "Prototype_1_BossRoom" }
     };
 
     private void Awake()

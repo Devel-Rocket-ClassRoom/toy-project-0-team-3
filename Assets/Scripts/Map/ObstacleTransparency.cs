@@ -16,13 +16,16 @@ public class ObstacleTransparecncy : MonoBehaviour
     public Transform player;
     public Camera mainCamera;
 
+    [Header("Settings")]
     //장애물로 인식할 레이어 마스크. 이 레이어에 속한 오브젝트만 투명화 대상이 된다.
     public LayerMask obstacleLayer;
+    public Material fadeMaterial;
+    public float fadedAlpha = 0.25f;
+    public float fadeSpeed = 5f;
+    
 
     //장애물이 시야를 막을 때 적용할 목표 알파값 (0 ~ 1). 낮을수록 더 투명하다.    public float fadedAlpha = 0.25f;
     //알파값을 목표치로 보간하는 속도. 값이 클수록 빠르게 전환된다.
-    public float fadedAlpha = 0.25f;
-    public float fadeSpeed = 5f;
 
     // 현재 페이드 처리 중인 Renderer와 그 상태를 매핑하는 딕셔너리.
     // 장애물이 시야를 막기 시작하면 등록되고, 완전히 불투명하게 복원되면 제거된다.
@@ -33,13 +36,10 @@ public class ObstacleTransparecncy : MonoBehaviour
     {
         //오브젝트의 원본 머티리얼 배열. 페이드 복원 시 사용된다.ummary>
         public Material[] originalMaterials;
-
         //투명화 처리를 위해 원본에서 복사한 머티리얼 배열. 이 배열의 알파값을 조작한다.
         public Material[] fadeMaterials;
-
         //현재 프레임에서 보간할 목표 알파값 (fadedAlpha 또는 1f).
         public float targetAlpha;
-
         //이번 프레임에 SphereCast에 의해 시야를 막고 있는지 여부.
         public bool isBlocking;
     }
@@ -74,7 +74,7 @@ public class ObstacleTransparecncy : MonoBehaviour
         {
             Renderer rend = hit.collider.GetComponent<Renderer>();
             if (rend == null) continue;
-
+            // Fadeble => 오타지만 유니티 내부에서도 Fadeble
             if (!hit.collider.CompareTag("Fadeble"))
             {
                 continue;
@@ -109,12 +109,13 @@ public class ObstacleTransparecncy : MonoBehaviour
 
         for (int i = 0; i < rend.sharedMaterials.Length; i++)
         {
-            state.fadeMaterials[i] = new Material(rend.sharedMaterials[i]);
-            SetMaterialTransparent(state.fadeMaterials[i]);
+            state.fadeMaterials[i] = new Material(fadeMaterial);
+            Color c = state.fadeMaterials[i].color;
+            state.fadeMaterials[i].color = new Color(c.r, c.g, c.b, 1f);
         }
 
-        state.targetAlpha = 1f;
-        state.isBlocking = false;
+        state.targetAlpha = fadedAlpha;
+        state.isBlocking = true;
         _trackedRenderers[rend] = state;
 
         rend.materials = state.fadeMaterials;
@@ -158,17 +159,5 @@ public class ObstacleTransparecncy : MonoBehaviour
         {
             _trackedRenderers.Remove(rend);
         }
-    }
-
-
-    // 머티리얼을 URP Transparent 렌더링 모드로 설정한다.
-    // Surface Type을 Transparent로, Blend Mode를 Alpha로 지정하고 렌더 큐를 3000으로 설정하여
-    // 알파 채널이 실제로 반영되도록 한다.
-    void SetMaterialTransparent(Material mat)
-    {
-        mat.SetFloat("_Surface", 1f);
-        mat.SetFloat("_Blend", 0f);
-        mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
-        mat.renderQueue = 3000;
     }
 }

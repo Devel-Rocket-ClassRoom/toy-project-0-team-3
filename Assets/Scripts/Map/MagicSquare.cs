@@ -10,7 +10,7 @@ public class MagicSquare : MonoBehaviour
     private bool isActivated = false;
     private Vector3 _portalLifter = new Vector3(0f, 1.5f, 0f);
 
-    [SerializeField] private string pubScene = "Prototype_1_Pub";
+    [SerializeField] private string NextScene = "Prototype_1_BossRoom";
 
 
     private void Awake()
@@ -22,7 +22,7 @@ public class MagicSquare : MonoBehaviour
     {
         if (isActivated)
         {
-            SceneManager.LoadScene(pubScene);
+            SceneManager.LoadScene(NextScene);
         }
         else
         {
