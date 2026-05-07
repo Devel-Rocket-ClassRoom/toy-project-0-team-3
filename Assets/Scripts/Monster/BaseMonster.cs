@@ -7,44 +7,45 @@ using UnityEngine.AI;
 public abstract class BaseMonster : LivingEntity
 {
     [Header("Base Stats")]
-    [SerializeField] 
+    [SerializeField]
     protected float moveSpeed = 3f;
-    [SerializeField] 
+    [SerializeField]
     protected float turnSpeed = 720f;
-    [SerializeField] 
+    [SerializeField]
     protected float attackRange = 1.5f;
-    [SerializeField] 
+    [SerializeField]
     protected float attackCooldown = 1.0f;
 
 
     [Header("Combat")]
-    [SerializeField] 
+    [SerializeField]
     protected float attackDamage = 10f;
-    [SerializeField] 
+    protected float currentAttackDamage;
+    [SerializeField]
     protected HitBox hitBox;
-    [SerializeField] 
+    [SerializeField]
     protected bool allowMultipleDamageEventsPerAttack = false;
 
     [Header("Target")]
-    [SerializeField] 
+    [SerializeField]
     protected string playerTag = "Player";
-    [SerializeField] 
+    [SerializeField]
     protected LayerMask obstacleLayer;
-    [SerializeField] 
+    [SerializeField]
     protected float eyeHeight = 1.5f;
-    [SerializeField] 
+    [SerializeField]
     protected float targetEyeHeight = 1.0f;
 
     [Header("Alert Mark")]
-    [SerializeField] 
+    [SerializeField]
     protected GameObject alertMarkPrefab;
-    [SerializeField] 
+    [SerializeField]
     protected Vector3 alertMarkLocalOffset = new Vector3(0f, 2.2f, 0f);
 
     [Header("Animation Event Safety")]
-    [SerializeField] 
+    [SerializeField]
     protected float attackFallbackDuration = 2.5f;
-    [SerializeField] 
+    [SerializeField]
     protected float hitReactionFallbackDuration = 0.6f;
 
     [Header("Return")]
@@ -74,7 +75,6 @@ public abstract class BaseMonster : LivingEntity
     [Header("NavMesh")]
     [SerializeField]
     protected float destinationSampleRadius = 2f;
-    private bool hasCachedSpawnPoint;
     protected NavMeshAgent agent;
 
     protected Animator anim;
@@ -117,6 +117,8 @@ public abstract class BaseMonster : LivingEntity
 
         //spawnPosition = transform.position;
         //spawnRotation = transform.rotation;
+
+        currentAttackDamage = attackDamage;
 
         if (bodyCollider != null)
         {
@@ -344,6 +346,8 @@ public abstract class BaseMonster : LivingEntity
         hasAppliedDamageThisAttack = false;
         attackStartedTime = Time.time;
 
+        currentAttackDamage = attackDamage;
+
         StopMoving();
 
         if (player != null)
@@ -376,6 +380,8 @@ public abstract class BaseMonster : LivingEntity
             return;
         }
 
+        Debug.Log("AttackHit");
+
         hasAppliedDamageThisAttack = true;
         ApplyAttackDamage();
     }
@@ -389,6 +395,11 @@ public abstract class BaseMonster : LivingEntity
 
         isAttacking = false;
         lastAttackEndTime = Time.time;
+    }
+
+    protected void SetCurrentAttackDamage(float damage)
+    {
+        currentAttackDamage = Mathf.Max(0f, damage);
     }
 
     protected virtual void ApplyAttackDamage()
@@ -407,7 +418,7 @@ public abstract class BaseMonster : LivingEntity
                 continue;
             }
 
-            LivingEntity targetEntity = target.GetComponentInParent<LivingEntity>();
+            LivingEntity targetEntity = target.GetComponent<LivingEntity>();
 
             if (targetEntity == null)
             {
@@ -432,7 +443,9 @@ public abstract class BaseMonster : LivingEntity
                 hitNormal = transform.forward;
             }
 
-            targetEntity.OnDamage(attackDamage, hitPoint, hitNormal);
+            targetEntity.OnDamage(currentAttackDamage, hitPoint, hitNormal);
+
+            Debug.Log(targetEntity.Health);
         }
     }
 

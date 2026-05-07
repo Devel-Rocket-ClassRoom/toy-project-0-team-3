@@ -70,6 +70,7 @@ public class PlayerStatus : LivingEntity
         if (IsInvincible) return;
 
         base.OnDamage(damage, hitPoint, hitNormal);
+        Debug.Log(Health);
 
         // Die()에서 Dead 트리거를 쏘므로 여기선 살아있을 때만 Damaged 재생
         if (!IsDead)

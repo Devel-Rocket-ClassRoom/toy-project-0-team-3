@@ -490,7 +490,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!136 &979804924
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -632,6 +632,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &1143007854 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8870446465190448273, guid: 245935e25737f2746a4cbb22a942b382, type: 3}
+  m_PrefabInstance: {fileID: 5369605693033711907}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 347fec5b52d96834daba02a054842699, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitBox
 --- !u!1 &1513588496
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,7 +780,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 248170757794865002, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.55661
+      value: 0.16
       objectReference: {fileID: 0}
     - target: {fileID: 248170757794865002, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -777,7 +788,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 248170757794865002, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -13.1
+      value: -19.69
       objectReference: {fileID: 0}
     - target: {fileID: 248170757794865002, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -809,6 +820,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5878163374890091685, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5878163374890091685, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5878163374890091685, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -876,7 +895,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 36.7
+  field of view: 17.9
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1010,6 +1029,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dragon_LP
       objectReference: {fileID: 0}
+    - target: {fileID: 4968924269262054079, guid: 7e6beb6defcf7274f8f7d4e78b47fcd6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5044778299767958221, guid: 7e6beb6defcf7274f8f7d4e78b47fcd6, type: 3}
       propertyPath: anim
       value: 
@@ -1037,11 +1060,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1023679701244589182, guid: 245935e25737f2746a4cbb22a942b382, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1023679701244589182, guid: 245935e25737f2746a4cbb22a942b382, type: 3}
+      propertyPath: m_TagString
+      value: Monster
+      objectReference: {fileID: 0}
+    - target: {fileID: 2558262181784512433, guid: 245935e25737f2746a4cbb22a942b382, type: 3}
+      propertyPath: hitBox
+      value: 
+      objectReference: {fileID: 1143007854}
     - target: {fileID: 6035452279502588180, guid: 245935e25737f2746a4cbb22a942b382, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.98
       objectReference: {fileID: 0}
     - target: {fileID: 6035452279502588180, guid: 245935e25737f2746a4cbb22a942b382, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1049,7 +1080,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6035452279502588180, guid: 245935e25737f2746a4cbb22a942b382, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -8.7
       objectReference: {fileID: 0}
     - target: {fileID: 6035452279502588180, guid: 245935e25737f2746a4cbb22a942b382, type: 3}
       propertyPath: m_LocalRotation.w
