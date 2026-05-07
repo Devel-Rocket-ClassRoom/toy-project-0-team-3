@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,6 +43,20 @@ public class ItemSlotList : MonoBehaviour
 
         itemDataList.RemoveAt(selectedSlotIndex);
         selectedSlotIndex = -1;
+        UpdateSlots();
+    }
+
+    public void Clear()
+    {
+        itemDataList.Clear();
+        selectedSlotIndex = -1;
+        UpdateSlots();
+    }
+
+    public void Exchange(List<ItemData> chestItemDataList)
+    {
+        Clear();
+        itemDataList = chestItemDataList.ToList<ItemData>();
         UpdateSlots();
     }
 

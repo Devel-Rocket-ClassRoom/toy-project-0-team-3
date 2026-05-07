@@ -7,9 +7,10 @@ public class PlayerInteractive : MonoBehaviour
     public static PlayerInteractive Instance { get; private set; }
 
     public ItemSlotList itemSlotList;
+    public GameObject chestInventory;
 
     [Header("References")]
-    public PlayerInput playerInput;
+    private PlayerInput playerInput;
 
     [Header("Interaction Settings")]
     public float interactableRange = 1f;
@@ -17,6 +18,7 @@ public class PlayerInteractive : MonoBehaviour
 
     private GameObject currentTarget; // 범위 내 상호작용 대상
     private bool isInRange = false;
+    private bool isChestOpen = false;
 
     private void Awake()
     {
@@ -72,15 +74,22 @@ public class PlayerInteractive : MonoBehaviour
                 Chest chest = target.GetComponent<Chest>();
                 if (chest != null)   chest.OpenLid();
                 if (chest.itemDataList.Count <= 0) return;
+                if (isChestOpen)
+                {
+                    isChestOpen = false;
+                    chestInventory.SetActive(false);
+                    return;
+                }
                 else
                 {
-                    for (int i = 0; i < chest.itemDataList.Count; i++)
-                    {
-                        Debug.Log(chest.itemDataList[i].ItemName);
-                    }
+                    Debug.Log("Chest Opened");
+                    Debug.Log(chest.itemDataList.Count);
+                    isChestOpen = true;
+                    chestInventory.SetActive(true);
+                    itemSlotList.Exchange(chest.itemDataList);
                 }
                 // 상자아이템 보유 리스트 초기화
-                Debug.Log("Chest Opened");
+                
                 break;
             case "MagicSquare":
                 MagicSquare ms = target.GetComponent<MagicSquare>();

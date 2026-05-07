@@ -49,7 +49,7 @@ public class Chest : MonoBehaviour
         if (isOpen || isAnimating) return;
         StartCoroutine(RotateLid());
 
-        OpenChestInv();
+       // OpenChestInv();
     }   
 
 
@@ -73,21 +73,20 @@ public class Chest : MonoBehaviour
         isAnimating = false;
     }
 
-    private void OpenChestInv()
+    public void OpenChestInv()
     {
         chestInventory.SetActive(true);
         Debug.Log("OpenChestInv called / chestInventory: " + chestInventory);
-
     }
 
-    private void CloseChestInv()
+    public void CloseChestInv()
     {
         chestInventory.SetActive(false);
     }
 
     private void GenerateRandomItemInChest()
     {
-        int attempts = Random.Range(0, 7);
+        int attempts = Random.Range(1, 7);
         for (int i = 0; i < attempts; i++)
         {
             ItemData data = DataTableManager.ItemTable.GetRandom();
