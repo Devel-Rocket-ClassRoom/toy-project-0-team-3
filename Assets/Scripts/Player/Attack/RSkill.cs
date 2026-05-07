@@ -15,7 +15,7 @@ public class RSkill : SkillBase
 
     private void Awake()
     {
-        Cooldown = 6f;
+        Cooldown = 3f;
         _playerSkill = GetComponentInParent<PlayerSkill>();
     }
 
@@ -65,7 +65,7 @@ public class RSkill : SkillBase
         foreach (var hit in hits)
         {
             float dist = Vector3.Distance(transform.position, hit.transform.position);
-            if (dist < radius - _thickness) continue;
+            //if (dist < radius - _thickness) continue;
 
             if (hit.TryGetComponent<IDamagable>(out var target))
             {

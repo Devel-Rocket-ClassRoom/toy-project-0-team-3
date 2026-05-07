@@ -1207,6 +1207,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd206a3a9cfff2945979e76560255ae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkillSlotUI
+--- !u!1001 &1677461898
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3223964439278906374, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223964439278906374, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223964439278906374, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223964439278906374, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223964439278906374, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223964439278906374, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223964439278906374, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223964439278906374, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223964439278906374, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223964439278906374, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7707154960554707790, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
+      propertyPath: m_Name
+      value: MushMonsterBasic
+      objectReference: {fileID: 0}
+    - target: {fileID: 7707154960554707790, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 63843306ce159bb47a92f2961598dcb0, type: 3}
 --- !u!1001 &1694688869
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1874,7 +1935,8 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 6081197827050893558, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
     - {fileID: 7858203939767971946, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2744984770816202479, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
@@ -1897,3 +1959,4 @@ SceneRoots:
   - {fileID: 1821869477}
   - {fileID: 797641509}
   - {fileID: 717714558}
+  - {fileID: 1677461898}
