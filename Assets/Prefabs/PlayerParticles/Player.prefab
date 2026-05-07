@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 248170757794865002}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -684,6 +684,8 @@ MonoBehaviour:
       m_Calls: []
   maxMana: 100
   manaRegen: 5
+  invincibleDuration: 1.5
+  blinkInterval: 0.1
 --- !u!114 &2310165586864787441
 MonoBehaviour:
   m_ObjectHideFlags: 0

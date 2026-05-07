@@ -44,6 +44,7 @@ public class PlayerSkill : MonoBehaviour
         {
             IsUsingSkill = true;
             _wSkill?.Use();
+            _wSkill.Direction = _playerMovement.PlayerDirection;
             _animator.SetTrigger("WSkill");
         }
 
@@ -59,6 +60,11 @@ public class PlayerSkill : MonoBehaviour
             IsUsingSkill = true;
             _rSkill?.Use();
             _animator.SetTrigger("RSkill");
+        }
+
+        if (IsUsingSkill)
+        {
+            _wSkill.Direction = _playerMovement.PlayerDirection;
         }
     }
 
@@ -90,6 +96,11 @@ public class PlayerSkill : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(_qSkill.Direction);
 
         _qSkill.OnDashStart();
+    }
+
+    public void WToMove()
+    {
+        _animator.SetTrigger("WToMove");
     }
 
     public void OnSkillEnd()
