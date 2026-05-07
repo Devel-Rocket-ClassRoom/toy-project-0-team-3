@@ -763,6 +763,7 @@ public class DragonBoss : LivingEntity
             float t = Mathf.Clamp01(normalizedTime);
             float curveValue = landingHeightCurve.Evaluate(t);
 
+            Debug.Log(startY +", " + targetY);
             SetY(Mathf.Lerp(startY, targetY, curveValue));
 
             if (normalizedTime >= 1f)
