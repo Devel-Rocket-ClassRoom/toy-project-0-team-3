@@ -9,7 +9,7 @@ public class Monster : LivingEntity
     [Header("감지")]
     [SerializeField] private float _detectRange = 10f;
     [SerializeField] private float _attackRange = 2f;
-    [SerializeField] private float _realAttackRange = 5f;
+    [SerializeField] private float _realAttackRange = 3f;
 
     [Header("공격")]
     [SerializeField] private float _attackDamage = 10f;

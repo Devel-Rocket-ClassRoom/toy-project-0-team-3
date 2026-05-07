@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class SensoryMonster : BaseMonsterKnockback
+public abstract class SensoryMonster : BaseMonster
 {
     [Header("Sight Type Settings")]
     [SerializeField] protected float viewAngle = 120f;
