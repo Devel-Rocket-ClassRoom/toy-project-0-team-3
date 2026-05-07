@@ -102,14 +102,6 @@ public abstract class SensoryMonster : BaseMonster
         }
     }
 
-    private float GetFlatDistance(Vector3 a, Vector3 b)
-    {
-        a.y = 0f;
-        b.y = 0f;
-
-        return Vector3.Distance(a, b);
-    }
-
     protected override void UpdateTrace()
     {
         if (player == null)

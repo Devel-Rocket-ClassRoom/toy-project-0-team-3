@@ -33,6 +33,7 @@ public class TestPlayer : LivingEntity
         if (Input.GetKeyDown(KeyCode.Space))
         {
             TestAttack();
+            Debug.Log("공격시도");
         }
     }
 
@@ -88,28 +89,39 @@ public class TestPlayer : LivingEntity
 
     private void TestAttack()
     {
-        float attackRadius = 5f;
+        float attackRadius = 8f;
         float attackDamage = 10f;
-        float stunDuration = 3f;
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRadius);
 
         foreach (Collider hitCol in hitColliders)
         {
-            if (hitCol.CompareTag("Monster"))
+            LivingEntity target = hitCol.GetComponentInParent<LivingEntity>();
+
+            if (target == null)
             {
-                BaseMonster monster = hitCol.GetComponent<BaseMonster>();
-
-                if (monster != null)
-                {
-                    monster.OnDamage(attackDamage, hitCol.ClosestPoint(transform.position), transform.forward);
-
-                    Debug.Log($"[테스트 공격] {hitCol.name}에게 {attackDamage}의 데미지와 {stunDuration}초 스턴을 부여했습니다!");
-                }
+                continue;
             }
+
+            if (target == this)
+            {
+                continue;
+            }
+
+            if (!target.CompareTag("Monster") && !target.transform.root.CompareTag("Monster"))
+            {
+                continue;
+            }
+
+            target.OnDamage(
+                attackDamage,
+                hitCol.ClosestPoint(transform.position),
+                transform.forward
+            );
+
+            Debug.Log($"[테스트 공격] {target.name}에게 {attackDamage} 데미지 적용");
         }
     }
-
     public override void Die()
     {
         base.Die();

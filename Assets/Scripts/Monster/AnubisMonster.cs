@@ -14,6 +14,8 @@ public class AnubisMonster : SensoryMonster
     private static readonly int HashAttack2 = Animator.StringToHash("attack2");
     private static readonly int HashAttack3 = Animator.StringToHash("attack3");
 
+    private static readonly int HashDeath = Animator.StringToHash("death");
+
     /// <summary>
     /// Anubis Blend Tree 기준:
     /// 0   = Walk Backwards
@@ -99,6 +101,6 @@ public class AnubisMonster : SensoryMonster
     /// </summary>
     protected override void PlayDeathAnim()
     {
-        anim.SetFloat(HashLocomotion, IdleValue);
+        anim.SetTrigger(HashDeath);
     }
 }
