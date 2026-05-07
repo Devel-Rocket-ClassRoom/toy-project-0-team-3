@@ -87,9 +87,10 @@ public class PlayerInteractive : MonoBehaviour
                     isChestOpen = true;
                     chestInventory.SetActive(true);
                     itemSlotList.Exchange(chest.itemDataList);
+                    GetComponent<PlayerInventory>().SetChest(target);
                 }
                 // 상자아이템 보유 리스트 초기화
-                
+
                 break;
             case "MagicSquare":
                 MagicSquare ms = target.GetComponent<MagicSquare>();

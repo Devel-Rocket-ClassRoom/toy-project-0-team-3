@@ -8,7 +8,7 @@ public class PlayerInventory : MonoBehaviour
     public ItemSlotList inventoryItemSlotList;
 
     private GameObject _chest;
-    
+
 
     public GameObject _inventory;
 
@@ -23,18 +23,19 @@ public class PlayerInventory : MonoBehaviour
         if (_playerInput.TabKey)
         {
             _inventory.SetActive(!_inventory.activeSelf);
-        } 
+        }
     }
 
     public void OnClickObtain()
     {
+        int selectedIndex = chestItemSlotList.SelectedSlotIndex;
         inventoryItemSlotList.AddItem(chestItemSlotList.GetSelectedItem().Id);
+        _chest.GetComponent<Chest>().itemDataList.RemoveAt(selectedIndex);
         chestItemSlotList.RemoveItem();
-        _chest.GetComponent<Chest>().itemDataList.RemoveAt(chestItemSlotList.SelectedSlotIndex);
     }
 
     public void SetChest(GameObject chest)
-    {  
+    {
         _chest = chest;
     }
 }

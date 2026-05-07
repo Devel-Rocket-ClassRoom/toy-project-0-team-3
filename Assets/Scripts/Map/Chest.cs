@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Chest : MonoBehaviour
@@ -9,12 +8,12 @@ public class Chest : MonoBehaviour
     public GameObject body;
     public GameObject chestInventory;
     public List<ItemData> itemDataList = new();
-    
+
     private GameObject player;
     public float interactableRange = 1f;
 
     [Header("Lid Open Settings")]
-    public Vector3 openAngle = new Vector3 (-90f, 0f, 0f); // 인스펙터에서 조절
+    public Vector3 openAngle = new Vector3(-90f, 0f, 0f); // 인스펙터에서 조절
     public float openDuration = 0.5f;
 
     private bool isOpen = false;
@@ -49,8 +48,8 @@ public class Chest : MonoBehaviour
         if (isOpen || isAnimating) return;
         StartCoroutine(RotateLid());
 
-       // OpenChestInv();
-    }   
+        // OpenChestInv();
+    }
 
 
     private IEnumerator RotateLid()
