@@ -625,7 +625,7 @@ GameObject:
   - component: {fileID: 7017119570103730803}
   - component: {fileID: 1173182686107507039}
   - component: {fileID: 114046630305025173}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_Prop_Chest_02_Lid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1412,9 +1412,9 @@ GameObject:
   - component: {fileID: 8274353025575754676}
   - component: {fileID: 2089191454122865838}
   - component: {fileID: 90974681141525900}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_Prop_Chest_02(Clone)
-  m_TagString: Untagged
+  m_TagString: Chest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1526,7 +1526,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.536, y: 0.187, z: 0.319}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.187, z: 0}
   m_TimeToStationary: 0.5
@@ -2032,7 +2032,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 1.4790001, y: 1.0480001, z: 1.8830001}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: -0.85, y: 1.0300001, z: 0.26000002}
   m_TimeToStationary: 0.5
@@ -2387,7 +2387,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.554, y: 0.126, z: 0.544}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.20700002, z: 0}
   m_TimeToStationary: 0.5

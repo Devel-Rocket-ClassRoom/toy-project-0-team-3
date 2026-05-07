@@ -21,7 +21,7 @@ public class MonsterRandomSpawner : MonoBehaviour
     public Transform player;
 
     private List<Vector3> _spawnedPositions = new();
-    private List<GameObject>_spawnedMonsters = new();
+    private List<GameObject> _spawnedMonsters = new();
 
 
     private void Start()
@@ -41,7 +41,7 @@ public class MonsterRandomSpawner : MonoBehaviour
     {
         if (monsterPrefabs == null || monsterPrefabs.Length == 0)
         {
-            Debug.Log ("MonsterSpawner : monsterPrefabs가 비어있습니다.");
+            Debug.Log("MonsterSpawner : monsterPrefabs가 비어있습니다.");
             return;
         }
 
@@ -53,17 +53,17 @@ public class MonsterRandomSpawner : MonoBehaviour
         for (int i = 0; i < tri.indices.Length; i += 3)
         {
             Vector3 a = tri.vertices[tri.indices[i]];
-            Vector3 b = tri.vertices[tri.indices[i +1]];
-            Vector3 c = tri.vertices[tri.indices[i +2]];
+            Vector3 b = tri.vertices[tri.indices[i + 1]];
+            Vector3 c = tri.vertices[tri.indices[i + 2]];
 
-            Vector3 normal = Vector3.Cross (b - a, c - a).normalized;
+            Vector3 normal = Vector3.Cross(b - a, c - a).normalized;
 
             if (Vector3.Dot(normal, Vector3.up) < flatNormalThreshold)
             {
                 continue;
             }
 
-            float area = Vector3.Cross (b - a, c - a).magnitude * 0.5f;
+            float area = Vector3.Cross(b - a, c - a).magnitude * 0.5f;
             flatTriangleIndices.Add(i);
             totalArea += area;
             cumulativeArea.Add(totalArea);
@@ -71,7 +71,7 @@ public class MonsterRandomSpawner : MonoBehaviour
 
         if (flatTriangleIndices.Count == 0)
         {
-            Debug.Log ("MonsterSpawner : NavMesh의 Flat Triangle가 없습니다.");
+            Debug.Log("MonsterSpawner : NavMesh의 Flat Triangle가 없습니다.");
             return;
         }
 
@@ -79,11 +79,11 @@ public class MonsterRandomSpawner : MonoBehaviour
         int attempts = 0;
         while (spawned < spawnCount && attempts < maxSampleAttempts)
         {
-            attempts ++;
+            attempts++;
 
-            float pick = Random.Range(0f, totalArea);   
+            float pick = Random.Range(0f, totalArea);
             int triListIdx = cumulativeArea.BinarySearch(pick);
-            
+
             if (triListIdx < 0)
             {
                 triListIdx = ~triListIdx;
@@ -110,11 +110,11 @@ public class MonsterRandomSpawner : MonoBehaviour
                 continue;
             }
 
-            if (player != null && Vector3.Distance (hit.position, player.position) < minDistanceFromPlayer)
+            if (player != null && Vector3.Distance(hit.position, player.position) < minDistanceFromPlayer)
             {
                 continue;
             }
-            
+
             bool tooClose = false;
             foreach (var pos in _spawnedPositions)
             {
@@ -130,12 +130,12 @@ public class MonsterRandomSpawner : MonoBehaviour
             }
 
             GameObject prefab = monsterPrefabs[Random.Range(0, monsterPrefabs.Length)];
-            GameObject monster = Instantiate(prefab, hit.position, 
+            GameObject monster = Instantiate(prefab, hit.position,
                 Quaternion.Euler(0, Random.Range(0f, 360f), 0));
             monster.transform.SetParent(transform);
 
-            _spawnedPositions.Add(hit.position);;
-            _spawnedMonsters.Add(monster); 
+            _spawnedPositions.Add(hit.position); ;
+            _spawnedMonsters.Add(monster);
             spawned++;
         }
 
@@ -150,9 +150,9 @@ public class MonsterRandomSpawner : MonoBehaviour
             {
                 Destroy(m);
             }
-            _spawnedMonsters.Clear();
-            _spawnedPositions.Clear();
         }
+        _spawnedMonsters.Clear();
+        _spawnedPositions.Clear();
     }
 
 }

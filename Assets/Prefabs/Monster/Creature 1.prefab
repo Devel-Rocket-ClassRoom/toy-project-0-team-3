@@ -1110,7 +1110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 326c729da218d8d4aa80090fbef480e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Creature1
-  startingHealth: 100
+  startingHealth: 50
   OnDead:
     m_PersistentCalls:
       m_Calls: []

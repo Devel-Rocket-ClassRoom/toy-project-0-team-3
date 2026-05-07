@@ -8,6 +8,9 @@ TagManager:
   - Monster
   - TileFloor
   - Fadeble
+  - Chest
+  - MagicSquare
+  - Portal
   layers:
   - Default
   - TransparentFX
@@ -16,7 +19,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - Interactable
   - 
   - 
   - 

@@ -7,6 +7,7 @@ public class PlayerSkill : MonoBehaviour
     private PlayerAttack _playerAttack;
     private PlayerInput _input;
     private PlayerMovement _playerMovement;
+    private PlayerStatus _playerStatus;
     private QSkill _qSkill;
     private WSkill _wSkill;
     private ESkill _eSkill;
@@ -24,10 +25,13 @@ public class PlayerSkill : MonoBehaviour
         _wSkill = Skills.GetComponent<WSkill>();
         _eSkill = Skills.GetComponent<ESkill>();
         _rSkill = Skills.GetComponent<RSkill>();
+        _playerStatus = GetComponent<PlayerStatus>();
     }
 
     private void Update()
     {
+        if (_playerStatus.IsHit || _playerStatus.IsDead) return;
+
         if (_input.SkillQ && _qSkill.CanUse && !IsUsingSkill)
         {
             IsUsingSkill = true;
@@ -36,25 +40,31 @@ public class PlayerSkill : MonoBehaviour
             _animator.SetTrigger("QSkill");
         }
 
-        if (_input.SkillW && _qSkill.CanUse && !IsUsingSkill)
+        if (_input.SkillW && _wSkill.CanUse && !IsUsingSkill)
         {
             IsUsingSkill = true;
             _wSkill?.Use();
+            _wSkill.Direction = _playerMovement.PlayerDirection;
             _animator.SetTrigger("WSkill");
         }
 
-        if (_input.SkillE && _qSkill.CanUse && !IsUsingSkill)
+        if (_input.SkillE && _eSkill.CanUse && !IsUsingSkill)
         {
             IsUsingSkill = true;
             _eSkill?.Use();
             _animator.SetTrigger("ESkill");
         }
 
-        if (_input.SkillR && _qSkill.CanUse && !IsUsingSkill)
+        if (_input.SkillR && _rSkill.CanUse && !IsUsingSkill)
         {
             IsUsingSkill = true;
             _rSkill?.Use();
             _animator.SetTrigger("RSkill");
+        }
+
+        if (IsUsingSkill)
+        {
+            _wSkill.Direction = _playerMovement.PlayerDirection;
         }
     }
 
@@ -86,6 +96,11 @@ public class PlayerSkill : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(_qSkill.Direction);
 
         _qSkill.OnDashStart();
+    }
+
+    public void WToMove()
+    {
+        _animator.SetTrigger("WToMove");
     }
 
     public void OnSkillEnd()

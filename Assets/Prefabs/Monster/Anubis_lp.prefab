@@ -1501,7 +1501,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02134f43555550b4e912d1cd5bc48ab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnubisMonster
-  startingHealth: 100
+  startingHealth: 80
   OnDead:
     m_PersistentCalls:
       m_Calls: []
