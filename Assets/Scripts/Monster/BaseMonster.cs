@@ -19,12 +19,10 @@ public abstract class BaseMonster : LivingEntity
 
     [Header("Combat")]
     [SerializeField]
-    protected float attackDamage = 10f;
+    protected float BaseAttackDamage = 1f;
     protected float currentAttackDamage;
     [SerializeField]
     protected HitBox hitBox;
-    [SerializeField]
-    protected bool allowMultipleDamageEventsPerAttack = false;
 
     [Header("Target")]
     [SerializeField]
@@ -49,10 +47,12 @@ public abstract class BaseMonster : LivingEntity
     protected float hitReactionFallbackDuration = 0.6f;
 
     [Header("Return")]
-    [SerializeField] protected float returnArriveDistance = 0.35f;
+    [SerializeField] 
+    protected float returnArriveDistance = 0.35f;
 
     [Header("Death")]
-    [SerializeField] protected float destroyDelay = 3f;
+    [SerializeField] 
+    protected float destroyDelay = 3f;
 
     protected enum MonsterState
     {
@@ -64,7 +64,8 @@ public abstract class BaseMonster : LivingEntity
         Dead,
     }
 
-    [SerializeField] private MonsterState currentState = MonsterState.Idle;
+    [SerializeField] 
+    private MonsterState currentState = MonsterState.Idle;
 
     protected MonsterState CurrentState
     {
@@ -86,7 +87,6 @@ public abstract class BaseMonster : LivingEntity
     protected bool isAttacking;
     protected bool isHitReacting;
 
-    private bool hasAppliedDamageThisAttack;
     private float attackStartedTime;
     private float lastAttackEndTime;
 
@@ -112,13 +112,12 @@ public abstract class BaseMonster : LivingEntity
 
         isAttacking = false;
         isHitReacting = false;
-        hasAppliedDamageThisAttack = false;
         lastAttackEndTime = -attackCooldown;
 
         //spawnPosition = transform.position;
         //spawnRotation = transform.rotation;
 
-        currentAttackDamage = attackDamage;
+        currentAttackDamage = BaseAttackDamage;
 
         if (bodyCollider != null)
         {
@@ -343,10 +342,9 @@ public abstract class BaseMonster : LivingEntity
     private void StartAttack()
     {
         isAttacking = true;
-        hasAppliedDamageThisAttack = false;
         attackStartedTime = Time.time;
 
-        currentAttackDamage = attackDamage;
+        currentAttackDamage = BaseAttackDamage;
 
         StopMoving();
 
@@ -375,14 +373,8 @@ public abstract class BaseMonster : LivingEntity
             return;
         }
 
-        if (!allowMultipleDamageEventsPerAttack && hasAppliedDamageThisAttack)
-        {
-            return;
-        }
-
         Debug.Log("AttackHit");
 
-        hasAppliedDamageThisAttack = true;
         ApplyAttackDamage();
     }
 
