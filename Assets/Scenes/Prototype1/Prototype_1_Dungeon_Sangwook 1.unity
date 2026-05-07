@@ -1932,6 +1932,10 @@ PrefabInstance:
       propertyPath: itemSlotList
       value: 
       objectReference: {fileID: 245770853}
+    - target: {fileID: 8412354985497746201, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
+      propertyPath: _dashSpeed
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6081197827050893558, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
     - {fileID: 7858203939767971946, guid: e89adfa9c238cd44c8a810bb78b3102d, type: 3}
