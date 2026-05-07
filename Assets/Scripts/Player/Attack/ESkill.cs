@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ESkill : SkillBase
@@ -7,15 +8,49 @@ public class ESkill : SkillBase
     [SerializeField] private float _forwardDistance = 3f;
     [SerializeField] private float _jumpDuration = 0.5f;
     [SerializeField] private float _smashDuration = 0.2f;
+    [SerializeField] private GameObject _rangeIndicator;
 
     private PlayerSkill _playerSkill;
     private Rigidbody _rigidbody;
+
+    [SerializeField] private float _damage = 30f;
+    [SerializeField] private Collider _eCollider;
+
+    private HashSet<Collider> _hitTargets = new HashSet<Collider>();
 
     private void Awake()
     {
         Cooldown = 3f;
         _playerSkill = GetComponentInParent<PlayerSkill>();
         _rigidbody = GetComponentInParent<Rigidbody>();
+        _eCollider.GetComponent<ESkillHitBox>().Init(this);
+        DisableHit();
+    }
+
+    private void EnableHit()
+    {
+        _hitTargets.Clear();
+        _eCollider.enabled = true;
+        _rangeIndicator.SetActive(true);
+    }
+
+    private void DisableHit()
+    {
+        _eCollider.enabled = false;
+        _rangeIndicator.SetActive(false);
+    }
+
+    public void OnHit(Collider other)
+    {
+        if (_hitTargets.Contains(other)) return;
+        _hitTargets.Add(other);
+
+        if (other.TryGetComponent<IDamagable>(out var target))
+        {
+            Vector3 hitPoint = other.transform.position;
+            Vector3 hitNormal = (other.transform.position - _eCollider.transform.position).normalized;
+            target.OnDamage(_damage, hitPoint, hitNormal);
+        }
     }
 
     protected override void OnUse() { }
@@ -75,5 +110,8 @@ public class ESkill : SkillBase
         }
 
         _rigidbody.MovePosition(endPos);
+        EnableHit();
+        yield return new WaitForSeconds(0.2f);
+        DisableHit();
     }
 }
