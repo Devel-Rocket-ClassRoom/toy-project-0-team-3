@@ -1,9 +1,13 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 
 public class PlayerInteractive : MonoBehaviour
 {
     public static PlayerInteractive Instance { get; private set; }
+
+    public ItemSlotList itemSlotList;
+
     [Header("References")]
     public PlayerInput playerInput;
 
@@ -65,8 +69,17 @@ public class PlayerInteractive : MonoBehaviour
         switch (target.tag)
         {
             case "Chest":
-                ChestOpening chest = target.GetComponent<ChestOpening>();
+                Chest chest = target.GetComponent<Chest>();
                 if (chest != null)   chest.OpenLid();
+                if (chest.itemDataList.Count <= 0) return;
+                else
+                {
+                    for (int i = 0; i < chest.itemDataList.Count; i++)
+                    {
+                        Debug.Log(chest.itemDataList[i].ItemName);
+                    }
+                }
+                // 상자아이템 보유 리스트 초기화
                 Debug.Log("Chest Opened");
                 break;
             case "MagicSquare":
