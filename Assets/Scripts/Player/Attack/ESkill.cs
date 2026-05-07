@@ -20,7 +20,7 @@ public class ESkill : SkillBase
 
     private void Awake()
     {
-        Cooldown = 3f;
+        Cooldown = 5f;
         _playerSkill = GetComponentInParent<PlayerSkill>();
         _rigidbody = GetComponentInParent<Rigidbody>();
         _eCollider.GetComponent<ESkillHitBox>().Init(this);

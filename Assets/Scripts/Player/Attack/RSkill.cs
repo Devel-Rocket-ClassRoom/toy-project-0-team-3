@@ -15,7 +15,7 @@ public class RSkill : SkillBase
 
     private void Awake()
     {
-        Cooldown = 3f;
+        Cooldown = 6f;
         _playerSkill = GetComponentInParent<PlayerSkill>();
     }
 

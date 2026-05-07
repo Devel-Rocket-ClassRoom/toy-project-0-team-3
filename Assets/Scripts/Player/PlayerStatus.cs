@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerStatus : LivingEntity
 {
     [Header("마나")]
-    [SerializeField] private float maxMana = 100f;
+    [SerializeField] private float maxMana = 200f;
     [SerializeField] private float manaRegen = 5f;
     [SerializeField] private float invincibleDuration = 1.5f;
     [SerializeField] private float blinkInterval = 0.1f; // 깜빡이는 속도
