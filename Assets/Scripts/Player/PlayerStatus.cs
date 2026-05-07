@@ -30,6 +30,10 @@ public class PlayerStatus : LivingEntity
         CurrentMana = maxMana;
         IsHit = false;
         IsInvincible = false;
+    }
+
+    public void Awake()
+    {
         _playerSkill = GetComponent<PlayerSkill>();
         _animator = GetComponent<Animator>();
         _renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
