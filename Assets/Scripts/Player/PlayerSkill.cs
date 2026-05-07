@@ -103,6 +103,16 @@ public class PlayerSkill : MonoBehaviour
         _animator.SetTrigger("WToMove");
     }
 
+    public void EJumpShot()
+    {
+        _eSkill.JumpShot();
+    }
+
+    public void EGroundSmash()
+    {
+        _eSkill.GroundSmash();
+    }
+
     public void OnSkillEnd()
     {
         IsUsingSkill = false;

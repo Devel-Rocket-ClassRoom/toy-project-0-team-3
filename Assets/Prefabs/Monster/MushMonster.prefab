@@ -1376,7 +1376,7 @@ MonoBehaviour:
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  moveSpeed: 3
+  moveSpeed: 2
   turnSpeed: 720
   attackRange: 1.5
   attackCooldown: 2
