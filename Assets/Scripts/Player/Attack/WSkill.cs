@@ -7,15 +7,21 @@ public class WSkill : SkillBase
     [SerializeField] private float _dashDuration = 0.3f;
     [SerializeField] private float _rotateSpeed = 5f; // 높을수록 빠르게 회전
 
+    [SerializeField] private WSkillWall _wSkillWall;
+
+    public float DashSpeed => _dashSpeed;
+
     public Vector3 Direction { get; set; } = Vector3.zero;
 
     private PlayerSkill _playerSkill;
+    private PlayerStatus _playerStatus;
     private Rigidbody _rigidbody;
 
     private void Awake()
     {
         Cooldown = 3f;
         _playerSkill = GetComponentInParent<PlayerSkill>();
+        _playerStatus = GetComponentInParent<PlayerStatus>();
         _rigidbody = GetComponentInParent<Rigidbody>();
     }
 
@@ -26,6 +32,9 @@ public class WSkill : SkillBase
 
     private IEnumerator DashCoroutine()
     {
+        _wSkillWall.EnableWall();
+        _playerStatus.SetInvincible(true);
+
         float elapsed = 0f;
 
         // 시작 방향 고정
@@ -52,6 +61,9 @@ public class WSkill : SkillBase
             yield return new WaitForFixedUpdate();
         }
 
+        Direction = Vector3.zero;
+        _wSkillWall.DisableWall();
+        _playerStatus.SetInvincible(false);
         _playerSkill.OnSkillEnd();
         _playerSkill.WToMove();
     }

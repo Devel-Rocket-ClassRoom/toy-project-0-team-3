@@ -63,16 +63,16 @@ public class Monster : LivingEntity
         switch (newState)
         {
             case State.Idle:
-                _agent.isStopped = true;
+                if (_agent.enabled) _agent.isStopped = true;
                 break;
             case State.Move:
-                _agent.isStopped = false;
+                if (_agent.enabled) _agent.isStopped = false;
                 break;
             case State.Attack:
-                _agent.isStopped = true;
+                if (_agent.enabled) _agent.isStopped = true;
                 break;
             case State.Dead:
-                _agent.isStopped = true;
+                if (_agent.enabled) _agent.isStopped = true;
                 StartCoroutine(DestroyAfterDead());
                 break;
         }
@@ -92,6 +92,7 @@ public class Monster : LivingEntity
     private void UpdateMove()
     {
         if (_player == null) return;
+        if (!_agent.enabled) return;
 
         float dist = GetDistToPlayer();
 
@@ -120,6 +121,7 @@ public class Monster : LivingEntity
     private void UpdateAttack()
     {
         if (_player == null) return;
+        if (!_agent.enabled) return;
 
         float dist = GetDistToPlayer();
         float currentRange = _isAttacking ? _realAttackRange : _attackRange;
@@ -200,8 +202,12 @@ public class Monster : LivingEntity
     private IEnumerator KnockbackCoroutine(Vector3 hitNormal)
     {
         _isKnockback = true;
-        _agent.isStopped = true;
-        _agent.ResetPath();
+
+        if (_agent.enabled)
+        {
+            _agent.isStopped = true;
+            _agent.ResetPath();
+        }
 
         _animator.ResetTrigger("MoveToAttack");
         _animator.SetTrigger("Damaged");
@@ -225,5 +231,15 @@ public class Monster : LivingEntity
         base.Die();
         _animator.SetTrigger("Dead");
         ChangeState(State.Dead);
+    }
+
+    public void DisableNavMesh()
+    {
+        _agent.enabled = false;
+    }
+
+    public void EnableNavMesh()
+    {
+        _agent.enabled = true;
     }
 }
