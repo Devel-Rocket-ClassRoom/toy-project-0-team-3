@@ -884,7 +884,7 @@ GameObject:
   - component: {fileID: 4519842578620285077}
   - component: {fileID: 5214679545264452398}
   m_Layer: 9
-  m_Name: MushMonster
+  m_Name: MushMonster 1
   m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

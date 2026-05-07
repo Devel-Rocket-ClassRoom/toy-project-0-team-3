@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class SimpleMonster : BaseMonster
+public abstract class SimpleMonster : BaseMonsterKnockback
 {
     [Header("Detection Type Ranges")]
     [SerializeField] protected float alertRange = 8f;
