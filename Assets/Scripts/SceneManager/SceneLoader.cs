@@ -9,7 +9,7 @@ using System.Collections.Generic;
 /// </summary>
 public class SceneLoader : MonoBehaviour
 {
-    public static SceneLoader Instance {get; private set;}
+    public static SceneLoader Instance { get; private set; }
 
     // 씬이 로드되기 전에 자동으로 실행되어 인스턴스를 생성합니다. (수동으로 씬에 배치할 필요 없음)
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -34,7 +34,7 @@ public class SceneLoader : MonoBehaviour
     {
         { GameScene.MainTitle, "Prototype_1_Main" },
         { GameScene.Pub, "Prototype_1_Pub" },
-        { GameScene.Dungeon, "Prototype_1_Dungeon_Sangwook"}
+        { GameScene.Dungeon, "Prototype_1_Dungeon"}
     };
 
     private void Awake()
