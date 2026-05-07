@@ -463,12 +463,16 @@ public abstract class BaseMonster : LivingEntity
             return;
         }
 
-        HandleDamageAggro();
+        isAttacking = false;
 
-        if (!isAttacking)
-        {
-            StartHitReaction();
-        }
+        HandleDamageAggro();
+        
+        //if (!isAttacking)
+        //{
+        //    StartHitReaction();
+        //}
+
+        StartHitReaction();
     }
 
     protected virtual void HandleDamageAggro()
@@ -505,6 +509,7 @@ public abstract class BaseMonster : LivingEntity
         }
 
         isHitReacting = true;
+
         StopMoving();
         PlayHitAnim();
 

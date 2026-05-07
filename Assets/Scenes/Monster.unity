@@ -208,7 +208,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 154357150260305359, guid: 7a6e25aee908a8f49aa370ba73d7becd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 154357150260305359, guid: 7a6e25aee908a8f49aa370ba73d7becd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -216,7 +216,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 154357150260305359, guid: 7a6e25aee908a8f49aa370ba73d7becd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.57
+      value: -1.1
       objectReference: {fileID: 0}
     - target: {fileID: 154357150260305359, guid: 7a6e25aee908a8f49aa370ba73d7becd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -246,13 +246,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6333187160507835309, guid: 7a6e25aee908a8f49aa370ba73d7becd, type: 3}
+      propertyPath: startingHealth
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 8272712446662012606, guid: 7a6e25aee908a8f49aa370ba73d7becd, type: 3}
       propertyPath: m_Name
       value: MushMonster
       objectReference: {fileID: 0}
     - target: {fileID: 8272712446662012606, guid: 7a6e25aee908a8f49aa370ba73d7becd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1060,7 +1064,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1023679701244589182, guid: 245935e25737f2746a4cbb22a942b382, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1023679701244589182, guid: 245935e25737f2746a4cbb22a942b382, type: 3}
       propertyPath: m_TagString
