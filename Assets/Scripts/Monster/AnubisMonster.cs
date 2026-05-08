@@ -67,21 +67,22 @@ public class AnubisMonster : SensoryMonster
 
         anim.SetFloat(HashLocomotion, IdleValue);
 
-        int attackIndex = Random.Range(1, 4);
+        float rand = Random.value;
 
-        switch (attackIndex)
+        if (rand < 0.5f)
         {
-            case 1:
-                anim.SetTrigger(HashAttack1);
-                break;
-
-            case 2:
-                anim.SetTrigger(HashAttack2);
-                break;
-
-            case 3:
-                anim.SetTrigger(HashAttack3);
-                break;
+            SetCurrentAttackDamage(10f);
+            anim.SetTrigger(HashAttack1);
+        }
+        else if (rand < 0.8f)
+        {
+            SetCurrentAttackDamage(12f);
+            anim.SetTrigger(HashAttack2);
+        }
+        else
+        {
+            SetCurrentAttackDamage(15f);
+            anim.SetTrigger(HashAttack3);
         }
     }
 

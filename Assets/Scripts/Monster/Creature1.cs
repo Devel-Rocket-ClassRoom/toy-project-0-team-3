@@ -29,14 +29,19 @@ public class Creature1 : SensoryMonster
         switch (attackIndex)
         {
             case 1:
+                SetCurrentAttackDamage(7f);
                 anim.SetTrigger(HashAttack1);
                 break;
 
             case 2:
+                SetCurrentAttackDamage(3f);
+                ApplyStatusEffect(StatusFlags.Bleed, 3f, 1.5f);
                 anim.SetTrigger(HashAttack2);
                 break;
 
             case 3:
+                SetCurrentAttackDamage(3f);
+                ApplyStatusEffect(StatusFlags.Bleed, 3f, 1.5f);
                 anim.SetTrigger(HashAttack3);
                 break;
 
