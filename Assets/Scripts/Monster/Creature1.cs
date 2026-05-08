@@ -24,23 +24,26 @@ public class Creature1 : SensoryMonster
     {
         FaceTarget(player.position, true);
 
-        int attackIndex = Random.Range(1, 4);
+        float rand = Random.value;
 
-        switch (attackIndex)
+        if (rand < 0.5f)
         {
-            case 1:
-                anim.SetTrigger(HashAttack1);
-                break;
-
-            case 2:
-                anim.SetTrigger(HashAttack2);
-                break;
-
-            case 3:
-                anim.SetTrigger(HashAttack3);
-                break;
-
+            SetCurrentAttackDamage(7f);
+            anim.SetTrigger(HashAttack1);
         }
+        else if (rand < 0.8f)
+        {
+            SetCurrentAttackDamage(3f);
+            ApplyStatusEffect(StatusFlags.Bleed, 3f, 1.5f);
+            anim.SetTrigger(HashAttack2);
+        }
+        else
+        {
+            SetCurrentAttackDamage(3f);
+            ApplyStatusEffect(StatusFlags.Bleed, 3f, 1.5f);
+            anim.SetTrigger(HashAttack3);
+        }
+
     }
 
     protected override void PlayHitAnim()
