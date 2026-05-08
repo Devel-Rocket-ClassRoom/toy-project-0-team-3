@@ -20,6 +20,8 @@ public class PlayerStatus : LivingEntity
     private PlayerSkill _playerSkill;
     private Animator _animator;
 
+    public GameObject GameOver;
+
     private SkinnedMeshRenderer[] _renderers; // 스킨 렌더러
 
     public float[] GetRemainingCooldowns() => _playerSkill.GetRemainingCooldowns();
@@ -37,6 +39,7 @@ public class PlayerStatus : LivingEntity
         _playerSkill = GetComponent<PlayerSkill>();
         _animator = GetComponent<Animator>();
         _renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+        GameOver.SetActive(false);
     }
 
     protected override void Update()
@@ -142,6 +145,12 @@ public class PlayerStatus : LivingEntity
         }
 
         _animator.SetTrigger("Dead");
+        GameOver.SetActive(true);
+    }
+
+    public void OnGameOver()
+    {
+        SceneLoader.Instance.LoadScene(SceneLoader.GameScene.Pub);
     }
 
     public void SetInvincible(bool value)

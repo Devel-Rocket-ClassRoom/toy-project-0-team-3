@@ -6,7 +6,7 @@ public class MagicSquare : MonoBehaviour
     [SerializeField] private GameObject portalPrefab;
 
     private ParticleSystem portalParticle;
-    
+
     private bool isActivated = false;
     private Vector3 _portalLifter = new Vector3(0f, 1.5f, 0f);
 
@@ -16,7 +16,7 @@ public class MagicSquare : MonoBehaviour
     private void Awake()
     {
         portalParticle = portalPrefab.GetComponent<ParticleSystem>();
-        
+
     }
     public void Interact()
     {
@@ -28,10 +28,10 @@ public class MagicSquare : MonoBehaviour
         {
             isActivated = true;
 
-        //portalParticle.Play();
+            //portalParticle.Play();
 
-        Instantiate(portalPrefab, transform.position + _portalLifter, Quaternion.identity);
+            Instantiate(portalPrefab, transform.position + _portalLifter, Quaternion.identity);
         }
-        
+
     }
 }

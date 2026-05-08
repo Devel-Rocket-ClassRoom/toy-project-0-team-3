@@ -35,7 +35,7 @@ public class SceneLoader : MonoBehaviour
     {
         { GameScene.MainTitle, "Prototype_1_Main" },
         { GameScene.Pub, "Prototype_1_Pub" },
-        { GameScene.Dungeon, "Prototype_1_Dungeon_Sangwook"},
+        { GameScene.Dungeon, "Prototype_1_Dungeon_Sangwook_1"},
         { GameScene.BossRoom, "Prototype_1_BossRoom" }
     };
 
