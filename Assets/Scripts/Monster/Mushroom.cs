@@ -42,14 +42,17 @@ public class Mushroom : SimpleMonster
 
         if (rand < 0.5f)
         {
+            SetCurrentAttackDamage(5f);
             anim.SetTrigger(HashAttack1);
         }
         else if (rand < 0.8f)
         {
+            SetCurrentAttackDamage(8f);
             anim.SetTrigger(HashAttack2);
         }
         else
         {
+            SetCurrentAttackDamage(10f);
             anim.SetTrigger(HashAttack3);
         }
     }

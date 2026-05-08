@@ -18,7 +18,7 @@ public abstract class BaseMonster : LivingEntity
 
     [Header("Combat")]
     [SerializeField]
-    protected float BaseAttackDamage = 1f;
+    protected float baseAttackDamage = 1f;
     protected float currentAttackDamage;
     [SerializeField]
     protected HitBox hitBox;
@@ -36,8 +36,6 @@ public abstract class BaseMonster : LivingEntity
     [Header("Alert Mark")]
     [SerializeField]
     protected GameObject alertMarkPrefab;
-    [SerializeField]
-    protected Vector3 alertMarkLocalOffset = new Vector3(0f, 2.2f, 0f);
 
     [Header("Animation Event Safety")]
     [SerializeField]
@@ -74,7 +72,6 @@ public abstract class BaseMonster : LivingEntity
 
     [Header("NavMesh")]
     [SerializeField]
-    protected float destinationSampleRadius = 2f;
     protected NavMeshAgent agent;
 
     protected Animator anim;
@@ -89,7 +86,6 @@ public abstract class BaseMonster : LivingEntity
     private float attackStartedTime;
     private float lastAttackEndTime;
 
-    private GameObject alertMarkInstance;
     private Coroutine hitReactionCoroutine;
     private Collider bodyCollider;
 
@@ -116,7 +112,7 @@ public abstract class BaseMonster : LivingEntity
         //spawnPosition = transform.position;
         //spawnRotation = transform.rotation;
 
-        currentAttackDamage = BaseAttackDamage;
+        currentAttackDamage = baseAttackDamage;
 
         if (bodyCollider != null)
         {
@@ -140,7 +136,7 @@ public abstract class BaseMonster : LivingEntity
             }
         }
 
-        ClearAlertMark();
+        alertMarkPrefab.SetActive(false);
         ChangeState(MonsterState.Idle, true);
     }
 
@@ -202,8 +198,6 @@ public abstract class BaseMonster : LivingEntity
             return;
         }
 
-        ExitState(currentState);
-
         currentState = nextState;
         Debug.Log($"[{gameObject.name}] State -> {currentState}");
 
@@ -216,7 +210,7 @@ public abstract class BaseMonster : LivingEntity
         {
             case MonsterState.Idle:
                 StopMoving();
-                ClearAlertMark();
+                alertMarkPrefab.SetActive(false);
                 PlayIdleAnim();
                 break;
 
@@ -227,23 +221,23 @@ public abstract class BaseMonster : LivingEntity
                 break;
 
             case MonsterState.Trace:
-                ClearAlertMark();
+                ShowAlertMark();
                 ResumeMoving();
                 break;
 
             case MonsterState.Attack:
-                ClearAlertMark();
+                ShowAlertMark();
                 StopMoving();
                 break;
 
             case MonsterState.Return:
-                ClearAlertMark();
+                alertMarkPrefab.SetActive(false);
                 ResumeMoving();
                 break;
 
             case MonsterState.Dead:
                 StopMoving();
-                ClearAlertMark();
+                alertMarkPrefab.SetActive(false);
 
                 if (bodyCollider != null)
                 {
@@ -260,14 +254,6 @@ public abstract class BaseMonster : LivingEntity
                 DropLoot();
                 Destroy(gameObject, destroyDelay);
                 break;
-        }
-    }
-
-    private void ExitState(MonsterState state)
-    {
-        if (state == MonsterState.Alert)
-        {
-            ClearAlertMark();
         }
     }
 
@@ -343,7 +329,7 @@ public abstract class BaseMonster : LivingEntity
         isAttacking = true;
         attackStartedTime = Time.time;
 
-        currentAttackDamage = BaseAttackDamage;
+        currentAttackDamage = baseAttackDamage;
 
         StopMoving();
 
@@ -388,9 +374,9 @@ public abstract class BaseMonster : LivingEntity
         lastAttackEndTime = Time.time;
     }
 
-    protected virtual void SetCurrentAttackDamage(float damage)
+    protected void SetCurrentAttackDamage(float damage)
     {
-        currentAttackDamage = Mathf.Max(0f, damage);
+        currentAttackDamage = baseAttackDamage * Mathf.Abs(damage);
     }
 
     protected virtual void ApplyAttackDamage()
@@ -476,7 +462,7 @@ public abstract class BaseMonster : LivingEntity
             return;
         }
 
-        ClearAlertMark();
+        alertMarkPrefab.SetActive(false);
 
         float dist = GetDistanceToPlayer();
 
@@ -712,30 +698,10 @@ public abstract class BaseMonster : LivingEntity
 
     protected void ShowAlertMark()
     {
-        if (alertMarkPrefab == null)
+        if (alertMarkPrefab != null && !alertMarkPrefab.activeSelf)
         {
-            return;
+            alertMarkPrefab.SetActive(true);
         }
-
-        if (alertMarkInstance != null)
-        {
-            return;
-        }
-
-        alertMarkInstance = Instantiate(alertMarkPrefab, transform);
-        alertMarkInstance.transform.localPosition = alertMarkLocalOffset;
-        alertMarkInstance.transform.localRotation = Quaternion.identity;
-    }
-
-    protected void ClearAlertMark()
-    {
-        if (alertMarkInstance == null)
-        {
-            return;
-        }
-
-        Destroy(alertMarkInstance);
-        alertMarkInstance = null;
     }
 
     protected abstract void PlayIdleAnim();

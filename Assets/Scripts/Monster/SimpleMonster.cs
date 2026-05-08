@@ -1,14 +1,19 @@
 using UnityEngine;
 
-public abstract class SimpleMonster : BaseMonsterKnockback
+public abstract class SimpleMonster : BaseMonster
 {
     [Header("Detection Type Ranges")]
-    [SerializeField] protected float alertRange = 8f;
-    [SerializeField] protected float traceRange = 5f;
-    [SerializeField] protected float chaseRange = 14f;
+    [SerializeField] 
+    protected float alertRange = 8f;
+    [SerializeField] 
+    protected float traceRange = 5f;
+    [SerializeField] 
+    protected float chaseRange = 14f;
+
 
     [Header("Detection Option")]
-    [SerializeField] protected bool requireLineOfSight = true;
+    [SerializeField]
+    protected bool requireLineOfSight = true;
 
     protected override void UpdateIdle()
     {

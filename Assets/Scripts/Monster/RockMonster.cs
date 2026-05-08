@@ -205,21 +205,22 @@ public class RockMonster : SimpleMonster
 
         anim.SetFloat(HashLocomotion, idleLocomotionValue);
 
-        int attackIndex = Random.Range(0, 3);
+        float rand = Random.value;
 
-        switch (attackIndex)
+        if (rand < 0.5f)
         {
-            case 0:
-                anim.SetTrigger(HashAttack1A);
-                break;
-
-            case 1:
-                anim.SetTrigger(HashAttack1B);
-                break;
-
-            case 2:
-                anim.SetTrigger(HashAttack2);
-                break;
+            SetCurrentAttackDamage(10f);
+            anim.SetTrigger(HashAttack1A);
+        }
+        else if (rand < 0.8f)
+        {
+            SetCurrentAttackDamage(10f);
+            anim.SetTrigger(HashAttack1B);
+        }
+        else
+        {
+            SetCurrentAttackDamage(20f);
+            anim.SetTrigger(HashAttack2);
         }
     }
 
