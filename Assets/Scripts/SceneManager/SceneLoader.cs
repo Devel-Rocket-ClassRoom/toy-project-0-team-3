@@ -2,11 +2,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
-/// <summary>
 /// 씬 전환을 담당하는 싱글톤 매니저
 /// 씬을 로드할 때는 SceneManager 대신 이 클래스를 사용
 /// 사용 예: SceneLoader.Instance.LoadScene(SceneLoader.GameScene.Dungeon);
-/// </summary>
 public class SceneLoader : MonoBehaviour
 {
     public static SceneLoader Instance { get; private set; }
