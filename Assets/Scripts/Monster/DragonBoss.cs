@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class DragonBoss : LivingEntity
 {
-    private enum BossState 
-    { 
+    [SerializeField] private GameObject portalPrefab;
+
+    private enum BossState
+    {
         Idle,
         Chase,
         GroundAttack,
         TakeOff,
         AirIdle,
         AirBreathFire,
-        Landing, 
+        Landing,
         HitReaction,
-        Dead 
+        Dead
     }
 
     [System.Serializable]
@@ -70,13 +72,13 @@ public class DragonBoss : LivingEntity
     private float landingSpeedMultiplier = 2f;
 
     [Header("Phase")]
-    [SerializeField] 
+    [SerializeField]
     private float phase2HealthRatio = 0.5f;
 
     [Header("Burn")]
-    [SerializeField] 
+    [SerializeField]
     private float burnDuration = 3f;
-    [SerializeField] 
+    [SerializeField]
     private float burnTickDamage = 2f;
 
     [Header("Attack Probability")]
@@ -582,7 +584,7 @@ public class DragonBoss : LivingEntity
         phase2Requested = true;
 
         if (!isActionLocked)
-        { 
+        {
             StartPhase2TransitionNow();
         }
     }
@@ -618,6 +620,7 @@ public class DragonBoss : LivingEntity
         }
 
         Destroy(gameObject, destroyDelay);
+        Instantiate(portalPrefab, transform.position, Quaternion.identity);
     }
 
     private void BeginAction(BossState state)
@@ -812,10 +815,10 @@ public class DragonBoss : LivingEntity
 
         while (timeout > 0f)
         {
-            AnimatorStateInfo info = 
-                anim.IsInTransition(animatorLayerIndex) ? anim.GetNextAnimatorStateInfo(animatorLayerIndex) 
+            AnimatorStateInfo info =
+                anim.IsInTransition(animatorLayerIndex) ? anim.GetNextAnimatorStateInfo(animatorLayerIndex)
                 : anim.GetCurrentAnimatorStateInfo(animatorLayerIndex);
-            
+
             if (IsState(info, stateName) && !anim.IsInTransition(animatorLayerIndex))
             {
                 yield break;
