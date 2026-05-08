@@ -883,7 +883,7 @@ GameObject:
   - component: {fileID: 6333187160507835309}
   - component: {fileID: 4519842578620285077}
   - component: {fileID: 5214679545264452398}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: MushMonster
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -1380,8 +1380,9 @@ MonoBehaviour:
   turnSpeed: 720
   attackRange: 1.5
   attackCooldown: 2
-  BaseAttackDamage: 1
+  attackDamage: 10
   hitBox: {fileID: 4003579869161019703}
+  allowMultipleDamageEventsPerAttack: 0
   playerTag: Player
   obstacleLayer:
     serializedVersion: 2
@@ -1394,6 +1395,8 @@ MonoBehaviour:
   hitReactionFallbackDuration: 0.6
   returnArriveDistance: 0.35
   destroyDelay: 3
+  knockbackForce: 5
+  knockbackDuration: 0.3
   currentState: 0
   destinationSampleRadius: 2
   alertRange: 8

@@ -39,6 +39,7 @@ public class PlayerSkill : MonoBehaviour
 
         if (_input.SkillQ && _qSkill.CanUse && !IsUsingSkill && _playerStatus.CurrentMana >= _qManaCost)
         {
+            _playerStatus.SetInvincible(true);
             IsUsingSkill = true;
             _playerStatus.UseMana(_qManaCost); // 추가
             _qSkill?.Use();
@@ -48,6 +49,7 @@ public class PlayerSkill : MonoBehaviour
 
         if (_input.SkillW && _wSkill.CanUse && !IsUsingSkill && _playerStatus.CurrentMana >= _wManaCost)
         {
+            _playerStatus.SetInvincible(true);
             IsUsingSkill = true;
             _playerStatus.UseMana(_wManaCost); // 추가
             _wSkill?.Use();
@@ -57,6 +59,7 @@ public class PlayerSkill : MonoBehaviour
 
         if (_input.SkillE && _eSkill.CanUse && !IsUsingSkill && _playerStatus.CurrentMana >= _eManaCost)
         {
+            _playerStatus.SetInvincible(true);
             IsUsingSkill = true;
             _playerStatus.UseMana(_eManaCost); // 추가
             _eSkill?.Use();
@@ -65,6 +68,7 @@ public class PlayerSkill : MonoBehaviour
 
         if (_input.SkillR && _rSkill.CanUse && !IsUsingSkill && _playerStatus.CurrentMana >= _rManaCost)
         {
+            _playerStatus.SetInvincible(true);
             IsUsingSkill = true;
             _playerStatus.UseMana(_rManaCost); // 추가
             _rSkill?.Use();
@@ -124,6 +128,7 @@ public class PlayerSkill : MonoBehaviour
 
     public void OnSkillEnd()
     {
+        _playerStatus.SetInvincible(false);
         IsUsingSkill = false;
         _playerAttack.ForceReset();
     }

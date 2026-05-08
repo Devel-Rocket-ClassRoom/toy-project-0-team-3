@@ -786,7 +786,7 @@ GameObject:
   - component: {fileID: 7291323411690267993}
   - component: {fileID: 7181925076669661808}
   - component: {fileID: 6667756665261958393}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: MushMonsterBasic
   m_TagString: Monster
   m_Icon: {fileID: 0}

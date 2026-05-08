@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 1500403833964863954}
   - component: {fileID: 5935694011705318696}
   - component: {fileID: 5135014710669182759}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: RockMonster_LP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -823,6 +823,8 @@ MonoBehaviour:
   hitReactionFallbackDuration: 0.6
   returnArriveDistance: 0.35
   destroyDelay: 3
+  knockbackForce: 5
+  knockbackDuration: 0.3
   currentState: 0
   destinationSampleRadius: 2
   alertRange: 8

@@ -360,7 +360,7 @@ GameObject:
   - component: {fileID: 3743900567456963465}
   - component: {fileID: 2558262181784512433}
   - component: {fileID: 6602194669137973691}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Anubis_lp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1509,9 +1509,8 @@ MonoBehaviour:
   turnSpeed: 720
   attackRange: 1.5
   attackCooldown: 1
-  attackDamage: 10
+  BaseAttackDamage: 1
   hitBox: {fileID: 0}
-  allowMultipleDamageEventsPerAttack: 0
   playerTag: Player
   obstacleLayer:
     serializedVersion: 2

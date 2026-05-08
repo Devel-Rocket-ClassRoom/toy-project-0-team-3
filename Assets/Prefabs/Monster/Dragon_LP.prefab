@@ -3815,7 +3815,7 @@ GameObject:
   - component: {fileID: 4849130772353318525}
   - component: {fileID: 3150841730263166891}
   - component: {fileID: 4160782280877526429}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Dragon_LP
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -4404,10 +4404,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   playerTag: Player
-  anim: {fileID: 0}
-  disableNavMeshAgentOnEnable: 1
-  disableRootMotionOnEnable: 1
-  forceKinematicRigidbody: 1
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   activationRange: 25
   attackRange: 10
   stopDistance: 7.5
@@ -4440,64 +4439,54 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  landingHeightCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  landingSpeedMultiplier: 2
   phase2HealthRatio: 0.5
-  attack1Damage: 18
-  attack2Damage: 24
-  breathDamage: 12
-  airBreathDamage: 16
   burnDuration: 3
   burnTickDamage: 2
-  forceSpecialAfterMeleeCount: 5
-  attack1WeightNear: 0.25
-  attack1WeightFar: 0.75
-  attack2WeightNear: 0.75
-  attack2WeightFar: 0.15
+  specialAttackInterval: 5
+  attack1Near: 0.25
+  attack1Far: 0.75
+  attack2Near: 0.75
+  attack2Far: 0.15
   baseSpecialWeight: 0.08
-  specialWeightPerMeleeAttack: 0.08
+  specialChanceIncrease: 0.08
   maxSpecialWeight: 0.55
   attackCooldown: 1.5
-  headBiteHitBox: {fileID: 0}
-  footStompHitBox: {fileID: 0}
-  groundBreathHitBox: {fileID: 0}
-  airBreathHitBox: {fileID: 0}
-  attack1HitWindow: {x: 0.35, y: 0.55}
-  attack2HitWindow: {x: 0.45, y: 0.65}
-  groundBreathHitWindow: {x: 0.25, y: 0.85}
-  airBreathHitWindow: {x: 0.2, y: 0.9}
+  attack1:
+    triggerName: attack1
+    stateName: Attack01
+    hitBox: {fileID: 0}
+    damage: 18
+    applyBurn: 0
+    hitWindow: {x: 0.35, y: 0.55}
+  attack2:
+    triggerName: attack2
+    stateName: Attack02
+    hitBox: {fileID: 0}
+    damage: 24
+    applyBurn: 0
+    hitWindow: {x: 0.45, y: 0.65}
+  groundBreath:
+    triggerName: breatheFire
+    stateName: BreatheFire
+    hitBox: {fileID: 0}
+    damage: 12
+    applyBurn: 1
+    hitWindow: {x: 0.25, y: 0.85}
+  airBreath:
+    triggerName: flyBreatheFire
+    stateName: FlyBreatheFire
+    hitBox: {fileID: 0}
+    damage: 16
+    applyBurn: 1
+    hitWindow: {x: 0.2, y: 0.9}
   animatorLayerIndex: 0
-  attack1StateName: Attack01
-  attack2StateName: Attack02
-  breatheFireStateName: BreatheFire
   takeOffStateName: Idle Takeoff
-  flyBreatheFireStateName: FlyBreatheFire
   landingStateName: Idle Landing
   gotHitStateName: Hit01
   hitReactionStepRatio: 0.05
   destroyDelay: 5
+  drawDetectionGizmos: 1
   currentState: 0
 --- !u!54 &4849130772353318525
 Rigidbody:
