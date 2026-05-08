@@ -1066,7 +1066,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &154357150260305359
 Transform:
   m_ObjectHideFlags: 0
@@ -1566,7 +1566,7 @@ MonoBehaviour:
     m_Bits: 0
   eyeHeight: 1.5
   targetEyeHeight: 1
-  alertMarkPrefab: {fileID: 0}
+  alertMarkPrefab: {fileID: 1316921277109025651}
   attackFallbackDuration: 2.5
   hitReactionFallbackDuration: 0.6
   returnArriveDistance: 0.35
