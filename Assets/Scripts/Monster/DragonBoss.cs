@@ -194,7 +194,12 @@ public class DragonBoss : LivingEntity
 
         ApplyPose();
 
-        isPhase2 = isAirborne = isActionLocked = isChangingPhase = phase2Requested = false;
+        isPhase2 = false;
+        isAirborne = false;
+        isActionLocked = false;
+        isChangingPhase = false;
+        phase2Requested = false;
+
         normalAttackCount = 0;
         nextAttackTime = 0f;
         nextHitReactionHealth = startingHealth * (1f - hitReactionStepRatio);
@@ -261,6 +266,7 @@ public class DragonBoss : LivingEntity
     private void UpdateIdle()
     {
         PlayIdle();
+
         if (FlatDistance(bossPosition, player.position) <= activationRange)
         {
             currentState = BossState.Chase;
@@ -272,6 +278,7 @@ public class DragonBoss : LivingEntity
         if (!isPhase2 && Health <= startingHealth * phase2HealthRatio)
         {
             RequestPhase2Transition();
+
             return;
         }
         float dist = FlatDistance(bossPosition, player.position);
@@ -279,6 +286,7 @@ public class DragonBoss : LivingEntity
         if (dist <= attackRange && Time.time >= nextAttackTime)
         {
             StartSelectedAttack();
+
             return;
         }
 
@@ -296,12 +304,14 @@ public class DragonBoss : LivingEntity
     private void StartSelectedAttack()
     {
         int index = SelectAttackIndex();
+
         if (index == 2)
         {
             normalAttackCount = 0;
             StartAction(isPhase2 ? AirSequence(false) : GroundAttack(groundBreath));
             return;
         }
+
         normalAttackCount++;
         StartAction(GroundAttack(index == 0 ? attack1 : attack2));
     }
@@ -799,6 +809,7 @@ public class DragonBoss : LivingEntity
     private IEnumerator WaitForState(string stateName)
     {
         float timeout = 2f;
+
         while (timeout > 0f)
         {
             AnimatorStateInfo info = 
@@ -809,7 +820,9 @@ public class DragonBoss : LivingEntity
             {
                 yield break;
             }
+
             timeout -= Time.deltaTime;
+
             yield return null;
         }
 
@@ -948,7 +961,10 @@ public class DragonBoss : LivingEntity
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        if (drawDetectionGizmos) DrawDetectionGizmos();
+        if (drawDetectionGizmos)
+        {
+            DrawDetectionGizmos();
+        }
     }
 
     private void DrawDetectionGizmos()

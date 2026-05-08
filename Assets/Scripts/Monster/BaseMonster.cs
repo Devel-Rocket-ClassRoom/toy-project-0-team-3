@@ -16,7 +16,6 @@ public abstract class BaseMonster : LivingEntity
     [SerializeField]
     protected float attackCooldown = 1.0f;
 
-
     [Header("Combat")]
     [SerializeField]
     protected float BaseAttackDamage = 1f;
@@ -389,7 +388,7 @@ public abstract class BaseMonster : LivingEntity
         lastAttackEndTime = Time.time;
     }
 
-    protected void SetCurrentAttackDamage(float damage)
+    protected virtual void SetCurrentAttackDamage(float damage)
     {
         currentAttackDamage = Mathf.Max(0f, damage);
     }
@@ -456,6 +455,8 @@ public abstract class BaseMonster : LivingEntity
         }
 
         HandleDamageAggro();
+
+        Debug.Log(Health);
 
         if (!isAttacking)
         {
