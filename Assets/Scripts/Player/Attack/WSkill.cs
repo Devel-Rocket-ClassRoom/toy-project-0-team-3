@@ -3,9 +3,14 @@ using UnityEngine;
 
 public class WSkill : SkillBase
 {
-    [SerializeField] private float _dashSpeed = 15f;
-    [SerializeField] private float _dashDuration = 0.3f;
-    [SerializeField] private float _rotateSpeed = 5f;
+    [SerializeField]
+    private float _dashSpeed = 15f;
+
+    [SerializeField]
+    private float _dashDuration = 0.3f;
+
+    [SerializeField]
+    private float _rotateSpeed = 5f;
 
     public Vector3 Direction { get; set; } = Vector3.zero;
 
@@ -31,20 +36,21 @@ public class WSkill : SkillBase
         _playerStatus.SetInvincible(true);
 
         float elapsed = 0f;
-        Vector3 currentDir = Direction != Vector3.zero
-            ? Direction.normalized
-            : _rigidbody.transform.forward;
+        Vector3 currentDir =
+            Direction != Vector3.zero ? Direction.normalized : _rigidbody.transform.forward;
 
         while (elapsed < _dashDuration)
         {
-            Vector3 targetDir = Direction != Vector3.zero
-                ? Direction.normalized
-                : currentDir;
+            Vector3 targetDir = Direction != Vector3.zero ? Direction.normalized : currentDir;
 
-            currentDir = Vector3.Slerp(currentDir, targetDir, _rotateSpeed * Time.fixedDeltaTime).normalized;
+            currentDir = Vector3
+                .Slerp(currentDir, targetDir, _rotateSpeed * Time.fixedDeltaTime)
+                .normalized;
 
             _rigidbody.transform.rotation = Quaternion.LookRotation(currentDir);
-            _rigidbody.MovePosition(_rigidbody.position + currentDir * _dashSpeed * Time.fixedDeltaTime);
+            _rigidbody.MovePosition(
+                _rigidbody.position + currentDir * _dashSpeed * Time.fixedDeltaTime
+            );
 
             elapsed += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();

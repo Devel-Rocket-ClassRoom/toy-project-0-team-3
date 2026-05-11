@@ -4,17 +4,29 @@ using UnityEngine;
 
 public class ESkill : SkillBase
 {
-    [SerializeField] private float _jumpHeight = 3f;
-    [SerializeField] private float _forwardDistance = 3f;
-    [SerializeField] private float _jumpDuration = 0.5f;
-    [SerializeField] private float _smashDuration = 0.2f;
-    [SerializeField] private GameObject _rangeIndicator;
+    [SerializeField]
+    private float _jumpHeight = 3f;
+
+    [SerializeField]
+    private float _forwardDistance = 3f;
+
+    [SerializeField]
+    private float _jumpDuration = 0.5f;
+
+    [SerializeField]
+    private float _smashDuration = 0.2f;
+
+    [SerializeField]
+    private GameObject _rangeIndicator;
 
     private PlayerSkill _playerSkill;
     private Rigidbody _rigidbody;
 
-    [SerializeField] private float _damage = 30f;
-    [SerializeField] private Collider _eCollider;
+    [SerializeField]
+    private float _damage = 30f;
+
+    [SerializeField]
+    private Collider _eCollider;
 
     private HashSet<Collider> _hitTargets = new HashSet<Collider>();
 
@@ -42,13 +54,16 @@ public class ESkill : SkillBase
 
     public void OnHit(Collider other)
     {
-        if (_hitTargets.Contains(other)) return;
+        if (_hitTargets.Contains(other))
+            return;
         _hitTargets.Add(other);
 
         if (other.TryGetComponent<IDamagable>(out var target))
         {
             Vector3 hitPoint = other.transform.position;
-            Vector3 hitNormal = (other.transform.position - _eCollider.transform.position).normalized;
+            Vector3 hitNormal = (
+                other.transform.position - _eCollider.transform.position
+            ).normalized;
             target.OnDamage(_damage, hitPoint, hitNormal);
         }
     }

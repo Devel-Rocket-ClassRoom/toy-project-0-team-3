@@ -3,11 +3,15 @@ using UnityEngine;
 public class TestPlayer : LivingEntity
 {
     [Header("이동")]
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField]
+    private float moveSpeed = 5f;
 
     [Header("마나")]
-    [SerializeField] private float maxMana = 100f;
-    [SerializeField] private float manaRegen = 5f;
+    [SerializeField]
+    private float maxMana = 100f;
+
+    [SerializeField]
+    private float manaRegen = 5f;
 
     public float CurrentMana { get; private set; }
     public float MaxHealth => startingHealth;
@@ -50,6 +54,7 @@ public class TestPlayer : LivingEntity
         // 프레임률에 독립적인 이동을 위한 Time.deltaTime 적용
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
     }
+
     // ----------------------
 
     public void UseMana(float amount)
@@ -123,6 +128,7 @@ public class TestPlayer : LivingEntity
             Debug.Log($"[테스트 공격] {target.name}에게 {attackDamage} 데미지 적용");
         }
     }
+
     public override void Die()
     {
         base.Die();

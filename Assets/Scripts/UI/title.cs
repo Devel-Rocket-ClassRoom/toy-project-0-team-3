@@ -3,14 +3,18 @@ using UnityEngine.UI;
 
 public class title : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     private Button continueButton;
+
     [SerializeField]
     private Button newGameButton;
+
     [SerializeField]
     private Button loadGameButton;
+
     [SerializeField]
     private Button optionsButton;
+
     [SerializeField]
     private Button QuitButton;
 

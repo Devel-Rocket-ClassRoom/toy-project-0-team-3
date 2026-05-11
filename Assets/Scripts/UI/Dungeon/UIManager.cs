@@ -2,12 +2,18 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private PlayerStatus playerStatus;
+    [SerializeField]
+    private PlayerStatus playerStatus;
 
     [Header("UI 컴포넌트")]
-    [SerializeField] private HealthBarUI healthBar;
-    [SerializeField] private ManaBarUI manaBar;
-    [SerializeField] private SkillSlotUI[] skillSlots = new SkillSlotUI[4];
+    [SerializeField]
+    private HealthBarUI healthBar;
+
+    [SerializeField]
+    private ManaBarUI manaBar;
+
+    [SerializeField]
+    private SkillSlotUI[] skillSlots = new SkillSlotUI[4];
 
     private void Awake()
     {
@@ -25,10 +31,7 @@ public class UIManager : MonoBehaviour
             skillSlots[i].UpdateCooldown(ratios[i], remaining[i]);
     }
 
-    private void OnPlayerDied()
-    {
-
-    }
+    private void OnPlayerDied() { }
 
     private void OnDestroy()
     {

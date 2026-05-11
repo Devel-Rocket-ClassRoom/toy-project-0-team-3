@@ -43,7 +43,6 @@ public class Creature1 : SensoryMonster
             ApplyStatusEffect(StatusFlags.Bleed, 3f, 1.5f);
             anim.SetTrigger(HashAttack3);
         }
-
     }
 
     protected override void PlayHitAnim()

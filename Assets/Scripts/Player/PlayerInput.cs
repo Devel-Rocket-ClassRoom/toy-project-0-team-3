@@ -16,7 +16,7 @@ public class PlayerInput : MonoBehaviour
     public bool SkillR { get; private set; }
     public bool TabKey { get; private set; }
 
-    public bool InteractKey {get; private set;}
+    public bool InteractKey { get; private set; }
 
     private void Update()
     {

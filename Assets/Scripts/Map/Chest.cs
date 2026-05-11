@@ -28,7 +28,8 @@ public class Chest : MonoBehaviour
 
     private void Update()
     {
-        if (isOpen || isAnimating) return;
+        if (isOpen || isAnimating)
+            return;
 
         // if (Vector3.Distance(transform.position, player.transform.position) < interactableRange)
         // {
@@ -39,18 +40,16 @@ public class Chest : MonoBehaviour
         // }
     }
 
-
-
     public void OpenLid()
     {
         // isOpen/isAnimating 으로 중복방지
 
-        if (isOpen || isAnimating) return;
+        if (isOpen || isAnimating)
+            return;
         StartCoroutine(RotateLid());
 
         // OpenChestInv();
     }
-
 
     private IEnumerator RotateLid()
     {
@@ -63,7 +62,11 @@ public class Chest : MonoBehaviour
         while (elapsed < openDuration)
         {
             elapsed += Time.deltaTime;
-            lid.transform.localRotation = Quaternion.Lerp(startRotation, endRotation, elapsed / openDuration);
+            lid.transform.localRotation = Quaternion.Lerp(
+                startRotation,
+                endRotation,
+                elapsed / openDuration
+            );
             yield return null;
         }
 
@@ -89,7 +92,8 @@ public class Chest : MonoBehaviour
         for (int i = 0; i < attempts; i++)
         {
             ItemData data = DataTableManager.ItemTable.GetRandom();
-            if (data == null) return;
+            if (data == null)
+                return;
 
             itemDataList.Add(data);
         }

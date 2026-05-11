@@ -20,7 +20,8 @@ public class PlayerRotation : MonoBehaviour
 
     private void Rotate()
     {
-        if (Input.GetAxis("Mouse X") == 0 && Input.GetAxis("Mouse Y") == 0) return;
+        if (Input.GetAxis("Mouse X") == 0 && Input.GetAxis("Mouse Y") == 0)
+            return;
 
         Ray ray = mainCamera.ScreenPointToRay(_playerInput.MousePosition);
 

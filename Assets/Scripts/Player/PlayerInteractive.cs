@@ -1,7 +1,6 @@
 using Unity.Mathematics;
 using UnityEngine;
 
-
 public class PlayerInteractive : MonoBehaviour
 {
     public static PlayerInteractive Instance { get; private set; }
@@ -44,11 +43,14 @@ public class PlayerInteractive : MonoBehaviour
         }
     }
 
-
     // 플레이어 지정된 범위내에 상호작용 가능 대상이 있는지 확인
     private void DetectInteractable()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, interactableRange, interactableLayer);
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position,
+            interactableRange,
+            interactableLayer
+        );
 
         float closestDistance = float.MaxValue;
         currentTarget = null;
@@ -72,8 +74,10 @@ public class PlayerInteractive : MonoBehaviour
         {
             case "Chest":
                 Chest chest = target.GetComponent<Chest>();
-                if (chest != null) chest.OpenLid();
-                if (chest.itemDataList.Count <= 0) return;
+                if (chest != null)
+                    chest.OpenLid();
+                if (chest.itemDataList.Count <= 0)
+                    return;
                 if (isChestOpen)
                 {
                     isChestOpen = false;
@@ -94,12 +98,14 @@ public class PlayerInteractive : MonoBehaviour
                 break;
             case "MagicSquare":
                 MagicSquare ms = target.GetComponent<MagicSquare>();
-                if (ms != null) ms.Interact();
+                if (ms != null)
+                    ms.Interact();
                 Debug.Log("Portal Activated");
                 break;
             case "Portal":
                 ExitPortal portal = target.GetComponent<ExitPortal>();
-                if (portal != null) portal.Interact();
+                if (portal != null)
+                    portal.Interact();
                 Debug.Log("Leaving Dungeon");
                 break;
         }
@@ -112,4 +118,3 @@ public class PlayerInteractive : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, interactableRange);
     }
 }
-

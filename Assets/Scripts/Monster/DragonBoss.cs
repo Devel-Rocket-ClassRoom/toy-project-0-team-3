@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class DragonBoss : LivingEntity
 {
-    [SerializeField] private GameObject portalPrefab;
+    [SerializeField]
+    private GameObject portalPrefab;
 
     private enum BossState
     {
@@ -16,7 +17,7 @@ public class DragonBoss : LivingEntity
         AirBreathFire,
         Landing,
         HitReaction,
-        Dead
+        Dead,
     }
 
     [System.Serializable]
@@ -44,30 +45,39 @@ public class DragonBoss : LivingEntity
     [Header("Target")]
     [SerializeField]
     private string playerTag = "Player";
+
     [SerializeField]
     private LayerMask targetLayers = ~0;
 
     [Header("Movement")]
     [SerializeField]
     private float activationRange = 25f;
+
     [SerializeField]
     private float attackRange = 10f;
+
     [SerializeField]
     private float stopDistance = 7.5f;
+
     [SerializeField]
     private float groundMoveSpeed = 4f;
+
     [SerializeField]
     private float airMoveSpeed = 8f;
+
     [SerializeField]
     private float turnSpeed = 360f;
 
     [Header("Air Movement")]
     [SerializeField]
     private float airHeight = 6f;
+
     [SerializeField]
     private float airIdleDuration = 2f;
+
     [SerializeField]
     private AnimationCurve takeOffHeightCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
     [SerializeField]
     private float landingSpeedMultiplier = 2f;
 
@@ -78,26 +88,35 @@ public class DragonBoss : LivingEntity
     [Header("Burn")]
     [SerializeField]
     private float burnDuration = 3f;
+
     [SerializeField]
     private float burnTickDamage = 2f;
 
     [Header("Attack Probability")]
     [SerializeField]
     private int specialAttackInterval = 5;
+
     [SerializeField]
     private float attack1Near = 0.25f;
+
     [SerializeField]
     private float attack1Far = 0.75f;
+
     [SerializeField]
     private float attack2Near = 0.75f;
+
     [SerializeField]
     private float attack2Far = 0.15f;
+
     [SerializeField]
     private float baseSpecialWeight = 0.08f;
+
     [SerializeField]
     private float specialChanceIncrease = 0.08f;
+
     [SerializeField]
     private float maxSpecialWeight = 0.55f;
+
     [SerializeField]
     private float attackCooldown = 1.5f;
 
@@ -109,8 +128,9 @@ public class DragonBoss : LivingEntity
         stateName = "Attack01",
         damage = 18f,
         applyBurn = false,
-        hitWindow = new Vector2(0.35f, 0.55f)
+        hitWindow = new Vector2(0.35f, 0.55f),
     };
+
     [SerializeField]
     private AttackData attack2 = new AttackData
     {
@@ -118,8 +138,9 @@ public class DragonBoss : LivingEntity
         stateName = "Attack02",
         damage = 24f,
         applyBurn = false,
-        hitWindow = new Vector2(0.45f, 0.65f)
+        hitWindow = new Vector2(0.45f, 0.65f),
     };
+
     [SerializeField]
     private AttackData groundBreath = new AttackData
     {
@@ -127,8 +148,9 @@ public class DragonBoss : LivingEntity
         stateName = "BreatheFire",
         damage = 12f,
         applyBurn = true,
-        hitWindow = new Vector2(0.25f, 0.85f)
+        hitWindow = new Vector2(0.25f, 0.85f),
     };
+
     [SerializeField]
     private AttackData airBreath = new AttackData
     {
@@ -136,30 +158,36 @@ public class DragonBoss : LivingEntity
         stateName = "FlyBreatheFire",
         damage = 16f,
         applyBurn = true,
-        hitWindow = new Vector2(0.20f, 0.90f)
+        hitWindow = new Vector2(0.20f, 0.90f),
     };
 
     [Header("Animator")]
     [SerializeField]
     private int animatorLayerIndex = 0;
+
     [SerializeField]
     private string takeOffStateName = "Idle Takeoff";
+
     [SerializeField]
     private string landingStateName = "Idle Landing";
+
     [SerializeField]
     private string gotHitStateName = "Hit01";
 
     [Header("Hit Reaction / Death")]
     [SerializeField]
     private float hitReactionStepRatio = 0.05f;
+
     [SerializeField]
     private float destroyDelay = 5f;
 
     [Header("Gizmos")]
-    [SerializeField] private bool drawDetectionGizmos = true;
+    [SerializeField]
+    private bool drawDetectionGizmos = true;
 
     [Header("Debug")]
-    [SerializeField] private BossState currentState = BossState.Idle;
+    [SerializeField]
+    private BossState currentState = BossState.Idle;
 
     private Transform player;
     private Animator anim;
@@ -241,7 +269,8 @@ public class DragonBoss : LivingEntity
 
     private void LateUpdate()
     {
-        if (!IsDead) ApplyPose();
+        if (!IsDead)
+            ApplyPose();
     }
 
     private void OnAnimatorMove()
@@ -325,10 +354,16 @@ public class DragonBoss : LivingEntity
             return 2;
         }
 
-        float distance01 = Mathf.Clamp01(FlatDistance(bossPosition, player.position) / Mathf.Max(attackRange, 0.01f));
+        float distance01 = Mathf.Clamp01(
+            FlatDistance(bossPosition, player.position) / Mathf.Max(attackRange, 0.01f)
+        );
         float w1 = Mathf.Lerp(attack1Near, attack1Far, distance01);
         float w2 = Mathf.Lerp(attack2Near, attack2Far, distance01);
-        float ws = Mathf.Clamp(baseSpecialWeight + normalAttackCount * specialChanceIncrease, 0f, maxSpecialWeight);
+        float ws = Mathf.Clamp(
+            baseSpecialWeight + normalAttackCount * specialChanceIncrease,
+            0f,
+            maxSpecialWeight
+        );
         float random = Random.value * (w1 + w2 + ws);
 
         if (random < w1)
@@ -489,7 +524,8 @@ public class DragonBoss : LivingEntity
         {
             FaceTarget(player.position);
             SetY(Mathf.Lerp(startY, groundY, Mathf.Clamp01(t) * landingSpeedMultiplier));
-            if (t >= 1f) break;
+            if (t >= 1f)
+                break;
             yield return null;
         }
 
@@ -547,7 +583,12 @@ public class DragonBoss : LivingEntity
 
     private bool ShouldDelayHitReaction()
     {
-        return isAirborne || isChangingPhase || currentState == BossState.TakeOff || currentState == BossState.AirIdle || currentState == BossState.AirBreathFire || currentState == BossState.Landing;
+        return isAirborne
+            || isChangingPhase
+            || currentState == BossState.TakeOff
+            || currentState == BossState.AirIdle
+            || currentState == BossState.AirBreathFire
+            || currentState == BossState.Landing;
     }
 
     private IEnumerator HitReaction()
@@ -711,19 +752,34 @@ public class DragonBoss : LivingEntity
 
             Vector3 center = box.transform.TransformPoint(box.center);
             Vector3 halfExtents = Vector3.Scale(box.size * 0.5f, box.transform.lossyScale);
-            Collider[] colliders = Physics.OverlapBox(center, halfExtents, box.transform.rotation, targetLayers, QueryTriggerInteraction.Collide);
+            Collider[] colliders = Physics.OverlapBox(
+                center,
+                halfExtents,
+                box.transform.rotation,
+                targetLayers,
+                QueryTriggerInteraction.Collide
+            );
 
             foreach (Collider targetCollider in colliders)
             {
-                LivingEntity target = targetCollider != null ? targetCollider.GetComponentInParent<LivingEntity>() : null;
-                if (target == null || target == this || target.IsDead || damagedTargets.Contains(target))
+                LivingEntity target =
+                    targetCollider != null
+                        ? targetCollider.GetComponentInParent<LivingEntity>()
+                        : null;
+                if (
+                    target == null
+                    || target == this
+                    || target.IsDead
+                    || damagedTargets.Contains(target)
+                )
                 {
                     continue;
                 }
 
-                bool isPlayer = target.CompareTag(playerTag) ||
-                                targetCollider.CompareTag(playerTag) ||
-                                target.transform.root.CompareTag(playerTag);
+                bool isPlayer =
+                    target.CompareTag(playerTag)
+                    || targetCollider.CompareTag(playerTag)
+                    || target.transform.root.CompareTag(playerTag);
 
                 if (!isPlayer)
                 {
@@ -815,8 +871,8 @@ public class DragonBoss : LivingEntity
 
         while (timeout > 0f)
         {
-            AnimatorStateInfo info =
-                anim.IsInTransition(animatorLayerIndex) ? anim.GetNextAnimatorStateInfo(animatorLayerIndex)
+            AnimatorStateInfo info = anim.IsInTransition(animatorLayerIndex)
+                ? anim.GetNextAnimatorStateInfo(animatorLayerIndex)
                 : anim.GetCurrentAnimatorStateInfo(animatorLayerIndex);
 
             if (IsState(info, stateName) && !anim.IsInTransition(animatorLayerIndex))
@@ -829,7 +885,9 @@ public class DragonBoss : LivingEntity
             yield return null;
         }
 
-        Debug.LogWarning($"[{gameObject.name}] Animator state '{stateName}'에 진입하지 못했습니다.");
+        Debug.LogWarning(
+            $"[{gameObject.name}] Animator state '{stateName}'에 진입하지 못했습니다."
+        );
     }
 
     private bool TryGetStateTime(string stateName, out float normalizedTime)
@@ -901,7 +959,9 @@ public class DragonBoss : LivingEntity
         }
 
         Quaternion targetRotation = Quaternion.LookRotation(direction.normalized);
-        bossRotation = instant ? targetRotation : Quaternion.RotateTowards(bossRotation, targetRotation, turnSpeed * Time.deltaTime);
+        bossRotation = instant
+            ? targetRotation
+            : Quaternion.RotateTowards(bossRotation, targetRotation, turnSpeed * Time.deltaTime);
 
         ApplyPose();
     }

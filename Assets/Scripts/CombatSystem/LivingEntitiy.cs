@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Collections.Generic;
 
 public class LivingEntity : MonoBehaviour, IDamagable
 {
@@ -11,8 +11,8 @@ public class LivingEntity : MonoBehaviour, IDamagable
     public UnityEvent OnDead;
 
     public StatusFlags currentStatusMask { get; private set; } = StatusFlags.None;
-    private Dictionary<StatusFlags, StatusEffectData> activeEffects = new Dictionary<StatusFlags, StatusEffectData>();
-
+    private Dictionary<StatusFlags, StatusEffectData> activeEffects =
+        new Dictionary<StatusFlags, StatusEffectData>();
 
     protected virtual void OnEnable()
     {
@@ -84,7 +84,7 @@ public class LivingEntity : MonoBehaviour, IDamagable
             {
                 currentStatusMask &= ~flag;
                 activeEffects.Remove(flag);
-                Debug.Log($"{flag} »óÅÂÀÌ»óÀÌ Á¾·áµÇ¾ú½À´Ï´Ù.");
+                Debug.Log($"{flag} ï¿½ï¿½ï¿½ï¿½ï¿½Ì»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
             }
         }
     }

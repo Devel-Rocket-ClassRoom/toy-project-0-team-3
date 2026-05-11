@@ -10,6 +10,7 @@ public class PlayerInput_Test : MonoBehaviour
     public float MoveY { get; private set; }
     public Vector2 MousePosition { get; private set; }
     public bool Fire { get; private set; }
+
     //public bool Attack { get; private set; }
     // public bool Explode { get; private set; }
 

@@ -1,8 +1,9 @@
 using UnityEngine;
+
 public class TopUIManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject shopPanel; 
+    private GameObject shopPanel;
 
     private void Update()
     {
@@ -28,5 +29,4 @@ public class TopUIManager : MonoBehaviour
             shopPanel.SetActive(false);
         }
     }
-
 }

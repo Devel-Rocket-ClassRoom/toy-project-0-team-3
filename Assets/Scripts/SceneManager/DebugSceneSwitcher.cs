@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-
-
 // 개발 단계에서 씬 전환 하게 해주는 Debug Ui (키보드 단축키로 씬 전환)
 public class DebugSceneSwitcher : MonoBehaviour
 {
-    [SerializeField] private bool showDebugPanel = false;
-    [SerializeField] private KeyCode toggleKey = KeyCode.F1;
+    [SerializeField]
+    private bool showDebugPanel = false;
+
+    [SerializeField]
+    private KeyCode toggleKey = KeyCode.F1;
 
     private void Awake()
     {
@@ -20,7 +21,7 @@ public class DebugSceneSwitcher : MonoBehaviour
         {
             showDebugPanel = !showDebugPanel;
 
-            // 1번 누르면 메인 타이틀 씬 
+            // 1번 누르면 메인 타이틀 씬
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 SceneLoader.Instance.LoadScene(SceneLoader.GameScene.MainTitle);
@@ -45,23 +46,24 @@ public class DebugSceneSwitcher : MonoBehaviour
     private void OnGUI()
     {
         // 에디터 화면에서 씬 쉽게 이동해줄 기능
-        if (!showDebugPanel) return;
+        if (!showDebugPanel)
+            return;
 
-        GUI.Box (new Rect (10, 10, 200, 140), "Scene Switcher (F1)");
-        
-        if (GUI.Button (new Rect(20, 40, 180, 25), "1. Main Title"))
+        GUI.Box(new Rect(10, 10, 200, 140), "Scene Switcher (F1)");
+
+        if (GUI.Button(new Rect(20, 40, 180, 25), "1. Main Title"))
         {
             SceneLoader.Instance.LoadScene(SceneLoader.GameScene.MainTitle);
         }
-        if (GUI.Button (new Rect(20, 70, 180, 25), "2. Pub (주점)"))
+        if (GUI.Button(new Rect(20, 70, 180, 25), "2. Pub (주점)"))
         {
             SceneLoader.Instance.LoadScene(SceneLoader.GameScene.Pub);
         }
-        if (GUI.Button (new Rect(20, 100, 180, 25), "3. Dungeon (던전)"))
+        if (GUI.Button(new Rect(20, 100, 180, 25), "3. Dungeon (던전)"))
         {
             SceneLoader.Instance.LoadScene(SceneLoader.GameScene.Dungeon);
         }
-        if (GUI.Button (new Rect(20, 130, 180, 25), "4. Boss Room (보스 방)"))
+        if (GUI.Button(new Rect(20, 130, 180, 25), "4. Boss Room (보스 방)"))
         {
             SceneLoader.Instance.LoadScene(SceneLoader.GameScene.BossRoom);
         }

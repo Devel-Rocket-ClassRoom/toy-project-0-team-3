@@ -3,25 +3,28 @@ using UnityEngine;
 public abstract class SensoryMonster : BaseMonster
 {
     [Header("Sight Type Settings")]
-    [SerializeField] 
+    [SerializeField]
     protected float viewAngle = 120f;
 
     [Header("Sight Ranges")]
-    [SerializeField] 
+    [SerializeField]
     protected float viewAlertRange = 12f;
-    [SerializeField] 
+
+    [SerializeField]
     protected float viewTraceRange = 6f;
 
     [Header("Alert Detection")]
-    [SerializeField] 
+    [SerializeField]
     protected float detectionRange = 2.5f;
-    [SerializeField] 
+
+    [SerializeField]
     protected float alertDuration = 3f;
-    [SerializeField] 
+
+    [SerializeField]
     protected float alertArriveDistance = 0.45f;
 
     [Header("Chase")]
-    [SerializeField] 
+    [SerializeField]
     protected float chaseRange = 18f;
 
     private Vector3 alertPosition;
@@ -36,7 +39,6 @@ public abstract class SensoryMonster : BaseMonster
         {
             return;
         }
-
 
         if (IsPlayerInsideView(viewTraceRange, viewAngle))
         {

@@ -2,9 +2,14 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed = 10f;
-    [SerializeField] private float _rotateSpeed = 10f;
-    [SerializeField] private float _animAcceleration = 2f; // 증가 속도
+    [SerializeField]
+    private float _moveSpeed = 10f;
+
+    [SerializeField]
+    private float _rotateSpeed = 10f;
+
+    [SerializeField]
+    private float _animAcceleration = 2f; // 증가 속도
 
     private Vector3 _playerDirection;
     public Vector3 PlayerDirection => _playerDirection;
@@ -41,27 +46,43 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        if (_playerAttack.IsAttacking || _playerSkill.IsUsingSkill
-            || _playerStatus.IsHit || _playerStatus.IsDead)
+        if (
+            _playerAttack.IsAttacking
+            || _playerSkill.IsUsingSkill
+            || _playerStatus.IsHit
+            || _playerStatus.IsDead
+        )
         {
             _playerAnimator.SetFloat("Speed", 0f);
             return;
         }
 
-        _playerRigidbody.MovePosition(_playerRigidbody.position + _playerDirection * _moveSpeed * Time.fixedDeltaTime);
+        _playerRigidbody.MovePosition(
+            _playerRigidbody.position + _playerDirection * _moveSpeed * Time.fixedDeltaTime
+        );
 
         float targetSpeed = _playerDirection.magnitude;
-        _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _animAcceleration * Time.fixedDeltaTime);
+        _currentSpeed = Mathf.MoveTowards(
+            _currentSpeed,
+            targetSpeed,
+            _animAcceleration * Time.fixedDeltaTime
+        );
         _playerAnimator.SetFloat("Speed", _currentSpeed);
     }
 
     private void Rotate()
     {
-        if (_playerAttack.IsAttacking || _playerSkill.IsUsingSkill
-            || _playerStatus.IsHit || _playerStatus.IsDead) return;
+        if (
+            _playerAttack.IsAttacking
+            || _playerSkill.IsUsingSkill
+            || _playerStatus.IsHit
+            || _playerStatus.IsDead
+        )
+            return;
 
         Vector3 direction = new Vector3(_playerInput.MoveX, 0f, _playerInput.MoveY);
-        if (direction == Vector3.zero) return;
+        if (direction == Vector3.zero)
+            return;
 
         transform.rotation = Quaternion.Slerp(
             transform.rotation,

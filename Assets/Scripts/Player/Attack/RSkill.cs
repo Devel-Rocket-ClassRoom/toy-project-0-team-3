@@ -3,13 +3,26 @@ using UnityEngine;
 
 public class RSkill : SkillBase
 {
-    [SerializeField] private GameObject _lightningPrefab;  // 번개 파티클 프리펩
-    [SerializeField] private float _radius = 3f;           // 원 반지름
-    [SerializeField] private int _strikeCount = 3;         // 쾅쾅쾅 횟수
-    [SerializeField] private int _lightningPerStrike = 5;  // 한 번에 떨어지는 번개 수
-    [SerializeField] private float _strikeCooldown = 0.4f; // 쾅쾅 사이 간격
-    [SerializeField] private float _damage = 30f;
-    [SerializeField] private float _thickness = 0.5f;
+    [SerializeField]
+    private GameObject _lightningPrefab; // 번개 파티클 프리펩
+
+    [SerializeField]
+    private float _radius = 3f; // 원 반지름
+
+    [SerializeField]
+    private int _strikeCount = 3; // 쾅쾅쾅 횟수
+
+    [SerializeField]
+    private int _lightningPerStrike = 5; // 한 번에 떨어지는 번개 수
+
+    [SerializeField]
+    private float _strikeCooldown = 0.4f; // 쾅쾅 사이 간격
+
+    [SerializeField]
+    private float _damage = 30f;
+
+    [SerializeField]
+    private float _thickness = 0.5f;
 
     private PlayerSkill _playerSkill;
 
@@ -60,7 +73,11 @@ public class RSkill : SkillBase
 
     private void StrikeDamage(float radius)
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, radius + _thickness, LayerMask.GetMask("Monster"));
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position,
+            radius + _thickness,
+            LayerMask.GetMask("Monster")
+        );
 
         foreach (var hit in hits)
         {

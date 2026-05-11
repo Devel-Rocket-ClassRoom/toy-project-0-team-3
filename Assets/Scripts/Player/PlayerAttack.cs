@@ -14,11 +14,16 @@ public class PlayerAttack : MonoBehaviour
     public bool IsAttacking => _isAttacking;
 
     private Rigidbody _rigidbody;
-    [SerializeField] private float _attackDashSpeed = 8f;
-    [SerializeField] private float _attackDashDuration = 0.2f;
+
+    [SerializeField]
+    private float _attackDashSpeed = 8f;
+
+    [SerializeField]
+    private float _attackDashDuration = 0.2f;
     private Coroutine _coDash = null;
 
-    [SerializeField] private Sword _sword;
+    [SerializeField]
+    private Sword _sword;
 
     private void Awake()
     {
@@ -31,7 +36,8 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        if (_playerStatus.IsHit || _playerStatus.IsDead) return;
+        if (_playerStatus.IsHit || _playerStatus.IsDead)
+            return;
 
         if (_playerInput.Attack)
         {
@@ -67,15 +73,17 @@ public class PlayerAttack : MonoBehaviour
 
     public void OnAttackEnd()
     {
-        if (_comboStep == 0) return;
+        if (_comboStep == 0)
+            return;
         ForceReset();
     }
 
     private IEnumerator DashCoroutine()
     {
-        Vector3 dashDirection = _playerMovement.PlayerDirection != Vector3.zero
-            ? _playerMovement.PlayerDirection
-            : transform.forward;
+        Vector3 dashDirection =
+            _playerMovement.PlayerDirection != Vector3.zero
+                ? _playerMovement.PlayerDirection
+                : transform.forward;
 
         if (dashDirection != Vector3.zero)
             transform.rotation = Quaternion.LookRotation(dashDirection);
@@ -83,7 +91,9 @@ public class PlayerAttack : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < _attackDashDuration)
         {
-            _rigidbody.MovePosition(_rigidbody.position + dashDirection * _attackDashSpeed * Time.fixedDeltaTime);
+            _rigidbody.MovePosition(
+                _rigidbody.position + dashDirection * _attackDashSpeed * Time.fixedDeltaTime
+            );
             elapsed += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }

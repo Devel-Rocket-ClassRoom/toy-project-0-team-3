@@ -10,5 +10,4 @@ public class DataTableManagerTest : MonoBehaviour
         Debug.Log(item.Icon);
         Debug.Log(item.Value);
     }
-
 }

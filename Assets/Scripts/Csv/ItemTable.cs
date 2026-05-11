@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class ItemTable : DataTable
 {
-    public readonly Dictionary<string, ItemData> table =
-        new Dictionary<string, ItemData>();
+    public readonly Dictionary<string, ItemData> table = new Dictionary<string, ItemData>();
 
     private List<string> keyList;
 

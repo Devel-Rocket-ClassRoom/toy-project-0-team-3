@@ -20,7 +20,8 @@ public static class DataTableManager
         tables.Add("ItemTable", itemTable);
     }
 
-    public static T Get<T>(string id) where T : DataTable
+    public static T Get<T>(string id)
+        where T : DataTable
     {
         if (!tables.ContainsKey(id))
         {
@@ -30,5 +31,4 @@ public static class DataTableManager
 
         return tables[id] as T;
     }
-
 }

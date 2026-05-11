@@ -23,7 +23,8 @@ public class ItemSlotList : MonoBehaviour
     public void AddItem(string itemId)
     {
         ItemData data = DataTableManager.ItemTable.Get(itemId);
-        if (data == null) return;
+        if (data == null)
+            return;
 
         itemDataList.Add(data);
         UpdateSlots();
@@ -32,7 +33,8 @@ public class ItemSlotList : MonoBehaviour
     public void AddRandomItem()
     {
         ItemData data = DataTableManager.ItemTable.GetRandom();
-        if (data == null) return;
+        if (data == null)
+            return;
 
         itemDataList.Add(data);
         UpdateSlots();
@@ -40,7 +42,8 @@ public class ItemSlotList : MonoBehaviour
 
     public void RemoveItem()
     {
-        if (selectedSlotIndex == -1) return;
+        if (selectedSlotIndex == -1)
+            return;
 
         itemDataList.RemoveAt(selectedSlotIndex);
         selectedSlotIndex = -1;
@@ -63,7 +66,8 @@ public class ItemSlotList : MonoBehaviour
 
     public ItemData GetSelectedItem()
     {
-        if (selectedSlotIndex == -1) return null;
+        if (selectedSlotIndex == -1)
+            return null;
         return itemDataList[selectedSlotIndex];
     }
 

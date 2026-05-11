@@ -3,9 +3,14 @@ using UnityEngine.UI;
 
 public class MainTitleUi : MonoBehaviour
 {
-    [SerializeField] private Button continueButton;
-    [SerializeField] private Button newGameButton;
-    [SerializeField] private Button exitButton;
+    [SerializeField]
+    private Button continueButton;
+
+    [SerializeField]
+    private Button newGameButton;
+
+    [SerializeField]
+    private Button exitButton;
 
     private void Start()
     {

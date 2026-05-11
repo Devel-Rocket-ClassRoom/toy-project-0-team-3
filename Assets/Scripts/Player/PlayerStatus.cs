@@ -4,10 +4,17 @@ using UnityEngine;
 public class PlayerStatus : LivingEntity
 {
     [Header("마나")]
-    [SerializeField] private float maxMana = 200f;
-    [SerializeField] private float manaRegen = 5f;
-    [SerializeField] private float invincibleDuration = 1.5f;
-    [SerializeField] private float blinkInterval = 0.1f; // 깜빡이는 속도
+    [SerializeField]
+    private float maxMana = 200f;
+
+    [SerializeField]
+    private float manaRegen = 5f;
+
+    [SerializeField]
+    private float invincibleDuration = 1.5f;
+
+    [SerializeField]
+    private float blinkInterval = 0.1f; // 깜빡이는 속도
 
     public float CurrentMana { get; private set; }
     public float MaxHealth => startingHealth;
@@ -26,7 +33,7 @@ public class PlayerStatus : LivingEntity
 
     protected override void OnEnable()
     {
-        base.OnEnable();  // Health, IsDead 초기화
+        base.OnEnable(); // Health, IsDead 초기화
         CurrentMana = maxMana;
         IsHit = false;
         IsInvincible = false;
@@ -55,7 +62,8 @@ public class PlayerStatus : LivingEntity
 
     public void UseMana(float amount)
     {
-        if (IsDead) return;
+        if (IsDead)
+            return;
         CurrentMana = Mathf.Clamp(CurrentMana - amount, 0f, maxMana);
     }
 
@@ -63,15 +71,19 @@ public class PlayerStatus : LivingEntity
 
     private void TickManaRegen()
     {
-        if (CurrentMana >= maxMana) return;
+        if (CurrentMana >= maxMana)
+            return;
         CurrentMana = Mathf.Min(CurrentMana + manaRegen * Time.deltaTime, maxMana);
     }
 
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
-        if (IsDead) return;
-        if (IsHit) return;
-        if (IsInvincible) return;
+        if (IsDead)
+            return;
+        if (IsHit)
+            return;
+        if (IsInvincible)
+            return;
 
         base.OnDamage(damage, hitPoint, hitNormal);
         Debug.Log(Health);

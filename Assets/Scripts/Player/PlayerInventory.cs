@@ -9,7 +9,6 @@ public class PlayerInventory : MonoBehaviour
 
     private GameObject _chest;
 
-
     public GameObject _inventory;
 
     private void Awake()

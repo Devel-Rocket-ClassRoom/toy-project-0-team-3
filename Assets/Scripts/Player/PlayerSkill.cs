@@ -13,10 +13,17 @@ public class PlayerSkill : MonoBehaviour
     private ESkill _eSkill;
     private RSkill _rSkill;
 
-    [SerializeField] private float _qManaCost = 20f;
-    [SerializeField] private float _wManaCost = 30f;
-    [SerializeField] private float _eManaCost = 30f;
-    [SerializeField] private float _rManaCost = 50f;
+    [SerializeField]
+    private float _qManaCost = 20f;
+
+    [SerializeField]
+    private float _wManaCost = 30f;
+
+    [SerializeField]
+    private float _eManaCost = 30f;
+
+    [SerializeField]
+    private float _rManaCost = 50f;
 
     public bool IsUsingSkill { get; private set; }
 
@@ -35,9 +42,15 @@ public class PlayerSkill : MonoBehaviour
 
     private void Update()
     {
-        if (_playerStatus.IsHit || _playerStatus.IsDead) return;
+        if (_playerStatus.IsHit || _playerStatus.IsDead)
+            return;
 
-        if (_input.SkillQ && _qSkill.CanUse && !IsUsingSkill && _playerStatus.CurrentMana >= _qManaCost)
+        if (
+            _input.SkillQ
+            && _qSkill.CanUse
+            && !IsUsingSkill
+            && _playerStatus.CurrentMana >= _qManaCost
+        )
         {
             _playerStatus.SetInvincible(true);
             IsUsingSkill = true;
@@ -47,7 +60,12 @@ public class PlayerSkill : MonoBehaviour
             _animator.SetTrigger("QSkill");
         }
 
-        if (_input.SkillW && _wSkill.CanUse && !IsUsingSkill && _playerStatus.CurrentMana >= _wManaCost)
+        if (
+            _input.SkillW
+            && _wSkill.CanUse
+            && !IsUsingSkill
+            && _playerStatus.CurrentMana >= _wManaCost
+        )
         {
             _playerStatus.SetInvincible(true);
             IsUsingSkill = true;
@@ -57,7 +75,12 @@ public class PlayerSkill : MonoBehaviour
             _animator.SetTrigger("WSkill");
         }
 
-        if (_input.SkillE && _eSkill.CanUse && !IsUsingSkill && _playerStatus.CurrentMana >= _eManaCost)
+        if (
+            _input.SkillE
+            && _eSkill.CanUse
+            && !IsUsingSkill
+            && _playerStatus.CurrentMana >= _eManaCost
+        )
         {
             _playerStatus.SetInvincible(true);
             IsUsingSkill = true;
@@ -66,7 +89,12 @@ public class PlayerSkill : MonoBehaviour
             _animator.SetTrigger("ESkill");
         }
 
-        if (_input.SkillR && _rSkill.CanUse && !IsUsingSkill && _playerStatus.CurrentMana >= _rManaCost)
+        if (
+            _input.SkillR
+            && _rSkill.CanUse
+            && !IsUsingSkill
+            && _playerStatus.CurrentMana >= _rManaCost
+        )
         {
             _playerStatus.SetInvincible(true);
             IsUsingSkill = true;
@@ -85,10 +113,10 @@ public class PlayerSkill : MonoBehaviour
     {
         return new float[]
         {
-        _qSkill.RemainingCooldown,
-        _wSkill.RemainingCooldown,
-        _eSkill.RemainingCooldown,
-        _rSkill.RemainingCooldown,
+            _qSkill.RemainingCooldown,
+            _wSkill.RemainingCooldown,
+            _eSkill.RemainingCooldown,
+            _rSkill.RemainingCooldown,
         };
     }
 

@@ -9,10 +9,13 @@ public abstract class BaseMonster : LivingEntity
     [Header("Base Stats")]
     [SerializeField]
     protected float moveSpeed = 3f;
+
     [SerializeField]
     protected float turnSpeed = 720f;
+
     [SerializeField]
     protected float attackRange = 1.5f;
+
     [SerializeField]
     protected float attackCooldown = 1.0f;
 
@@ -20,16 +23,20 @@ public abstract class BaseMonster : LivingEntity
     [SerializeField]
     protected float baseAttackDamage = 1f;
     protected float currentAttackDamage;
+
     [SerializeField]
     protected HitBox hitBox;
 
     [Header("Target")]
     [SerializeField]
     protected string playerTag = "Player";
+
     [SerializeField]
     protected LayerMask obstacleLayer;
+
     [SerializeField]
     protected float eyeHeight = 1.5f;
+
     [SerializeField]
     protected float targetEyeHeight = 1.0f;
 
@@ -40,15 +47,16 @@ public abstract class BaseMonster : LivingEntity
     [Header("Animation Event Safety")]
     [SerializeField]
     protected float attackFallbackDuration = 2.5f;
+
     [SerializeField]
     protected float hitReactionFallbackDuration = 0.6f;
 
     [Header("Return")]
-    [SerializeField] 
+    [SerializeField]
     protected float returnArriveDistance = 0.35f;
 
     [Header("Death")]
-    [SerializeField] 
+    [SerializeField]
     protected float destroyDelay = 3f;
 
     protected enum MonsterState
@@ -61,7 +69,7 @@ public abstract class BaseMonster : LivingEntity
         Dead,
     }
 
-    [SerializeField] 
+    [SerializeField]
     private MonsterState currentState = MonsterState.Idle;
 
     protected MonsterState CurrentState
@@ -273,8 +281,10 @@ public abstract class BaseMonster : LivingEntity
 
         if (isAttacking)
         {
-            if (attackFallbackDuration > 0f &&
-                Time.time >= attackStartedTime + attackFallbackDuration)
+            if (
+                attackFallbackDuration > 0f
+                && Time.time >= attackStartedTime + attackFallbackDuration
+            )
             {
                 Animation_AttackEnd();
             }
@@ -413,7 +423,10 @@ public abstract class BaseMonster : LivingEntity
             }
 
             Vector3 hitPoint = target.ClosestPoint(transform.position);
-            Vector3 hitNormal = GetFlatDirection(transform.position, target.transform.position).normalized;
+            Vector3 hitNormal = GetFlatDirection(
+                transform.position,
+                target.transform.position
+            ).normalized;
 
             if (hitNormal.sqrMagnitude <= 0.001f)
             {

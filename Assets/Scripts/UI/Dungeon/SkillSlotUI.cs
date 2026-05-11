@@ -1,11 +1,14 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class SkillSlotUI : MonoBehaviour
 {
-    [SerializeField] private GameObject cooldownOverlay;
-    [SerializeField] private TextMeshProUGUI cooldownText;
+    [SerializeField]
+    private GameObject cooldownOverlay;
+
+    [SerializeField]
+    private TextMeshProUGUI cooldownText;
 
     public void UpdateCooldown(float ratio, float remaining)
     {

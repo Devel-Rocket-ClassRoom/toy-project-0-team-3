@@ -1,7 +1,7 @@
-using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.AI;
 using Unity.AI.Navigation;
+using UnityEngine;
+using UnityEngine.AI;
 
 public class MonsterRandomSpawner : MonoBehaviour
 {
@@ -22,7 +22,6 @@ public class MonsterRandomSpawner : MonoBehaviour
 
     private List<Vector3> _spawnedPositions = new();
     private List<GameObject> _spawnedMonsters = new();
-
 
     private void Start()
     {
@@ -105,12 +104,22 @@ public class MonsterRandomSpawner : MonoBehaviour
             }
             Vector3 candidate = a + r1 * (b - a) + r2 * (c - a);
 
-            if (!NavMesh.SamplePosition(candidate, out NavMeshHit hit, sampleRadius, NavMesh.AllAreas))
+            if (
+                !NavMesh.SamplePosition(
+                    candidate,
+                    out NavMeshHit hit,
+                    sampleRadius,
+                    NavMesh.AllAreas
+                )
+            )
             {
                 continue;
             }
 
-            if (player != null && Vector3.Distance(hit.position, player.position) < minDistanceFromPlayer)
+            if (
+                player != null
+                && Vector3.Distance(hit.position, player.position) < minDistanceFromPlayer
+            )
             {
                 continue;
             }
@@ -130,11 +139,15 @@ public class MonsterRandomSpawner : MonoBehaviour
             }
 
             GameObject prefab = monsterPrefabs[Random.Range(0, monsterPrefabs.Length)];
-            GameObject monster = Instantiate(prefab, hit.position,
-                Quaternion.Euler(0, Random.Range(0f, 360f), 0));
+            GameObject monster = Instantiate(
+                prefab,
+                hit.position,
+                Quaternion.Euler(0, Random.Range(0f, 360f), 0)
+            );
             monster.transform.SetParent(transform);
 
-            _spawnedPositions.Add(hit.position); ;
+            _spawnedPositions.Add(hit.position);
+            ;
             _spawnedMonsters.Add(monster);
             spawned++;
         }
@@ -154,5 +167,4 @@ public class MonsterRandomSpawner : MonoBehaviour
         _spawnedMonsters.Clear();
         _spawnedPositions.Clear();
     }
-
 }

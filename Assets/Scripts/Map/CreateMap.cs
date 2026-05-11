@@ -25,14 +25,13 @@ public class CreateMap : MonoBehaviour
         }
     }
 
-
     public void GenerateMap()
     {
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < heigth; j++)
             {
-                Vector3 pos = new Vector3(i * tileSize, 0 , j * tileSize);
+                Vector3 pos = new Vector3(i * tileSize, 0, j * tileSize);
                 GameObject tile = Instantiate(tilePrefab, pos, Quaternion.identity);
                 tile.transform.parent = this.transform;
                 tile.name = $"Tile_{i}_{j}";

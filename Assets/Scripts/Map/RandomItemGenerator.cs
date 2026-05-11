@@ -30,9 +30,9 @@ public class RandomItemGenerator : MonoBehaviour
 
     private IEnumerator SpawnItemsRoutine()
     {
-         yield return null;
+        yield return null;
 
-        // MapTile 태그로 생성된 맵타일 찾기 
+        // MapTile 태그로 생성된 맵타일 찾기
         GameObject[] mapTiles = GameObject.FindGameObjectsWithTag("MapTile");
 
         if (mapTiles.Length == 0)
@@ -40,7 +40,7 @@ public class RandomItemGenerator : MonoBehaviour
             Debug.LogError("맵 타일이 존재하지 않습니다!");
             yield break;
         }
-        Debug.Log ($"현재 맵 타일: {mapTiles.Length}개");
+        Debug.Log($"현재 맵 타일: {mapTiles.Length}개");
 
         for (int i = 0; i < itemCount; i++)
         {
@@ -68,7 +68,6 @@ public class RandomItemGenerator : MonoBehaviour
             // 인스턴스 생성
             GameObject randomItem = spawnableItems[Random.Range(0, spawnableItems.Length)];
             Instantiate(randomItem, spawnPos, Quaternion.identity, transform);
-
         }
     }
 
@@ -76,15 +75,15 @@ public class RandomItemGenerator : MonoBehaviour
     {
         // Collider에서 bounds 계산
         Collider col = tile.GetComponentInChildren<Collider>();
-        if (col != null) 
+        if (col != null)
             return col.bounds;
 
         // collider로 계산 불가하면 Renderer로 계산
         Renderer rend = tile.GetComponentInChildren<Renderer>();
-        if (rend != null) 
+        if (rend != null)
             return rend.bounds;
 
         // 둘다 해당안되면 기본 transform 위치 기준으로 임의의 bounds 계산
-        return new Bounds(tile.transform.position, Vector3. one);
+        return new Bounds(tile.transform.position, Vector3.one);
     }
 }

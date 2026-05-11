@@ -3,8 +3,11 @@ using UnityEngine.UI;
 
 public class PubUi : MonoBehaviour
 {
-    [SerializeField] private Button toMainButton;
-    [SerializeField] private Button toDungeonButton;
+    [SerializeField]
+    private Button toMainButton;
+
+    [SerializeField]
+    private Button toDungeonButton;
 
     private void Start()
     {

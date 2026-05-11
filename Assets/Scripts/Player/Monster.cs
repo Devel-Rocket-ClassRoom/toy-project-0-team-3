@@ -4,18 +4,31 @@ using UnityEngine.AI;
 
 public class Monster : LivingEntity
 {
-    private enum State { Idle, Move, Attack, Dead }
+    private enum State
+    {
+        Idle,
+        Move,
+        Attack,
+        Dead,
+    }
 
     [Header("감지")]
-    [SerializeField] private float _detectRange = 10f;
-    [SerializeField] private float _attackRange = 2f;
-    [SerializeField] private float _realAttackRange = 3f;
+    [SerializeField]
+    private float _detectRange = 10f;
+
+    [SerializeField]
+    private float _attackRange = 2f;
+
+    [SerializeField]
+    private float _realAttackRange = 3f;
 
     [Header("공격")]
-    [SerializeField] private float _attackDamage = 10f;
+    [SerializeField]
+    private float _attackDamage = 10f;
 
     [Header("넉백")]
-    [SerializeField] private float _knockbackForce = 5f;
+    [SerializeField]
+    private float _knockbackForce = 5f;
 
     private State _currentState = State.Idle;
     private bool _isKnockback = false;
@@ -46,13 +59,20 @@ public class Monster : LivingEntity
     {
         base.Update();
 
-        if (_isKnockback) return;
+        if (_isKnockback)
+            return;
 
         switch (_currentState)
         {
-            case State.Idle: UpdateIdle(); break;
-            case State.Move: UpdateMove(); break;
-            case State.Attack: UpdateAttack(); break;
+            case State.Idle:
+                UpdateIdle();
+                break;
+            case State.Move:
+                UpdateMove();
+                break;
+            case State.Attack:
+                UpdateAttack();
+                break;
         }
     }
 
@@ -63,16 +83,20 @@ public class Monster : LivingEntity
         switch (newState)
         {
             case State.Idle:
-                if (_agent.enabled) _agent.isStopped = true;
+                if (_agent.enabled)
+                    _agent.isStopped = true;
                 break;
             case State.Move:
-                if (_agent.enabled) _agent.isStopped = false;
+                if (_agent.enabled)
+                    _agent.isStopped = false;
                 break;
             case State.Attack:
-                if (_agent.enabled) _agent.isStopped = true;
+                if (_agent.enabled)
+                    _agent.isStopped = true;
                 break;
             case State.Dead:
-                if (_agent.enabled) _agent.isStopped = true;
+                if (_agent.enabled)
+                    _agent.isStopped = true;
                 StartCoroutine(DestroyAfterDead());
                 break;
         }
@@ -80,7 +104,8 @@ public class Monster : LivingEntity
 
     private void UpdateIdle()
     {
-        if (_player == null) return;
+        if (_player == null)
+            return;
 
         if (GetDistToPlayer() <= _detectRange)
         {
@@ -91,8 +116,10 @@ public class Monster : LivingEntity
 
     private void UpdateMove()
     {
-        if (_player == null) return;
-        if (!_agent.enabled) return;
+        if (_player == null)
+            return;
+        if (!_agent.enabled)
+            return;
 
         float dist = GetDistToPlayer();
 
@@ -120,8 +147,10 @@ public class Monster : LivingEntity
 
     private void UpdateAttack()
     {
-        if (_player == null) return;
-        if (!_agent.enabled) return;
+        if (_player == null)
+            return;
+        if (!_agent.enabled)
+            return;
 
         float dist = GetDistToPlayer();
         float currentRange = _isAttacking ? _realAttackRange : _attackRange;
@@ -143,7 +172,8 @@ public class Monster : LivingEntity
 
     public void OnAttackHit()
     {
-        if (_player == null) return;
+        if (_player == null)
+            return;
 
         // 이벤트 호출 시점에 범위 안에 있을 때만 데미지
         if (GetDistToPlayer() <= _realAttackRange)

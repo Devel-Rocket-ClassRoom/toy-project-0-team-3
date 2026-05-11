@@ -1,9 +1,9 @@
 using UnityEngine;
 
 /// <summary>
-/// °¨Áö Å¸ÀÔ Rock ¸ó½ºÅÍ.
-/// Ã³À½¿¡´Â Rubble »óÅÂ·Î ¼û¾î ÀÖ´Ù°¡ ÇÃ·¹ÀÌ¾î°¡ °¨ÁöµÇ¸é ÀÏ¾î³ª°í,
-/// ÃßÀû/°ø°Ý/º¹±Í ÈÄ ÀÏÁ¤ ½Ã°£ µ¿¾È Idle »óÅÂ°¡ À¯ÁöµÇ¸é ´Ù½Ã Rubble »óÅÂ·Î µ¹¾Æ°£´Ù.
+/// ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ Rock ï¿½ï¿½ï¿½ï¿½.
+/// Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Rubble ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù°ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½ ï¿½Ï¾î³ªï¿½ï¿½,
+/// ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ Idle ï¿½ï¿½ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½ ï¿½Ù½ï¿½ Rubble ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½.
 /// </summary>
 public class RockMonster : SimpleMonster
 {
@@ -45,8 +45,8 @@ public class RockMonster : SimpleMonster
     private float idleTimer;
 
     /// <summary>
-    /// BaseMonster.OnEnable()ÀÌ Idle ÁøÀÔ°ú PlayIdleAnim()À» È£ÃâÇÏ¹Ç·Î,
-    /// base.OnEnable()º¸´Ù ¸ÕÀú isRubble °ªÀ» ¼¼ÆÃÇØ¾ß ÇÑ´Ù.
+    /// BaseMonster.OnEnable()ï¿½ï¿½ Idle ï¿½ï¿½ï¿½Ô°ï¿½ PlayIdleAnim()ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ï¹Ç·ï¿½,
+    /// base.OnEnable()ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ isRubble ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½Ñ´ï¿½.
     /// </summary>
     protected override void OnEnable()
     {
@@ -73,9 +73,9 @@ public class RockMonster : SimpleMonster
     }
 
     /// <summary>
-    /// Rubble »óÅÂ¿¡¼­´Â ÀÏ¹Ý SimpleMonster.UpdateIdle()À» ±×´ë·Î È£ÃâÇÏÁö ¾Ê´Â´Ù.
-    /// SimpleMonster.UpdateIdle()Àº PlayIdleAnim()À» ¸ÕÀú È£ÃâÇÏ±â ¶§¹®¿¡
-    /// Rubble »óÅÂ°¡ ±úÁú ¼ö ÀÖ´Ù.
+    /// Rubble ï¿½ï¿½ï¿½Â¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¹ï¿½ SimpleMonster.UpdateIdle()ï¿½ï¿½ ï¿½×´ï¿½ï¿½ È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´Â´ï¿½.
+    /// SimpleMonster.UpdateIdle()ï¿½ï¿½ PlayIdleAnim()ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// Rubble ï¿½ï¿½ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½.
     /// </summary>
     protected override void UpdateIdle()
     {
@@ -95,8 +95,8 @@ public class RockMonster : SimpleMonster
     }
 
     /// <summary>
-    /// ¼û¾î ÀÖ´Â »óÅÂÀÇ Idle Ã³¸®.
-    /// °¨Áö´Â ÇÏµÇ, °¨Áö Àü±îÁö´Â locomotionÀÌ³ª idle ¾Ö´Ï¸ÞÀÌ¼ÇÀ» °Çµå¸®Áö ¾Ê´Â´Ù.
+    /// ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Idle Ã³ï¿½ï¿½.
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ïµï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ locomotionï¿½Ì³ï¿½ idle ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½Çµå¸®ï¿½ï¿½ ï¿½Ê´Â´ï¿½.
     /// </summary>
     private void UpdateRubbleIdle()
     {
@@ -121,8 +121,8 @@ public class RockMonster : SimpleMonster
     }
 
     /// <summary>
-    /// ±ú¾î³­ »óÅÂÀÇ Idle Ã³¸®.
-    /// °¨Áö ´ë»óÀÌ ¾øÀ¸¸é ÀÏÁ¤ ½Ã°£ ÈÄ ´Ù½Ã Rubble·Î µ¹¾Æ°£´Ù.
+    /// ï¿½ï¿½ï¿½î³­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Idle Ã³ï¿½ï¿½.
+    /// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ ï¿½Ù½ï¿½ Rubbleï¿½ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½.
     /// </summary>
     private void UpdateAwakeIdle()
     {
@@ -243,8 +243,8 @@ public class RockMonster : SimpleMonster
     }
 
     /// <summary>
-    /// Rubble »óÅÂ¿¡¼­ ÀÏ¹Ý ÀüÅõ ´ë±â »óÅÂ·Î 1È¸¸¸ ÀüÈ¯ÇÑ´Ù.
-    /// ÃßÀû Áß ¹Ýº¹ÇØ¼­ rubbleToIdleÀÌ ½ÇÇàµÇÁö ¾Êµµ·Ï isRubbleÀ» Áï½Ã false·Î ¹Ù²Û´Ù.
+    /// Rubble ï¿½ï¿½ï¿½Â¿ï¿½ï¿½ï¿½ ï¿½Ï¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ 1È¸ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ñ´ï¿½.
+    /// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ýºï¿½ï¿½Ø¼ï¿½ rubbleToIdleï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Êµï¿½ï¿½ï¿½ isRubbleï¿½ï¿½ ï¿½ï¿½ï¿½ falseï¿½ï¿½ ï¿½Ù²Û´ï¿½.
     /// </summary>
     private void WakeUpFromRubble()
     {
@@ -261,7 +261,7 @@ public class RockMonster : SimpleMonster
     }
 
     /// <summary>
-    /// ¿ÏÀüÈ÷ Idle »óÅÂ¿¡¼­ ÀÏÁ¤ ½Ã°£ ÀÌ»ó ´ë±âÇßÀ» ¶§¸¸ Rubble »óÅÂ·Î µ¹¾Æ°£´Ù.
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Idle ï¿½ï¿½ï¿½Â¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Rubble ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½.
     /// </summary>
     private void ReturnToRubbleIfNeeded()
     {

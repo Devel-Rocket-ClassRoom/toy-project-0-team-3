@@ -3,13 +3,14 @@ using UnityEngine;
 public abstract class SimpleMonster : BaseMonster
 {
     [Header("Detection Type Ranges")]
-    [SerializeField] 
+    [SerializeField]
     protected float alertRange = 8f;
-    [SerializeField] 
-    protected float traceRange = 5f;
-    [SerializeField] 
-    protected float chaseRange = 14f;
 
+    [SerializeField]
+    protected float traceRange = 5f;
+
+    [SerializeField]
+    protected float chaseRange = 14f;
 
     [Header("Detection Option")]
     [SerializeField]

@@ -11,7 +11,8 @@ public abstract class SkillBase : MonoBehaviour, ISkill
 
     public void Use()
     {
-        if (Time.time < _lastUsedTime + Cooldown) return;
+        if (Time.time < _lastUsedTime + Cooldown)
+            return;
         _lastUsedTime = Time.time;
         OnUse();
     }

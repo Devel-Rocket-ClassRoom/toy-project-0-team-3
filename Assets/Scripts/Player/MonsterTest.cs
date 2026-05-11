@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class MonsterTest : LivingEntity
 {
-    [SerializeField] private float _knockbackForce = 5f;
+    [SerializeField]
+    private float _knockbackForce = 5f;
     private Rigidbody _rigidbody;
 
     private void Awake()

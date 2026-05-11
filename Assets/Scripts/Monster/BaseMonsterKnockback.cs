@@ -9,52 +9,67 @@ public abstract class BaseMonsterKnockback : LivingEntity
     [Header("Base Stats")]
     [SerializeField]
     protected float moveSpeed = 3f;
+
     [SerializeField]
     protected float turnSpeed = 720f;
+
     [SerializeField]
     protected float attackRange = 1.5f;
+
     [SerializeField]
     protected float attackCooldown = 1.0f;
 
     [Header("Combat")]
     [SerializeField]
     protected float attackDamage = 10f;
+
     [SerializeField]
     protected HitBox hitBox;
+
     [SerializeField]
     protected bool allowMultipleDamageEventsPerAttack = false;
 
     [Header("Target")]
     [SerializeField]
     protected string playerTag = "Player";
+
     [SerializeField]
     protected LayerMask obstacleLayer;
+
     [SerializeField]
     protected float eyeHeight = 1.5f;
+
     [SerializeField]
     protected float targetEyeHeight = 1.0f;
 
     [Header("Alert Mark")]
     [SerializeField]
     protected GameObject alertMarkPrefab;
+
     [SerializeField]
     protected Vector3 alertMarkLocalOffset = new Vector3(0f, 2.2f, 0f);
 
     [Header("Animation Event Safety")]
     [SerializeField]
     protected float attackFallbackDuration = 2.5f;
+
     [SerializeField]
     protected float hitReactionFallbackDuration = 0.6f;
 
     [Header("Return")]
-    [SerializeField] protected float returnArriveDistance = 0.35f;
+    [SerializeField]
+    protected float returnArriveDistance = 0.35f;
 
     [Header("Death")]
-    [SerializeField] protected float destroyDelay = 3f;
+    [SerializeField]
+    protected float destroyDelay = 3f;
 
     [Header("넉백")]
-    [SerializeField] protected float knockbackForce = 5f;
-    [SerializeField] protected float knockbackDuration = 0.3f;
+    [SerializeField]
+    protected float knockbackForce = 5f;
+
+    [SerializeField]
+    protected float knockbackDuration = 0.3f;
 
     protected enum MonsterState
     {
@@ -66,7 +81,8 @@ public abstract class BaseMonsterKnockback : LivingEntity
         Dead,
     }
 
-    [SerializeField] private MonsterState currentState = MonsterState.Idle;
+    [SerializeField]
+    private MonsterState currentState = MonsterState.Idle;
 
     protected MonsterState CurrentState
     {
@@ -289,8 +305,10 @@ public abstract class BaseMonsterKnockback : LivingEntity
 
         if (isAttacking)
         {
-            if (attackFallbackDuration > 0f &&
-                Time.time >= attackStartedTime + attackFallbackDuration)
+            if (
+                attackFallbackDuration > 0f
+                && Time.time >= attackStartedTime + attackFallbackDuration
+            )
             {
                 Animation_AttackEnd();
             }
@@ -427,7 +445,10 @@ public abstract class BaseMonsterKnockback : LivingEntity
             }
 
             Vector3 hitPoint = target.ClosestPoint(transform.position);
-            Vector3 hitNormal = GetFlatDirection(transform.position, target.transform.position).normalized;
+            Vector3 hitNormal = GetFlatDirection(
+                transform.position,
+                target.transform.position
+            ).normalized;
 
             if (hitNormal.sqrMagnitude <= 0.001f)
             {
@@ -476,7 +497,9 @@ public abstract class BaseMonsterKnockback : LivingEntity
         while (elapsed < knockbackDuration)
         {
             if (_rigidbody != null)
-                _rigidbody.MovePosition(_rigidbody.position + hitNormal * knockbackForce * Time.fixedDeltaTime);
+                _rigidbody.MovePosition(
+                    _rigidbody.position + hitNormal * knockbackForce * Time.fixedDeltaTime
+                );
 
             elapsed += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();

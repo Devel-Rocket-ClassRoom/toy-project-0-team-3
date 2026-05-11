@@ -1,10 +1,13 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
-    [SerializeField] private float _damage = 10f;
-    [SerializeField] private GameObject _player;
+    [SerializeField]
+    private float _damage = 10f;
+
+    [SerializeField]
+    private GameObject _player;
     private BoxCollider _collider;
     private HashSet<Collider> _hitTargets = new HashSet<Collider>();
 
@@ -29,7 +32,8 @@ public class Sword : MonoBehaviour
     {
         //Debug.Log($"OnTriggerEnter 호출됨: {other.name}");
 
-        if (_hitTargets.Contains(other)) return;
+        if (_hitTargets.Contains(other))
+            return;
 
         _hitTargets.Add(other);
 

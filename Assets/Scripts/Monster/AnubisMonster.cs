@@ -15,6 +15,7 @@ public class AnubisMonster : SensoryMonster
      * @brief Animator의 locomotion 또는 Locomotion 파라미터를 빠르게 접근하기 위해 미리 계산한 해시 값입니다.
      */
     private static readonly int HashLocomotion = Animator.StringToHash("locomotion");
+
     /**
      * @brief 피격 애니메이션 트리거 파라미터를 빠르게 접근하기 위해 미리 계산한 해시 값입니다.
      */
@@ -24,10 +25,12 @@ public class AnubisMonster : SensoryMonster
      * @brief 첫 번째 공격 애니메이션 트리거 파라미터의 해시 값입니다.
      */
     private static readonly int HashAttack1 = Animator.StringToHash("attack1");
+
     /**
      * @brief RockMonster 또는 Creature 계열의 두 번째 공격 트리거 해시 값입니다.
      */
     private static readonly int HashAttack2 = Animator.StringToHash("attack2");
+
     /**
      * @brief 세 번째 공격 애니메이션 트리거 파라미터의 해시 값입니다.
      */
