@@ -52,7 +52,6 @@ public class PlayerAttack : MonoBehaviour
             StopCoroutine(_coDash);
 
         _comboStep = (_comboStep % 3) + 1;
-        Debug.Log($"공격{_comboStep}");
         _canCombo = false;
         _isAttacking = true;
         _animator.ResetTrigger("Attack");
@@ -74,8 +73,10 @@ public class PlayerAttack : MonoBehaviour
 
     public void OnAttackEnd()
     {
-        if (_comboStep == 0)
+        // 이미 ForceReset이 호출되었다면 추가 처리 불필요
+        if (!_isAttacking)
             return;
+
         ForceReset();
     }
 
