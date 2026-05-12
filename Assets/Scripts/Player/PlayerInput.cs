@@ -10,6 +10,7 @@ public class PlayerInput : MonoBehaviour
     public Vector2 MousePosition { get; private set; }
     public bool Fire { get; private set; }
     public bool Attack { get; private set; }
+    public bool Jump { get; private set; }
     public bool SkillQ { get; private set; }
     public bool SkillW { get; private set; }
     public bool SkillE { get; private set; }
@@ -24,6 +25,7 @@ public class PlayerInput : MonoBehaviour
         MoveY = Input.GetAxisRaw(MoveYAxis);
         MousePosition = Input.mousePosition;
         Attack = Input.GetKeyDown(KeyCode.Space);
+        Jump = Input.GetMouseButtonDown(1);
         SkillQ = Input.GetKeyDown(KeyCode.Q);
         SkillW = Input.GetKeyDown(KeyCode.W);
         SkillE = Input.GetKeyDown(KeyCode.E);
