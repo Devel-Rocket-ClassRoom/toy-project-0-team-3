@@ -144,7 +144,8 @@ public abstract class BaseMonster : LivingEntity
             }
         }
 
-        alertMarkPrefab.SetActive(false);
+        if (alertMarkPrefab != null)
+            alertMarkPrefab.SetActive(false);
         ChangeState(MonsterState.Idle, true);
     }
 
@@ -218,7 +219,8 @@ public abstract class BaseMonster : LivingEntity
         {
             case MonsterState.Idle:
                 StopMoving();
-                alertMarkPrefab.SetActive(false);
+                if (alertMarkPrefab != null)
+                    alertMarkPrefab.SetActive(false);
                 PlayIdleAnim();
                 break;
 
@@ -239,13 +241,15 @@ public abstract class BaseMonster : LivingEntity
                 break;
 
             case MonsterState.Return:
-                alertMarkPrefab.SetActive(false);
+                if (alertMarkPrefab != null)
+                    alertMarkPrefab.SetActive(false);
                 ResumeMoving();
                 break;
 
             case MonsterState.Dead:
                 StopMoving();
-                alertMarkPrefab.SetActive(false);
+                if (alertMarkPrefab != null)
+                    alertMarkPrefab.SetActive(false);
 
                 if (bodyCollider != null)
                 {
@@ -475,7 +479,8 @@ public abstract class BaseMonster : LivingEntity
             return;
         }
 
-        alertMarkPrefab.SetActive(false);
+        if (alertMarkPrefab != null)
+            alertMarkPrefab.SetActive(false);
 
         float dist = GetDistanceToPlayer();
 
