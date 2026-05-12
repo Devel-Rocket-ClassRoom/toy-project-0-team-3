@@ -66,7 +66,7 @@ public class ItemSlotList : MonoBehaviour
 
     public ItemData GetSelectedItem()
     {
-        if (selectedSlotIndex == -1)
+        if (selectedSlotIndex == -1 || selectedSlotIndex >= itemDataList.Count)
             return null;
         return itemDataList[selectedSlotIndex];
     }
@@ -85,9 +85,20 @@ public class ItemSlotList : MonoBehaviour
                 int capturedIndex = i;
                 slot.button.onClick.AddListener(() =>
                 {
-                    selectedSlotIndex = capturedIndex;
-                    itemInfo.SetItemData(itemDataList[capturedIndex]);
-                    Debug.Log($"선택된 슬롯: {selectedSlotIndex}");
+                    // 인덱스 범위 검증: 아이템이 제거되었을 수 있으므로 확인
+                    if (capturedIndex >= 0 && capturedIndex < itemDataList.Count)
+                    {
+                        selectedSlotIndex = capturedIndex;
+                        itemInfo.SetItemData(itemDataList[capturedIndex]);
+                        Debug.Log($"선택된 슬롯: {selectedSlotIndex}");
+                    }
+                    else
+                    {
+                        // 범위를 벗어난 경우 선택 초기화
+                        selectedSlotIndex = -1;
+                        itemInfo.SetEmpty();
+                        Debug.LogWarning($"선택된 슬롯 {capturedIndex}은 유효하지 않습니다.");
+                    }
                 });
 
                 slotList.Add(slot);
